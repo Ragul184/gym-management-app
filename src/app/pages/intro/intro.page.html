@@ -1,0 +1,20 @@
+<ion-content>
+  <swiper #swiper [pagination]="true">
+    <ng-template swiperSlide class="ion-text-center">
+      <ion-text color="light">
+        <img src="https://i1.wp.com/ionicacademy.com/wp-content/uploads/2019/10/async-code-course.png">
+        <h1>Hey there!</h1>
+        <p>This is an epic app because...</p>
+        <ion-button (click)="next()" fill="outline" color="light">Next</ion-button>
+      </ion-text>
+    </ng-template>
+    <ng-template swiperSlide class="ion-text-center">
+      <ion-text color="light">
+        <img src="https://i1.wp.com/ionicacademy.com/wp-content/uploads/2020/06/ionic-everywhere-course.png">
+        <h1>It's Ionic!</h1>
+        <p>... it shows all the basics you need!</p>
+        <ion-button (click)="start()" fill="outline" color="light">Start</ion-button>
+      </ion-text>
+    </ng-template>
+  </swiper>
+</ion-content>
