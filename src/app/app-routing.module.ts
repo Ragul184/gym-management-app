@@ -57,7 +57,24 @@ const routes: Routes = [
     path: '**',
     redirectTo: '/login',
     pathMatch: 'full'
+  },
+  {
+    path: 'view-all-members',
+    loadChildren: () => import('./pages/view-all-members/view-all-members.module').then( m => m.ViewAllMembersPageModule)
+  },
+  {
+    path: 'view-all-payments',
+    loadChildren: () => import('./pages/view-all-payments/view-all-payments.module').then( m => m.ViewAllPaymentsPageModule)
+  },
+  {
+    path: 'show-expiring-members',
+    loadChildren: () => import('./pages/show-expiring-members/show-expiring-members.module').then( m => m.ShowExpiringMembersPageModule)
+  },
+  {
+    path: 'delete-user',
+    loadChildren: () => import('./pages/delete-user/delete-user.module').then( m => m.DeleteUserPageModule)
   }
+
 ];
 @NgModule({
   imports: [
