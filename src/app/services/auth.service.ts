@@ -17,7 +17,7 @@ export class AuthService {
 
   constructor(private http: HttpClient, private auth: Auth, private firestore: Firestore) {
     this.loadToken();
-    this.summaRead();
+    // this.summaRead();
   }
 
   async summaRead() {
