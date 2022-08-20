@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Show Expiring Members</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="scroll" *ngIf="show">
+  <ion-card-header color="primary" class="ion-text-center" style="font-size: larger;">Employee List</ion-card-header>
+  <ion-item button routerLink="/customcal" class="ion-text-center">
+    <ion-label>Weekly Activity Log</ion-label>
+  </ion-item>
+  <ion-item-sliding *ngFor="let emp of employees; let i=index">
+    <ion-item button color="none" routerLink="/employee-details/{{ emp.eid.toLowerCase() }}">
+      {{i+1}}.&nbsp;{{emp.eid |uppercase }} &nbsp; {{emp.name |titlecase }}
+    </ion-item>
+
+    <ion-item-options side="end">
+      <ion-item-option color="danger" (click)="deleteEmployee(emp.eid)">Delete</ion-item-option>
+    </ion-item-options>
+  </ion-item-sliding>
+
+</ion-content>
