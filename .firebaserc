@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "gym-app-a9c49"
+  },
+  "targets": {
+    "gym-app-a9c49": {
+      "hosting": {
+        "app": [
+          "extremegym"
+        ]
+      }
+    }
+  }
+}

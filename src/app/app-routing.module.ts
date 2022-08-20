@@ -21,27 +21,27 @@ const routes: Routes = [
   },
   {
     path: 'signup',
-    loadChildren: () => import('./pages/signup/signup.module').then( m => m.SignupPageModule)
+    loadChildren: () => import('./pages/signup/signup.module').then(m => m.SignupPageModule)
   },
   {
     path: 'forgot-password',
-    loadChildren: () => import('./pages/forgot-password/forgot-password.module').then( m => m.ForgotPasswordPageModule)
+    loadChildren: () => import('./pages/forgot-password/forgot-password.module').then(m => m.ForgotPasswordPageModule)
   },
   {
     path: 'add-member',
-    loadChildren: () => import('./pages/add-member/add-member.module').then( m => m.AddMemberPageModule)
+    loadChildren: () => import('./pages/add-member/add-member.module').then(m => m.AddMemberPageModule)
   },
   {
     path: 'list-member',
-    loadChildren: () => import('./pages/list-member/list-member.module').then( m => m.ListMemberPageModule)
+    loadChildren: () => import('./pages/list-member/list-member.module').then(m => m.ListMemberPageModule)
   },
   {
     path: 'member-detail',
-    loadChildren: () => import('./pages/member-detail/member-detail.module').then( m => m.MemberDetailPageModule)
+    loadChildren: () => import('./pages/member-detail/member-detail.module').then(m => m.MemberDetailPageModule)
   },
   {
     path: 'list-collections',
-    loadChildren: () => import('./pages/list-collections/list-collections.module').then( m => m.ListCollectionsPageModule)
+    loadChildren: () => import('./pages/list-collections/list-collections.module').then(m => m.ListCollectionsPageModule)
   },
   {
     path: 'profile',
@@ -50,6 +50,11 @@ const routes: Routes = [
   },
   {
     path: '',
+    redirectTo: '/login',
+    pathMatch: 'full'
+  },
+  {
+    path: '**',
     redirectTo: '/login',
     pathMatch: 'full'
   }

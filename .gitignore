@@ -30,3 +30,8 @@ node_modules
 /platforms
 /plugins
 /www
+
+# Firebase
+.firebase
+*-debug.log
+.runtimeconfig.json
