@@ -1,14 +1,33 @@
 import { Injectable } from '@angular/core';
-import * as firebase from 'firebase/app';
-import 'firebase/firestore';
-import { AuthService } from 'src/app/services/auth.service';
-
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { User } from '../../model/user';
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  // public userCollectionRef: firebase.firestore.CollectionReference;
-  // public userListRef: firebase.firestore.DocumentReference;
+
+  private dbPath = '/users';
+  usersRef: AngularFirestoreCollection<User>;
+
+  constructor(private db: AngularFirestore) {
+    this.usersRef = db.collection(this.dbPath);
+  }
+
+  getAllUsers(): AngularFirestoreCollection<User> {
+    return this.usersRef;
+  }
+
+  createUser(user: User): any {
+    return this.usersRef.add({ ...user });
+  }
+
+  updateUser(id: string, data: any): Promise<void> {
+    return this.usersRef.doc(id).update(data);
+  }
+
+  deleteUser(id: string): Promise<void> {
+    return this.usersRef.doc(id).delete();
+  }
 
   // constructor(private authService: AuthService) { }
 
@@ -21,10 +40,21 @@ export class UserService {
   //     })
   //   });
   // }
+  // addUser(user:any){
+  //   const usersRef = this.db.collection('users');
+  //   usersRef.add({ ...user });
+
+  // }
+
+  // updateUser(user:any){
+  //   const usersRef = this.db.collection('users');
+  //   usersRef.doc(user.id).set({ ...user });
+  // }
 
   // getUserDetails() {
-  //   this.userCollectionRef = firebase.firestore().collection('userProfile');
-  //   return this.userCollectionRef.get();
+  //   users: Observable<any[]>;
+  //   users = this.db.collection('users').valueChanges();
+
   // }
 
   // getUserswithCategoryA() {

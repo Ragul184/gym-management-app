@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from '../../model/user';
+import { UserService } from '../../services/user/user.service';
 
 @Component({
   selector: 'app-add-member',
@@ -7,18 +9,30 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddMemberPage implements OnInit {
 
+  user: User;
+  submitted = false;
+
+  constructor(private userService: UserService) {
+    this.today = new Date().toISOString();
+   }
+
+  saveUser(): void {
+    this.userService.createUser(this.user).then(() => {
+      console.log('Created new item successfully!');
+      this.submitted = true;
+    });
+  }
+  newUser(): void {
+    this.submitted = false;
+    this.user = new User();
+  }
   today: any;
   selectedDate: any;
   age: any; 
   
   ngOnInit() {
   }
-
-
-  constructor() {
-    this.today = new Date().toISOString();
-  }
-
+  
   ageCalc() {
     if (this.selectedDate != "") {
       let today: any = new Date().getFullYear();
