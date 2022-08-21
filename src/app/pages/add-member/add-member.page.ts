@@ -7,9 +7,28 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddMemberPage implements OnInit {
 
-  constructor() { }
-
+  today: any;
+  selectedDate: any;
+  age: any; 
+  
   ngOnInit() {
+  }
+
+
+  constructor() {
+    this.today = new Date().toISOString();
+  }
+
+  ageCalc() {
+    if (this.selectedDate != "") {
+      let today: any = new Date().getFullYear();
+      let selectedDate: any = new Date(this.selectedDate).getFullYear();
+      let age = today - selectedDate
+      this.age = age
+    }
+    else {
+      this.age = ""
+    }
   }
 
 }

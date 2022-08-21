@@ -1,9 +1,124 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>add-member</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button></ion-back-button>
+      </ion-buttons>
+      <ion-title>Add Member</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <form>
+      <ion-item lines="full">
+        <ion-label position="floating">Member ID</ion-label>
+        <ion-input type="text" required value="MEM-10"></ion-input>
+      </ion-item>
+      <ion-item lines="full">
+        <ion-label position="floating">Name</ion-label>
+        <ion-input type="text" required></ion-input>
+      </ion-item>
+      <ion-item lines="full">
+        <ion-label position="floating">Address</ion-label>
+        <ion-input type="text" required></ion-input>
+      </ion-item>
+   <ion-item>
+    <ion-radio-group>
+      <ion-row>
+        <ion-col>
+          <ion-label>Gender</ion-label>
+          </ion-col>
+        <ion-col>
+             <ion-item lines="none">
+                <ion-label>Male</ion-label>
+                <ion-radio item-left value="male"></ion-radio>
+           </ion-item>
+         </ion-col>
+    
+        <ion-col>
+            <ion-item lines="none"> 
+                <ion-label>Female</ion-label>
+                <ion-radio item-left value="female"></ion-radio>
+           </ion-item>
+        </ion-col>
+    
+        <ion-col>
+            <ion-item lines="none">
+                <ion-label>Transgender</ion-label>
+                <ion-radio  item-left value="transgender"></ion-radio>
+           </ion-item>
+        </ion-col>
+    
+    </ion-row>
+  </ion-radio-group>
+    </ion-item>
 
+    <ion-item>
+      <ion-radio-group>
+        <ion-row>
+          <ion-col>
+            <ion-label>Fee Paid</ion-label>
+            </ion-col>
+          <ion-col>
+               <ion-item lines="none">
+                  <ion-label>Yes</ion-label>
+                  <ion-radio item-left value="yes"></ion-radio>
+             </ion-item>
+           </ion-col>
+      
+          <ion-col>
+              <ion-item lines="none"> 
+                  <ion-label>No</ion-label>
+                  <ion-radio item-left value="no"></ion-radio>
+             </ion-item>
+          </ion-col>
+      </ion-row>
+    </ion-radio-group>
+      </ion-item>
+
+      <!-- <ion-item >
+        <ion-radio-group>
+          <ion-label>
+           Fee Paid
+          </ion-label>
+          <ion-item lines="none">
+          <ion-radio value="yes"></ion-radio>
+          <ion-label>Yes</ion-label>
+          </ion-item>
+          <ion-item lines="none">
+          <ion-radio value="no"></ion-radio>
+          <ion-label>No</ion-label>
+          </ion-item>
+        </ion-radio-group>
+      </ion-item> -->
+      <ion-item lines="full">
+        <ion-label position="floating">Date of Joining</ion-label>
+        <ion-input type="date" placeholder="" required></ion-input>
+      </ion-item>
+      <ion-item lines="full">
+        <ion-label position="floating">Date of Birth</ion-label>
+        <ion-input type="date" name="selectedDate" (ionChange)="ageCalc()" [(ngModel)]="selectedDate" placeholder="" [max]="today"></ion-input>
+      </ion-item>
+      <ion-item lines="full">
+        <ion-label position="floating">Age</ion-label>
+        <ion-input type="text" value={{age}}></ion-input>
+      </ion-item>
+      <ion-item lines="full">
+        <ion-label position="floating">Mobile Number</ion-label>
+        <ion-input type="tel" pattern="[0-9]{10}" maxlength="10"></ion-input>
+      </ion-item>
+
+      <!-- <ion-datetime
+  value="2022-04-21T00:00:00"
+  min="2022-03-01T00:00:00"
+  max="2022-05-31T23:59:59"
+></ion-datetime> -->
+      
+       
+      <ion-row>
+        <ion-col>
+          <ion-button type="submit" color="danger" expand="block">Add Member</ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
+  </ion-content>
 </ion-content>
