@@ -32,20 +32,38 @@ const routes: Routes = [
     loadChildren: () => import('./pages/add-member/add-member.module').then(m => m.AddMemberPageModule)
   },
   {
-    path: 'list-member',
-    loadChildren: () => import('./pages/list-member/list-member.module').then(m => m.ListMemberPageModule)
-  },
-  {
     path: 'member-detail',
     loadChildren: () => import('./pages/member-detail/member-detail.module').then(m => m.MemberDetailPageModule)
   },
   {
-    path: 'list-collections',
-    loadChildren: () => import('./pages/list-collections/list-collections.module').then(m => m.ListCollectionsPageModule)
+    path: 'view-all-members/:status',
+    loadChildren: () => import('./pages/view-all-members/view-all-members.module').then(m => m.ViewAllMembersPageModule)
+  },
+  {
+    path: 'view-all-payments/:filter',
+    loadChildren: () => import('./pages/view-all-payments/view-all-payments.module').then(m => m.ViewAllPaymentsPageModule)
+  },
+  {
+    path: 'delete-user',
+    loadChildren: () => import('./pages/delete-user/delete-user.module').then(m => m.DeleteUserPageModule)
+  },
+  {
+    path: 'init-payment',
+    loadChildren: () => import('./pages/init-payment/init-payment.module').then(m => m.InitPaymentPageModule)
   },
   {
     path: 'profile',
-    redirectTo: 'tabs/tab1',
+    redirectTo: 'tabs/profile',
+    pathMatch: 'full'
+  },
+  {
+    path: 'home',
+    redirectTo: 'tabs/home',
+    pathMatch: 'full'
+  },
+  {
+    path: 'more',
+    redirectTo: 'tabs/more',
     pathMatch: 'full'
   },
   {
@@ -57,24 +75,7 @@ const routes: Routes = [
     path: '**',
     redirectTo: '/login',
     pathMatch: 'full'
-  },
-  {
-    path: 'view-all-members',
-    loadChildren: () => import('./pages/view-all-members/view-all-members.module').then( m => m.ViewAllMembersPageModule)
-  },
-  {
-    path: 'view-all-payments',
-    loadChildren: () => import('./pages/view-all-payments/view-all-payments.module').then( m => m.ViewAllPaymentsPageModule)
-  },
-  {
-    path: 'show-expiring-members',
-    loadChildren: () => import('./pages/show-expiring-members/show-expiring-members.module').then( m => m.ShowExpiringMembersPageModule)
-  },
-  {
-    path: 'delete-user',
-    loadChildren: () => import('./pages/delete-user/delete-user.module').then( m => m.DeleteUserPageModule)
   }
-
 ];
 @NgModule({
   imports: [

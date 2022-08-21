@@ -1,5 +1,5 @@
-import { Component, OnInit, NgZone } from "@angular/core";
-import { Router } from "@angular/router";
+import { Component, OnInit, NgZone } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user/user.service';
 import { LoadingController, AlertController, ModalController, MenuController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
@@ -12,23 +12,27 @@ import { DeleteUserPage } from '../delete-user/delete-user.page';
 export class ViewAllMembersPage implements OnInit {
   users = [];
   public loading: HTMLIonLoadingElement;
-  show: boolean = false;
-  user_name: string;
-  user_pass: string;
+  show = false;
+  userName: string;
+  userPass: string;
+  status: string;
 
-  constructor(private router: Router, private authService: AuthService, private userService: UserService,
-    private modalController: ModalController,private loadingCtrl: LoadingController, private alertCtrl: AlertController,
+  constructor(private router: Router, private route: ActivatedRoute, private authService: AuthService, private userService: UserService,
+    private modalController: ModalController, private loadingCtrl: LoadingController, private alertCtrl: AlertController,
     private ngZone: NgZone, private menuController: MenuController) {
+
+    this.status = this.route.snapshot.paramMap.get('status');
+
     this.ngZone.run(() => {
       this.fetchResults();
-    })
+    });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ionViewWillEnter() {
-    this.menuController.enable(true, "first");
-    this.menuController.enable(false, "second");
+    this.menuController.enable(true, 'first');
+    this.menuController.enable(false, 'second');
   }
 
   fetchResults() {

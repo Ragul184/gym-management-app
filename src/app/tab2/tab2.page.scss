@@ -1,10 +1,109 @@
-.ioncol{
-    background-color:white;
-    color: black;
-    border: 2px solid #4CAF50;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin-left: 30px;
-    height: 101px;
-    margin-right: 30px;
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
+
+ion-header {
+  ion-toolbar {
+    --background: transparent;
+  }
+}
+
+ion-content {
+  * {
+    font-family: "Lato", sans-serif;
+  }
+
+  .main-header {
+    // height: 41vh;
+    // width: 150%;
+    // background: linear-gradient(
+    //   90deg,
+    //   var(--ion-color-tertiary) 10%,
+    //   var(--ion-color-primary) 100%
+    // );
+    // box-shadow: 0 1px 10px var(--ion-color-light);
+    // border-radius: 0 0 50% 50%;
+    // margin-left: -11.1vh;
+    // margin-top: -65px;
+  }
+
+  .main-header {
+    height: 40vh;
+    width: 100%;
+    box-shadow: 0 1px 10px var(--ion-color-light);
+    background: linear-gradient(
+      90deg,
+      var(--ion-color-tertiary) 10%,
+      var(--ion-color-primary) 100%
+    );
+    border-radius: 0 0 50% 50%/0 0 100% 100%;
+    transform: scaleX(2.6);
+    margin-top: -116px;
+  }
+
+  ion-grid {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translateY(10vh);
+    padding-bottom: 8vh;
+    ion-row {
+      ion-col {
+        span.membersCount {
+          font-size: 30px;
+          font-weight: 900;
+          padding: 10px 19px;
+          border-radius: 10px;
+        }
+        ion-button {
+          height: 3em !important;
+          transform: translateY(10%);
+          text-transform: none;
+          ion-text {
+            font-size: 0.7rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 1px var(--ion-color-medium);
+          }
+          ion-icon {
+            font-size: 1rem;
+          }
+        }
+        ion-card {
+          box-shadow: -1px 11px 13px -6px rgb(87, 86, 86);
+          border-radius: 10px !important;
+          margin: 10px 0;
+
+          ion-card-header {
+            margin-top: 5px;
+          }
+
+          ion-card-content {
+            height: 6vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            ion-label {
+              font-weight: bold;
+              //   text-shadow: 1px 1px 1px var(--ion-color-medium);
+              letter-spacing: 0.5px;
+            }
+          }
+        }
+      }
+    }
+    ion-list {
+      background: transparent;
+      ion-item {
+        width: 95%;
+        margin: auto;
+        border-radius: 5px;
+        margin-bottom: 2vh;
+        p {
+          font-size: 0.65rem;
+        }
+        ion-text {
+          font-weight: 800;
+        }
+      }
+    }
+  }
 }

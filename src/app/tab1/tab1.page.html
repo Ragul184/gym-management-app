@@ -1,14 +1,17 @@
-<ion-header [translucent]="true">
+<ion-header class="ion-no-border ion-no-padding">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+      <ion-menu-button color="light"></ion-menu-button>
     </ion-buttons>
-    <ion-title>
-      Profile
-    </ion-title>
+    <ion-title color="light" class="ion-text-center">Profile</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon slot="icon-only" color="light" name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-button (click)="logout()" expand="full">Logout</ion-button>
+<ion-content [fullscreen]="true" color="light">
+  <div class="main-header"></div>
 </ion-content>

@@ -6,33 +6,37 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  appPages=[
+  appPages = [
+    {
+      title: 'Home',
+      url: 'tabs/home',
+      icon: 'home'
+    },
     {
       title: 'Profile',
-      url: 'profile',
+      url: 'tabs/profile',
       icon: 'person'
     },
     {
       title: 'Total Members',
-      url: 'profile',
-      icon: 'person'
+      url: 'view-all-members/all',
+      icon: 'people'
     },
     {
       title: 'Active Members',
-      url: 'profile',
-      icon: 'person'
+      url: 'view-all-members/active',
+      icon: 'people'
     },
     {
       title: 'Expired Members',
-      url: 'profile',
-      icon: 'person'
+      url: 'view-all-members/expired',
+      icon: 'people'
     },
     {
       title: 'Total Collection',
-      url: 'profile',
-      icon: 'person'
+      url: 'view-all-payments',
+      icon: 'wallet'
     },
   ];
-  labels=['Label1','Label2','Label3'];
-  constructor() {}
+  constructor() { }
 }

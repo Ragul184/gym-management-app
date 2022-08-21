@@ -1,0 +1,197 @@
+<ion-header class="ion-no-border ion-no-padding">
+  <ion-toolbar>
+    <ion-menu-button slot="start"></ion-menu-button>
+    <ion-title>Initiate a Payment</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <svg class="back-blob" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#8295A3" d="M68.6,-33.5C81.6,-17.2,79.6,13.8,65.7,37.6C51.8,61.3,25.9,77.8,2.1,76.6C-21.7,75.4,
+                        -43.5,56.5,-54.2,34.6C-65,12.7,-64.8,-12.3,-53.9,-27.4C-43,-42.4,-21.5,-47.6,3.2,
+                        -49.4C27.9,-51.2,55.7,-49.7,68.6,-33.5Z" transform="translate(100 100)" />
+  </svg>
+
+  <form [formGroup]="payForm" (ngSubmit)="initPay()">
+
+    <div class="input-group">
+
+      <ion-item>
+        <ion-input required class="input" formControlName="firstName" placeholder="First Name" type="text"></ion-input>
+      </ion-item>
+
+      <div *ngIf="(firstName.dirty || firstName.touched) && firstName.errors" class="errors">
+        <span *ngIf="firstName.errors?.required">First Name is required</span>
+        <span *ngIf="firstName.errors?.maxLength">First Name is invalid!</span>
+      </div>
+
+      <ion-item>
+        <ion-input required class="input" formControlName="lastName" placeholder="Last Name" type="text"></ion-input>
+      </ion-item>
+
+      <div *ngIf="(lastName.dirty || lastName.touched) && lastName.errors" class="errors">
+        <span *ngIf="lastName.errors?.required">Last Name is required</span>
+        <span *ngIf="lastName.errors?.maxLength">Last Name is invalid!</span>
+      </div>
+
+      <ion-item>
+        <ion-input required class="input" formControlName="email" placeholder="Email" type="email"></ion-input>
+      </ion-item>
+
+      <div *ngIf="(email.dirty || email.touched) && email.errors" class="errors">
+        <span *ngIf="email.errors?.required">Email is required</span>
+        <span *ngIf="email.errors?.email">Email is invalid!</span>
+      </div>
+
+      <ion-item>
+        <ion-input required class="input" formControlName="mobileNumber" placeholder="Mobile" type="mobile"></ion-input>
+      </ion-item>
+
+      <div *ngIf="(mobileNumber.dirty || mobileNumber.touched) && mobileNumber.errors" class="errors">
+        <span *ngIf="mobileNumber.errors?.required">Mobile is required</span>
+        <span *ngIf="mobileNumber.errors">Mobile is invalid!</span>
+      </div>
+
+      <ion-button type="submit" expand="block" [disabled]="payForm.invalid">Pay Now</ion-button>
+    </div>
+
+    <ion-list class="wrap-input-radio">
+      <ion-radio-group formControlName="plan">
+        <ion-list-header class="container-form-btn">
+          <ion-label class="container-form-btn custom-font">
+            <strong>Plans</strong>
+          </ion-label>
+        </ion-list-header>
+
+        <ion-item class="wrap-input-radio">
+          <ion-label>1 month 500₹</ion-label>
+          <ion-radio class="input-radio" fill="clear" slot="start" value="1"></ion-radio>
+        </ion-item>
+
+        <ion-item class="wrap-input-radio">
+          <ion-label>3 month 1200₹</ion-label>
+          <ion-radio class="input-radio" fill="clear" slot="start" value="3"></ion-radio>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>1 year 4000₹</ion-label>
+          <ion-radio class="input-radio" fill="clear" slot="start" value="12"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+
+    <ion-list class="wrap-input-radio">
+      <ion-radio-group formControlName="mode">
+        <ion-list-header class="container-form-btn">
+          <ion-label class="container-form-btn custom-font">
+            <strong>Mode</strong>
+          </ion-label>
+        </ion-list-header>
+
+        <ion-item class="wrap-input-radio">
+          <ion-label>Cash</ion-label>
+          <ion-radio class="input-radio" fill="clear" slot="start" value="1"></ion-radio>
+        </ion-item>
+
+        <ion-item class="wrap-input-radio">
+          <ion-label>Card</ion-label>
+          <ion-radio class="input-radio" fill="clear" slot="start" value="2"></ion-radio>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Gpay</ion-label>
+          <ion-radio class="input-radio" fill="clear" slot="start" value="3"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+
+    <div class="container-form-btn">
+      <ion-button class="form-btn custom-font" fill="clear" (click)="initPay()" [disabled]="!payForm.valid">
+        Pay
+      </ion-button>
+    </div>
+
+  </form>
+</ion-content>
+
+<!-- <ion-content fullscreen="true">
+
+  <div class="ion-padding">
+
+    <form class="ion-padding" [formGroup]="payForm">
+
+      <div class="wrap-input">
+        <ion-input class="input" type="text" formControlName="firstName" placeholder="First Name"></ion-input>
+      </div>
+
+      <div class="wrap-input">
+        <ion-input class="input" type="text" formControlName="lastName" placeholder="Last Name"></ion-input>
+      </div>
+
+      <div class="wrap-input">
+        <ion-input class="input" type="email" formControlName="userEmail" placeholder="Email"></ion-input>
+      </div>
+
+      <div class="wrap-input">
+        <ion-input class="input" type="mobile" formControlName="mobileNumber" placeholder="Mobile"></ion-input>
+      </div>
+
+      <ion-list class="wrap-input-radio">
+        <ion-radio-group formControlName="plan">
+          <ion-list-header class="container-form-btn">
+            <ion-label class="container-form-btn custom-font">
+              <strong>Plans</strong>
+            </ion-label>
+          </ion-list-header>
+
+          <ion-item class="wrap-input-radio">
+            <ion-label>1 month 500₹</ion-label>
+            <ion-radio class="input-radio" fill="clear" slot="start" value="1"></ion-radio>
+          </ion-item>
+
+          <ion-item class="wrap-input-radio">
+            <ion-label>3 month 1200₹</ion-label>
+            <ion-radio class="input-radio" fill="clear" slot="start" value="3"></ion-radio>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>1 year 4000₹</ion-label>
+            <ion-radio class="input-radio" fill="clear" slot="start" value="12"></ion-radio>
+          </ion-item>
+        </ion-radio-group>
+      </ion-list>
+
+      <ion-list class="wrap-input-radio">
+        <ion-radio-group formControlName="mode">
+          <ion-list-header class="container-form-btn">
+            <ion-label class="container-form-btn custom-font">
+              <strong>Mode</strong>
+            </ion-label>
+          </ion-list-header>
+
+          <ion-item class="wrap-input-radio">
+            <ion-label>Cash</ion-label>
+            <ion-radio class="input-radio" fill="clear" slot="start" value="1"></ion-radio>
+          </ion-item>
+
+          <ion-item class="wrap-input-radio">
+            <ion-label>Card</ion-label>
+            <ion-radio class="input-radio" fill="clear" slot="start" value="2"></ion-radio>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Gpay</ion-label>
+            <ion-radio class="input-radio" fill="clear" slot="start" value="3"></ion-radio>
+          </ion-item>
+        </ion-radio-group>
+      </ion-list>
+
+      <div class="container-form-btn">
+        <ion-button class="form-btn custom-font" fill="clear" (click)="initPay()" [disabled]="!payForm.valid">
+          Pay
+        </ion-button>
+      </div>
+
+    </form>
+  </div>
+</ion-content> -->

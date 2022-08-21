@@ -1,60 +1,72 @@
-<ion-header>
-  <ion-toolbar color="primary">
+<!-- <ion-content>
+  <ion-item button routerLink="/view-all-members/all" color="none" lines="full">
+    <ion-label>View All Members</ion-label>
+  </ion-item>
+  <ion-item button routerLink="/view-all-payments" color="none" lines="full">
+    <ion-label>View All Payments</ion-label>
+  </ion-item>
+  <ion-item button routerLink="/show-expiring-members" color="none" lines="full">
+    <ion-label>Show Expiring Members</ion-label>
+  </ion-item>
+</ion-content> -->
+
+<ion-header class="ion-no-border ion-no-padding">
+  <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+      <ion-menu-button color="light"></ion-menu-button>
     </ion-buttons>
-    <ion-title>Home</ion-title>
+    <!-- <ion-title color="light" class="ion-text-center">Home</ion-title> -->
     <ion-buttons slot="end">
-      <ion-button (click)="logout()">
-        <ion-icon name="log-out-outline"></ion-icon>
-        LOGOUT
+      <ion-button>
+        <ion-icon slot="icon-only" color="light" name="log-out-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
+<ion-content [fullscreen]="true" color="light">
 
-
-
-
-
-
-
-
-
-
-
-
-<ion-content>
+  <div class="main-header"></div>
 
   <ion-grid>
-    <ion-row>
-      <ion-col class="ioncol" style="text-align: center;">
-        <div>{{activeMembers}} Active Members</div>
-      </ion-col>
-      <ion-col  class="ioncol" style="text-align: center;">
-        <div>{{totalMembers}} Total Members</div>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col  class="ioncol" style="text-align: center;">
-        <div>{{todayCollection}} Today Collection</div>
-      </ion-col>
-      <ion-col  class="ioncol"  style="text-align: center;">
-        <div>{{totalCollection}} Total Collection</div>
+    <ion-row class="ion-margin-horizontal ion-margin-top">
+      <ion-col>
+        <ion-label color="light">
+          <b>Gym Stats</b>
+        </ion-label>
       </ion-col>
     </ion-row>
+
+    <ion-row class="ion-margin-horizontal">
+      <ion-col *ngFor="let item of features" size="6">
+        <ion-card class="ion-text-center" [routerLink]="item?.page">
+          <ion-card-header>
+            <span class="membersCount" [style.background]="item?.background">
+              {{item?.src}}
+            </span>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-label color="dark">{{ item?.name }}</ion-label>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-list>
+      <ion-list-header>
+        <ion-label>OTHER PAGES</ion-label>
+      </ion-list-header>
+      <ion-item lines="none" *ngFor="let item of transactions">
+        <ion-icon slot="start" name="cash" color="primary"></ion-icon>
+        <ion-label size="large" class="ion-text-wrap">
+          <b>{{item.vendor}}</b>
+          <p>
+            {{item?.time}}
+          </p>
+        </ion-label>
+        <ion-text slot="end" [color]="item?.amount > 0 ? 'success' : 'danger'">₹{{item?.amount}}</ion-text>
+      </ion-item>
+    </ion-list>
   </ion-grid>
 
-  <ion-item button routerLink="/view-all-members" color="none">
-    <ion-label>
-      View All Members
-    </ion-label>
-  </ion-item>
-  <ion-item button routerLink="/view-all-payments" color="none">
-    <ion-label>View All Payments</ion-label>
-  </ion-item>
-  <ion-item button routerLink="/show-expiring-members" color="none">
-    <ion-label>Show Expiring Members</ion-label>
-  </ion-item>
 </ion-content>
