@@ -6,8 +6,8 @@ import { User } from '../../model/user';
 })
 export class UserService {
 
-  private dbPath = '/users';
   usersRef: AngularFirestoreCollection<User>;
+  private dbPath = '/users';
 
   constructor(private db: AngularFirestore) {
     this.usersRef = db.collection(this.dbPath);

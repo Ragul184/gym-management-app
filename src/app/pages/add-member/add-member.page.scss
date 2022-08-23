@@ -1,0 +1,56 @@
+ion-header {
+  ion-toolbar {
+    --background: transparent;
+  }
+  ion-title {
+    margin-left: -6vh;
+  }
+}
+
+ion-content {
+  // --padding-top: 40%;
+  --padding-start: 5%;
+  --padding-end: 5%;
+
+  --background: url("https://images.unsplash.com/photo-1536431311719-398b6704d4cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1234&q=80")
+    0 0/100% 100% no-repeat;
+
+  .addForm {
+    padding-top: 40%;
+  }
+
+  .main-header {
+    height: 13vh;
+    width: 100%;
+    box-shadow: 0 1px 10px var(--ion-color-light);
+    background: linear-gradient(
+      90deg,
+      var(--ion-color-tertiary) 10%,
+      var(--ion-color-primary) 100%
+    );
+    border-radius: 0 0 50% 50%/0 0 100% 100%;
+    transform: scaleX(2.6);
+    margin-top: -116px;
+  }
+}
+
+ion-col.gender {
+  align-self: center;
+  padding-left: 5px;
+}
+
+.input-group {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+.errors {
+  font-size: small;
+  color: #fff;
+  background: var(--ion-color-danger);
+  padding-left: 15px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}

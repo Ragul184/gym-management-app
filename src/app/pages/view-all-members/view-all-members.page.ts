@@ -15,7 +15,7 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./view-all-members.page.scss'],
 })
 export class ViewAllMembersPage implements OnInit {
-  users?:User[];
+  users?: User[];
   public loading: HTMLIonLoadingElement;
   show = false;
   userName: string;
@@ -35,13 +35,12 @@ export class ViewAllMembersPage implements OnInit {
     });
   }
 
-  ngOnInit() { 
+  ngOnInit() {
     this.retrieveUsers();
-
   }
 
   retrieveUsers(): void {
-    
+
     this.userService.getAllUsers().snapshotChanges().pipe(
       map(changes =>
         changes.map(c =>
@@ -50,7 +49,7 @@ export class ViewAllMembersPage implements OnInit {
       )
     ).subscribe(data => {
       this.users = data;
-      console.log("u",this.users)
+      console.log('u', this.users);
     });
   }
 
@@ -59,20 +58,24 @@ export class ViewAllMembersPage implements OnInit {
     this.menuController.enable(false, 'second');
   }
 
+  deleteEmployee(id: string) {
+    console.log(`ID: ${id}`);
+  }
+
   // fetchResults() {
   //   console.log("uvanss")
   //   console.log(this.userService.getAllUsers());
-    // this.userService.getUserDetails().then(querysnapshot => {
-    //   querysnapshot.forEach(snap => {
-    //     this.users.push(snap.data());
-    //   })
-    // }).then(() => {
-    //   this.users.sort((a, b) => {
-    //     return a.eid.localeCompare(b.eid)
-    //   });
-    // }).then(() => {
-    //   this.show = true;
-    // })
+  // this.userService.getUserDetails().then(querysnapshot => {
+  //   querysnapshot.forEach(snap => {
+  //     this.users.push(snap.data());
+  //   })
+  // }).then(() => {
+  //   this.users.sort((a, b) => {
+  //     return a.eid.localeCompare(b.eid)
+  //   });
+  // }).then(() => {
+  //   this.show = true;
+  // })
   // }
 
   // async deleteEmployee(id: string) {

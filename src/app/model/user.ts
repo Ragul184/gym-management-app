@@ -1,16 +1,16 @@
-import { Gender } from '../model/gender'
+import { Gender } from '../model/gender';
 export class User {
-    id?: string;
-    name?: string;
+    memberId?: string;
+    memberName?: string;
+    email?: string;
     password?: string;
-    emailId?: string;
     address?: string;
-    gender?:Gender;
+    gender?: Gender;
     feesPaid?: boolean;
-    subscriptionEndDate?: Date;
-    dateOfJoining:Date;
-    dateOfBirth:Date;
-    phoneNumber:string;
-    age:number;
-    active:boolean;
+    subscriptionEndDt?: Date;
+    joiningDt: Date;
+    birthDt: Date;
+    phoneNumber: string;
+    age: number;
+    active: boolean;
 }

@@ -10,18 +10,18 @@
 <ion-content>
   <ion-card-header color="primary" class="ion-text-center" style="font-size: larger;">Users List</ion-card-header>
   <ion-item-sliding *ngFor="let user of users; let i=index">
-    <ion-item button color="none" routerLink="/user-details/{{ user.id.toLowerCase() }}">
-      {{i+1}}.&nbsp;{{user.id |uppercase }} &nbsp; {{user.name |titlecase }}
+    <ion-item button color="none" routerLink="/user-details/{{ user.memberId |lowercase }}">
+      {{i+1}}.&nbsp;{{user.memberId |uppercase }} &nbsp; {{user.memberName |titlecase }}
     </ion-item>
     <ion-item-options side="end">
-      <ion-item-option color="danger" (click)="deleteEmployee(user.userid)">Delete</ion-item-option>
+      <ion-item-option color="danger" (click)="deleteEmployee(user.memberId)">Delete</ion-item-option>
     </ion-item-options>
   </ion-item-sliding>
 </ion-content>
 
 <ion-footer>
   <ion-toolbar>
-    <ion-button expand="block" fill="clear" color="primary" routerLink="/register">
+    <ion-button expand="block" fill="clear" color="primary" routerLink="/add-member">
       Add Users
     </ion-button>
   </ion-toolbar>
