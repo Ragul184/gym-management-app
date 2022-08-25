@@ -13,6 +13,7 @@
   <form class="addForm" [formGroup]="addMemberForm" (ngSubmit)="newUser()">
 
     <div class="input-group">
+      <!-- MEMBER ID -->
       <ion-item>
         <ion-label position="floating">Member ID</ion-label>
         <ion-input required formControlName="memberId" placeholder="Member ID" type="text"></ion-input>
@@ -23,6 +24,7 @@
         <span *ngIf="memberId.errors?.maxlength">Member Id should not be more than 6 chars!</span>
       </div>
 
+      <!-- MEMBER NAME -->
       <ion-item>
         <ion-label position="floating">Member Name</ion-label>
         <ion-input required formControlName="memberName" placeholder="Member Name" type="text">
@@ -34,16 +36,19 @@
         <span *ngIf="memberName.errors?.maxlength">Member Name should not be more than 25 chars!</span>
       </div>
 
+      <!-- PHONE NUMBER -->
       <ion-item>
-        <ion-label position="floating">Address</ion-label>
-        <ion-textarea autocapitalize="true" required formControlName="address" placeholder="Address" type="text">
-        </ion-textarea>
+        <ion-label position="floating">Mobile Number</ion-label>
+        <ion-input required formControlName="phoneNumber" placeholder="Mobile Number" type="tel" pattern="[0-9]{10}"
+          maxlength="10"></ion-input>
       </ion-item>
 
-      <div *ngIf="(address.dirty || address.touched) && address.errors" class="errors">
-        <span *ngIf="address.errors?.required">Address is required</span>
+      <div *ngIf="(phoneNumber.dirty || phoneNumber.touched) && phoneNumber.errors" class="errors">
+        <span *ngIf="phoneNumber.errors?.required">Mobile Number is required</span>
+        <span *ngIf="phoneNumber.errors?.minlength">Mobile Number should be 10 digits!</span>
       </div>
 
+      <!-- GENDER -->
       <ion-radio-group required formControlName="gender">
         <ion-row>
 
@@ -74,7 +79,51 @@
         <span *ngIf="gender.errors?.required">Address is required</span>
       </div>
 
-      <ion-radio-group required formControlName="feesPaid">
+      <!-- DATE OF BIRTH -->
+      <ion-item>
+        <ion-label position="floating">Date of Birth</ion-label>
+        <ion-input required formControlName="birthDt" placeholder="Date of Birth" type="date" (ionChange)="ageCalc()"
+          [max]="today"></ion-input>
+      </ion-item>
+
+      <div *ngIf="(birthDt.dirty || birthDt.touched) && birthDt.errors" class="errors">
+        <span *ngIf="birthDt.errors?.required">Date of Birth is required</span>
+      </div>
+
+      <!-- AGE -->
+      <ion-item>
+        <ion-label position="floating">Age</ion-label>
+        <ion-input required formControlName="age" placeholder="Age" type="number"></ion-input>
+      </ion-item>
+
+      <div *ngIf="(age.dirty || age.touched) && age.errors" class="errors">
+        <span *ngIf="age.errors?.required">Age is required</span>
+      </div>
+
+      <!-- ADDRESS -->
+      <ion-item>
+        <ion-label position="floating">Address</ion-label>
+        <ion-textarea autocapitalize="true" required formControlName="address" placeholder="Address" type="text">
+        </ion-textarea>
+      </ion-item>
+
+      <div *ngIf="(address.dirty || address.touched) && address.errors" class="errors">
+        <span *ngIf="address.errors?.required">Address is required</span>
+      </div>
+
+      <!-- DATE OF JOINING -->
+      <ion-item>
+        <ion-label position="floating">Date of Joining</ion-label>
+        <ion-input required formControlName="joiningDt" placeholder="Date of Joining" type="date" value="{{today}}">
+        </ion-input>
+      </ion-item>
+
+      <div *ngIf="(joiningDt.dirty || joiningDt.touched) && joiningDt.errors" class="errors">
+        <span *ngIf="joiningDt.errors?.required">Date of Joining is required</span>
+      </div>
+
+      <!-- FEES PAID -->
+      <ion-radio-group required formControlName="feesPaid" (ionChange)="toggleFeePaidStatus($event)">
         <ion-row>
 
           <ion-col size="4" class="ion-no-padding">
@@ -104,48 +153,54 @@
         <span *ngIf="feesPaid.errors?.required">Address is required</span>
       </div>
 
-      <ion-item>
-        <ion-label position="floating">Date of Joining</ion-label>
-        <ion-input required formControlName="joiningDt" placeholder="Date of Joining" type="date" [max]="today">
+      <!-- AMOUNT -->
+      <ion-item *ngIf="feesPaid.value==='yes'">
+        <ion-label position="floating">Amount</ion-label>
+        <ion-input formControlName="amount" placeholder="Amount" type="number" (ionChange)="calculateFee()"></ion-input>
+      </ion-item>
+
+      <div *ngIf="(amount.dirty || amount.touched) && amount.errors" class="errors">
+        <!-- <span *ngIf="amount.errors?.required">Amount is required</span> -->
+        <span *ngIf="amount.errors?.correctAmount">Amount should be in multiple of 500s</span>
+      </div>
+
+      <!-- SUBSCRIPTION START DATE -->
+      <ion-item *ngIf="feesPaid.value==='yes'">
+        <ion-label position="floating">Subscription Start Date</ion-label>
+        <ion-input formControlName="subscriptionStartDt" placeholder="Subscription Start Date" type="date"
+          (ionChange)="calculateFee()">
         </ion-input>
       </ion-item>
 
-      <div *ngIf="(joiningDt.dirty || joiningDt.touched) && joiningDt.errors" class="errors">
-        <span *ngIf="joiningDt.errors?.required">Date of Joining is required</span>
-      </div>
+      <!-- <div *ngIf="(subscriptionStartDt.dirty || subscriptionStartDt.touched) && subscriptionStartDt.errors" class="errors">
+        <span *ngIf="subscriptionStartDt.errors?.required">Subscription Start Date is required</span>
+      </div> -->
 
-      <ion-item>
-        <ion-label position="floating">Date of Birth</ion-label>
-        <ion-input required formControlName="birthDt" placeholder="Date of Birth" type="date" (ionChange)="ageCalc()"
-          [max]="today"></ion-input>
+      <!-- SUBSCRIPTION END DATE -->
+      <ion-item *ngIf="feesPaid.value==='yes'">
+        <ion-label position="floating">Subscription End Date</ion-label>
+        <ion-input formControlName="subscriptionEndDt" placeholder="Subscription End Date" type="date"
+          (ionChange)="calculateFee()">
+        </ion-input>
       </ion-item>
 
-      <div *ngIf="(birthDt.dirty || birthDt.touched) && birthDt.errors" class="errors">
-        <span *ngIf="birthDt.errors?.required">Date of Birth is required</span>
-      </div>
+      <!-- <div *ngIf="(subscriptionEndDt.dirty || subscriptionEndDt.touched) && subscriptionEndDt.errors" class="errors">
+        <span *ngIf="subscriptionEndDt.errors?.required">Subscription End Date is required</span>
+      </div> -->
 
-      <ion-item>
-        <ion-label position="floating">Age</ion-label>
-        <ion-input required formControlName="age" placeholder="Age" type="number"></ion-input>
+      <!-- NUMBER OF MONTHS -->
+      <ion-item *ngIf="feesPaid.value==='yes'">
+        <ion-label position="floating">Number of Months</ion-label>
+        <ion-input formControlName="numOfMonths" placeholder="Number of Months" type="number"
+          (ionChange)="calculateFee()"></ion-input>
       </ion-item>
 
-      <div *ngIf="(age.dirty || age.touched) && age.errors" class="errors">
-        <span *ngIf="age.errors?.required">Age is required</span>
-      </div>
+      <!-- <div *ngIf="(numOfMonths.dirty || numOfMonths.touched) && numOfMonths.errors" class="errors">
+        <span *ngIf="numOfMonths.errors?.required">Number of Months is required</span>
+      </div> -->
 
-      <ion-item>
-        <ion-label position="floating">Mobile Number</ion-label>
-        <ion-input required formControlName="phoneNumber" placeholder="Mobile Number" type="tel" pattern="[0-9]{10}"
-          maxlength="10"></ion-input>
-      </ion-item>
-
-      <div *ngIf="(phoneNumber.dirty || phoneNumber.touched) && phoneNumber.errors" class="errors">
-        <span *ngIf="phoneNumber.errors?.required">Mobile Number is required</span>
-        <span *ngIf="phoneNumber.errors?.minlength">Mobile Number should be 10 digits!</span>
-      </div>
-
-      <ion-button type="submit" color="success" fill="clear" expand="block"
-        [disabled]="addMemberForm.invalid">Add Member
+      <ion-button type="submit" color="success" fill="clear" expand="block" [disabled]="addMemberForm.invalid">Add
+        Member
       </ion-button>
     </div>
   </form>

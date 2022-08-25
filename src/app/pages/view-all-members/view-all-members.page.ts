@@ -1,13 +1,13 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingController, AlertController, ModalController, MenuController } from '@ionic/angular';
+import { map } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 import { DeleteUserPage } from '../delete-user/delete-user.page';
 
 import { User } from '../../model/user';
 import { UserService } from '../../services/user/user.service';
-
-import { map } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-view-all-members',
@@ -27,7 +27,7 @@ export class ViewAllMembersPage implements OnInit {
 
   constructor(private router: Router, private route: ActivatedRoute, private authService: AuthService, private userService: UserService,
     private modalController: ModalController, private loadingCtrl: LoadingController, private alertCtrl: AlertController,
-    private ngZone: NgZone, private menuController: MenuController) {
+    private ngZone: NgZone, private menuController: MenuController, private httpClient: HttpClient) {
 
     this.status = this.route.snapshot.paramMap.get('status');
 
@@ -37,10 +37,16 @@ export class ViewAllMembersPage implements OnInit {
 
   ngOnInit() {
     this.retrieveUsers();
+    this.createAvatarSVG('raghul');
+  }
+
+  async createAvatarSVG(memberName) {
+    // this.userService.getInitials().then(val => {
+    //   console.log(val);
+    // });
   }
 
   retrieveUsers(): void {
-
     this.userService.getAllUsers().snapshotChanges().pipe(
       map(changes =>
         changes.map(c =>
@@ -58,79 +64,17 @@ export class ViewAllMembersPage implements OnInit {
     this.menuController.enable(false, 'second');
   }
 
-  deleteEmployee(id: string) {
-    console.log(`ID: ${id}`);
+  editMember(id: string) {
+    console.log(`From EditMember: ID: ${id}`);
   }
 
-  // fetchResults() {
-  //   console.log("uvanss")
-  //   console.log(this.userService.getAllUsers());
-  // this.userService.getUserDetails().then(querysnapshot => {
-  //   querysnapshot.forEach(snap => {
-  //     this.users.push(snap.data());
-  //   })
-  // }).then(() => {
-  //   this.users.sort((a, b) => {
-  //     return a.eid.localeCompare(b.eid)
-  //   });
-  // }).then(() => {
-  //   this.show = true;
-  // })
-  // }
+  updatePayment(id: string) {
+    console.log(`From UpdatePayment: ID: ${id}`);
+  }
 
-  // async deleteEmployee(id: string) {
-  //   // console.log(id);
-  //   this.userService.getUserWithID(id).then(snapshot => {
-  //     snapshot.forEach(snap => {
-  //       this.user_name = snap.data().eid,
-  //         this.user_pass = snap.data().password
-  //     });
-  //   }).then(async () => {
-  //     // console.log(this.user_name, this.user_pass);
-  //     const inputAlert = await this.alertCtrl.create({
-  //       message: `Are you sure want to delete this id: ${id} ?`,
-  //       buttons: [{
-  //         text: 'Delete', handler: async () => {
-  //           const adminalert = await this.alertCtrl.create({
-  //             header: 'Enter your(admin) username and password:',
-  //             inputs: [{ name: 'adminuser', type: 'text', placeholder: 'Admin Username', value: 'admin' },
-  //             { name: 'adminpass', type: 'text', placeholder: 'Admin Password', value: 'idadmin' }],
-  //             buttons: [{
-  //               text: 'Ok', handler: async data => {
-  //                 this.showLoading();
-  //                 const modal = await this.modalController.create({
-  //                   component: DeleteUserPage,
-  //                 });
-  //                 await modal.present();
-  //                 this.router.navigateByUrl('delete-employee');
-  //                 this.authService.logout().then(() => {
-  //                   this.authService.login(this.user_name, this.user_pass).then(() => {
-  //                     this.authService.deleteUser().then(() => {
-  //                       this.handleError({ message: 'User Succesfully Deleted!' });
-  //                     }).catch(err => {
-  //                       this.router.navigateByUrl('employee-list');
-  //                       this.modalController.dismiss({ 'dismissed': true })
-  //                       this.handleError(err);
-  //                     }).then(() => {
-  //                       this.authService.login(data.adminuser, data.adminpass).then(async () => {
-  //                         this.router.navigateByUrl('/admin-home').then(() => {
-  //                           this.modalController.dismiss({ 'dismissed': true });
-  //                         })
-  //                         await this.hideLoading();
-  //                       });
-  //                     });
-  //                   });
-  //                 });
-  //               }
-  //             }, { text: 'Cancel', role: 'cancel', }]
-  //           });
-  //           await adminalert.present();
-  //         }
-  //       }, { text: 'Cancel', role: 'cancel', }]
-  //     });
-  //     await inputAlert.present();
-  //   })
-  // }
+  deleteMember(id: string) {
+    console.log(`From DeleteMember: ID: ${id}`);
+  }
 
   async showLoading(): Promise<void> {
     try {
