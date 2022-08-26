@@ -52,6 +52,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/init-payment/init-payment.module').then(m => m.InitPaymentPageModule)
   },
   {
+    path: 'update-payment/:id',
+    loadChildren: () => import('./pages/update-payment/update-payment.module').then(m => m.UpdatePaymentPageModule)
+  },
+  {
     path: 'profile',
     redirectTo: 'tabs/profile',
     pathMatch: 'full'
@@ -75,10 +79,7 @@ const routes: Routes = [
     path: '**',
     redirectTo: '/login',
     pathMatch: 'full'
-  },  {
-    path: 'update-payment',
-    loadChildren: () => import('./pages/update-payment/update-payment.module').then( m => m.UpdatePaymentPageModule)
-  }
+  },
 
 ];
 @NgModule({

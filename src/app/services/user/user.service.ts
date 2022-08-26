@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { AngularFirestore, AngularFirestoreCollection, DocumentData } from '@angular/fire/compat/firestore';
+import { collection, getDocs, getFirestore, limit, orderBy, query, QuerySnapshot, where } from '@angular/fire/firestore';
 import { User } from '../../model/user';
 @Injectable({
   providedIn: 'root'
@@ -8,14 +9,27 @@ import { User } from '../../model/user';
 export class UserService {
 
   usersRef: AngularFirestoreCollection<User>;
+  firestore = getFirestore();
   private dbPath = '/users';
 
   constructor(private db: AngularFirestore, private httpClient: HttpClient) {
     this.usersRef = db.collection(this.dbPath);
   }
 
-  getAllUsers(): AngularFirestoreCollection<User> {
+  getAllUsers(status?: string): AngularFirestoreCollection<User> {
+    if (status === 'active') {
+      return this.db.collection(this.dbPath, ref => ref.where('subscriptionEndDt', '>=', this.formatDate(new Date())));
+    }
     return this.usersRef;
+  }
+
+  async getDocIdByUserId(id: string) {
+    const docIdQuery = query(
+      collection(this.firestore, this.dbPath),
+      where('memberId', 'in', [id.toLowerCase(), id.toUpperCase()]),
+      limit(1)
+    );
+    return await getDocs(docIdQuery);
   }
 
   createUser(user: User): any {
@@ -28,6 +42,13 @@ export class UserService {
 
   deleteUser(id: string): Promise<void> {
     return this.usersRef.doc(id).delete();
+  }
+
+  formatDate(date) {
+    const year = date.getFullYear().toString();
+    const month = (date.getMonth() + 101).toString().substring(1);
+    const day = (date.getDate() + 100).toString().substring(1);
+    return year + '-' + month + '-' + day;
   }
 
   // constructor(private authService: AuthService) { }

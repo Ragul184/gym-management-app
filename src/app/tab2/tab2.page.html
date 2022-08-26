@@ -41,8 +41,8 @@
       <ion-col *ngFor="let item of features" size="6">
         <ion-card class="ion-text-center" [routerLink]="item?.page">
           <ion-card-header>
-            <span class="membersCount" [style.background]="item?.background">
-              {{item?.src}}
+            <span class="membersCount" [style.background]="item?.background" *ngIf="isShow">
+              {{showStats(item?.src)}}
             </span>
           </ion-card-header>
           <ion-card-content>

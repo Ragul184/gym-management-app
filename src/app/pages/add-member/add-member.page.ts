@@ -6,8 +6,7 @@ import { Gender } from 'src/app/model/gender';
 import { UserPaymentInfo } from 'src/app/model/userPaymentInfo';
 import { User } from '../../model/user';
 import { UserService } from '../../services/user/user.service';
-import { map, max } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { CollectionsService } from 'src/app/services/collections/collections.service';
 
 export const DEFAULT_FEE_AMOUNT = 500;
@@ -63,7 +62,7 @@ export class AddMemberPage implements OnInit {
       address: ['', [Validators.required]],
       joiningDt: [this.today, [Validators.required]],
       feesPaid: ['', [Validators.required]],
-      amount: ['', []],
+      amount: ['500', [Validators.min(DEFAULT_FEE_AMOUNT)]],
       subscriptionStartDt: ['', []],
       subscriptionEndDt: ['', []],
       numOfMonths: ['', []],
@@ -102,6 +101,14 @@ export class AddMemberPage implements OnInit {
         numOfMonths: this.addMemberForm.get('numOfMonths').value,
         paymentDateTime: this.feesPaid.value === 'yes' ? new Date() : null
       };
+    } else {
+      this.userPaymentInfo = {
+        memberId: this.addMemberForm.get('memberId').value,
+        memberName: this.addMemberForm.get('memberName').value,
+        joiningDt: new Date(this.addMemberForm.get('joiningDt').value),
+        feesPaid: this.addMemberForm.get('feesPaid').value,
+        paymentDateTime: this.feesPaid.value === 'yes' ? new Date() : null
+      };
     }
 
     this.saveUser();
@@ -115,11 +122,9 @@ export class AddMemberPage implements OnInit {
         console.log('Created new member successfully!', this.user);
       });
 
-      if (this.feesPaid.value === 'yes') {
-        await this.collectionService.saveUserPayment(this.userPaymentInfo).then(() => {
-          console.log('Added fee info successfully!', this.user);
-        });
-      }
+      await this.collectionService.saveUserPayment(this.userPaymentInfo).then(() => {
+        console.log('Added fee info successfully!', this.user);
+      });
 
       this.submitted = true;
 
@@ -145,9 +150,12 @@ export class AddMemberPage implements OnInit {
   }
 
   toggleFeePaidStatus(event) {
+    console.log(this.addMemberForm.errors);
     if (event.target.value === 'yes') {
       this.amount.setValue(DEFAULT_FEE_AMOUNT);
       this.calculateFee();
+    } else {
+      this.resetValue();
     }
   }
 
@@ -164,6 +172,13 @@ export class AddMemberPage implements OnInit {
 
   calculateEndDate(subStartDt: Date, numOfMonths: number) {
     return this.formatDate(new Date(new Date().setMonth(subStartDt.getMonth() + numOfMonths, subStartDt.getDate())));
+  }
+
+  resetValue() {
+    // this.amount.setValue(0);
+    this.subscriptionStartDt.setValue('');
+    this.subscriptionEndDt.setValue('');
+    this.numOfMonths.setValue(0);
   }
 
   // UTILITY FUNCTIONS

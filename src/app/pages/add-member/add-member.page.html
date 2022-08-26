@@ -161,7 +161,8 @@
 
       <div *ngIf="(amount.dirty || amount.touched) && amount.errors" class="errors">
         <!-- <span *ngIf="amount.errors?.required">Amount is required</span> -->
-        <span *ngIf="amount.errors?.correctAmount">Amount should be in multiple of 500s</span>
+        <span *ngIf="amount.errors?.min">Amount should be min of Rs. 500!</span>
+        <span *ngIf="amount.errors?.correctAmount">Amount should be in multiple of 500s!</span>
       </div>
 
       <!-- SUBSCRIPTION START DATE -->

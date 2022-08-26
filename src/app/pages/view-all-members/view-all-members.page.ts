@@ -36,18 +36,11 @@ export class ViewAllMembersPage implements OnInit {
   }
 
   ngOnInit() {
-    this.retrieveUsers();
-    this.createAvatarSVG('raghul');
+    this.retrieveUsers(this.status);
   }
 
-  async createAvatarSVG(memberName) {
-    // this.userService.getInitials().then(val => {
-    //   console.log(val);
-    // });
-  }
-
-  retrieveUsers(): void {
-    this.userService.getAllUsers().snapshotChanges().pipe(
+  retrieveUsers(status?: string): void {
+    this.userService.getAllUsers(status).snapshotChanges().pipe(
       map(changes =>
         changes.map(c =>
           ({ id: c.payload.doc.id, ...c.payload.doc.data() })
@@ -70,6 +63,7 @@ export class ViewAllMembersPage implements OnInit {
 
   updatePayment(id: string) {
     console.log(`From UpdatePayment: ID: ${id}`);
+    this.router.navigate(['update-payment', id.toLowerCase()]);
   }
 
   deleteMember(id: string) {
