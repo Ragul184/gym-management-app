@@ -9,7 +9,15 @@
 
 <ion-content>
   <ion-card-header color="primary" class="ion-text-center" style="font-size: larger;">{{status | uppercase}} - Members
-    List</ion-card-header>
+    List
+    <ion-toolbar>
+      <ion-searchbar 
+      [(ngModel)]="searchTerm"
+      showCancelButton="focus"
+      animated
+      placeholder="Search User"></ion-searchbar>
+    </ion-toolbar>
+  </ion-card-header>
   <!-- <ion-item-sliding *ngFor="let user of users; let i=index">
     <ion-item button color="none" routerLink="/user-details/{{ user.memberId |lowercase }}">
       {{i+1}}.&nbsp;{{user.memberId |uppercase }} &nbsp; {{user.memberName |titlecase }}
@@ -18,12 +26,6 @@
       <ion-item-option color="danger" (click)="deleteEmployee(user.memberId)">Delete</ion-item-option>
     </ion-item-options>
   </ion-item-sliding> -->
-
-  <ng-container *ngIf="users.length === 0">
-    <ion-item class="noItems" lines="full">
-      <ion-label class="ion-text-center">Sorry, No Users List Available!</ion-label>
-    </ion-item>
-  </ng-container>
 
   <ion-card class="usersListCard" *ngFor="let user of users; let i=index">
     <ion-card-header class="usersListCardHeader" routerLink="/member-detail/{{ user.memberId |lowercase }}">

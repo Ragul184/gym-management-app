@@ -21,6 +21,8 @@ export class ViewAllMembersPage implements OnInit {
   currentUser?: User;
   currentIndex = -1;
   title = '';
+  searchTerm :string;
+  
 
   constructor(private router: Router, private route: ActivatedRoute, private userService: UserService,
     private loadingController: LoadingController, private alertController: AlertController) {
