@@ -20,7 +20,7 @@
   </ion-item-sliding> -->
 
   <ion-card class="usersListCard" *ngFor="let user of users; let i=index">
-    <ion-card-header class="usersListCardHeader" routerLink="/user-details/{{ user.memberId |lowercase }}">
+    <ion-card-header class="usersListCardHeader" routerLink="/member-detail/{{ user.memberId |lowercase }}">
       <ion-row>
         <ion-col size="3">
           <ion-avatar>
@@ -41,7 +41,7 @@
           </ion-button>
         </ion-col>
         <ion-col size="6" class="deleteBtn ion-no-padding">
-          <ion-button expand="block" color="danger" fill="clear" (click)="deleteMember(user.memberId)">
+          <ion-button expand="block" color="danger" fill="clear" (click)="deleteMember(user)">
             <ion-icon name="trash"></ion-icon>&nbsp;DELETE
           </ion-button>
         </ion-col>

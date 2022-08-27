@@ -8,25 +8,29 @@ import { UserService } from 'src/app/services/user/user.service';
 import { DEFAULT_FEE_AMOUNT } from '../add-member/add-member.page';
 
 @Component({
-  selector: 'app-update-payment',
-  templateUrl: './update-payment.page.html',
-  styleUrls: ['./update-payment.page.scss'],
+  selector: 'app-edit-payment-info',
+  templateUrl: './edit-payment-info.page.html',
+  styleUrls: ['./edit-payment-info.page.scss'],
 })
-export class UpdatePaymentPage implements OnInit {
+export class EditPaymentInfoPage implements OnInit {
   public loading: HTMLIonLoadingElement;
   updateFeeForm: FormGroup;
   id: string;
+  paymentId: string;
   docId: string;
-  paymentData: UserPaymentInfo[] = [];
 
   submitted: boolean;
+  isShow = false;
   userPaymentInfo: UserPaymentInfo;
+  paymentDetail: UserPaymentInfo;
 
   constructor(private route: ActivatedRoute, private userService: UserService, private fb: FormBuilder,
     private alertController: AlertController, private router: Router,
     private loadingController: LoadingController, private collectionService: CollectionsService) {
-    this.id = this.route.snapshot.paramMap.get('id').toLowerCase();
-    this.getLatestPaymentDetails(this.id);
+    // this.id = this.route.snapshot.paramMap.get('id').toLowerCase();
+    // this.getLatestPaymentDetails(this.id);
+    this.paymentId = this.route.snapshot.paramMap.get('paymentId');
+    this.getTransactionWithId(this.paymentId);
   }
 
   get memberId() { return this.updateFeeForm.get('memberId'); }
@@ -49,32 +53,64 @@ export class UpdatePaymentPage implements OnInit {
       subscriptionEndDt: ['', []],
       numOfMonths: ['', []],
     }, { validators: [this.isCorrectAmount('amount')] } as AbstractControlOptions);
-    // setInterval(() => {
-    //   console.log(this.updateFeeForm.dirty && this.updateFeeForm.touched && !this.updateFeeForm.pristine);
-    // }, 5000);
   }
 
-  async getLatestPaymentDetails(id: string) {
-    const latestPayment = await this.collectionService.getLatestPaymentById(id);
-    latestPayment.forEach(item => {
-      this.paymentData.push(item.data());
-    });
+  // async getLatestPaymentDetails(id: string) {
+  //   const paymentData: UserPaymentInfo[] = [];
+  //   const latestPayment = await this.collectionService.getLatestPaymentById(id);
+  //   latestPayment.forEach(item => {
+  //     paymentData.push(item.data());
+  //   });
 
-    const docIdList = await this.userService.getDocIdByUserId(this.paymentData[0].memberId);
-    docIdList.forEach(item => {
-      this.docId = item.id;
-    });
+  //   const docIdList = await this.userService.getDocIdByUserId(paymentData[0].memberId);
+  //   docIdList.forEach(item => {
+  //     this.docId = item.id;
+  //   });
 
-    console.log(this.paymentData);
-    this.memberId.setValue(this.paymentData[0].memberId);
-    this.memberName.setValue(this.paymentData[0].memberName);
-    this.joiningDt.setValue(this.formatDate(this.paymentData[0].joiningDt.toDate()));
-    this.feesPaid.setValue(this.paymentData[0].feesPaid);
-    if (this.feesPaid.value === 'yes') {
-      this.amount.setValue(this.paymentData[0].amount);
-      this.subscriptionStartDt.setValue(this.paymentData[0].subscriptionStartDt);
-      this.subscriptionEndDt.setValue(this.paymentData[0].subscriptionEndDt);
-      this.numOfMonths.setValue(this.paymentData[0].numOfMonths);
+  //   console.log(paymentData);
+  //   this.memberId.setValue(paymentData[0].memberId);
+  //   this.memberName.setValue(paymentData[0].memberName);
+  //   this.joiningDt.setValue(this.formatDate((paymentData[0].joiningDt as any).toDate()));
+  //   this.feesPaid.setValue(paymentData[0].feesPaid);
+  //   if (this.feesPaid.value === 'yes') {
+  //     this.amount.setValue(paymentData[0].amount);
+  //     this.subscriptionStartDt.setValue(paymentData[0].subscriptionStartDt);
+  //     this.subscriptionEndDt.setValue(paymentData[0].subscriptionEndDt);
+  //     this.numOfMonths.setValue(paymentData[0].numOfMonths);
+  //   }
+  // }
+
+  async getTransactionWithId(paymentId: string) {
+    try {
+
+      await this.showLoading();
+      const paymentRef = await this.collectionService.getPaymentWithId(paymentId).get().toPromise();
+      this.paymentDetail = { id: paymentRef.id, ...paymentRef.data() };
+
+      const docIdList = await this.userService.getDocIdByUserId(this.paymentDetail.memberId);
+      docIdList.forEach(item => {
+        this.docId = item.id;
+      });
+      console.log(this.docId);
+
+      this.memberId.setValue(this.paymentDetail.memberId);
+      this.memberName.setValue(this.paymentDetail.memberName);
+      this.joiningDt.setValue(this.formatDate((this.paymentDetail.joiningDt as any).toDate()));
+      this.feesPaid.setValue(this.paymentDetail.feesPaid);
+      if (this.feesPaid.value === 'yes') {
+        this.amount.setValue(this.paymentDetail.amount);
+        this.subscriptionStartDt.setValue(this.paymentDetail.subscriptionStartDt);
+        this.subscriptionEndDt.setValue(this.paymentDetail.subscriptionEndDt);
+        this.numOfMonths.setValue(this.paymentDetail.numOfMonths);
+      }
+
+      this.isShow = true;
+      await this.hideLoading();
+
+    } catch (error) {
+      console.error(error);
+      this.handleError(error);
+      await this.hideLoading();
     }
   }
 
@@ -105,49 +141,7 @@ export class UpdatePaymentPage implements OnInit {
       };
     }
 
-    if (!(this.updateFeeForm.dirty && this.updateFeeForm.touched && !this.updateFeeForm.pristine)) {
-      await this.showLoading();
-      const confirmAlert = await this.alertController.create({
-        header: 'No Change!',
-        subHeader: `Values are not changed. Still are you sure want to update fee for this member ${this.userPaymentInfo.memberName}  \
-                with id: ${this.userPaymentInfo.memberId}?`,
-        message: 'This will create a new payment log in the collections which may be a duplicate!',
-        buttons: [{
-          text: 'Update', handler: async () => {
-            // await this.showLoading();
-            // DELETE PAYMENT HERE!
-            await this.updatePayment();
-            await this.router.navigate(['home']);
-            // await this.hideLoading();
-            // await this.handleError({ message: 'Payment Detail Succesfully Added!' });
-          }
-        }, { text: 'Cancel', role: 'cancel', }]
-      });
-      await this.hideLoading();
-      await confirmAlert.present();
-
-    } else {
-
-      await this.showLoading();
-      const confirmAlert = await this.alertController.create({
-        header: 'Confirm!',
-        message: `Are you sure want to update fee for this member ${this.userPaymentInfo.memberName}  \
-                  with id: ${this.userPaymentInfo.memberId}?`,
-        buttons: [{
-          text: 'Update', handler: async () => {
-            // await this.showLoading();
-            // DELETE PAYMENT HERE!
-            await this.updatePayment();
-            await this.router.navigate(['home']);
-            // await this.hideLoading();
-            // await this.handleError({ message: 'Payment Detail Succesfully Added!' });
-          }
-        }, { text: 'Cancel', role: 'cancel', }]
-      });
-      await this.hideLoading();
-      await confirmAlert.present();
-    }
-
+    await this.updatePayment();
   }
 
   async updatePayment() {
@@ -155,8 +149,9 @@ export class UpdatePaymentPage implements OnInit {
 
       await this.showLoading();
 
-      const paymentTransDetails = await this.collectionService.saveUserPayment(this.userPaymentInfo);
-      console.log('Added fee info successfully!', this.userPaymentInfo, paymentTransDetails.id);
+      await this.collectionService.updateUserPayment(this.paymentDetail.id, this.userPaymentInfo).then(() => {
+        console.log('Added fee info successfully!', this.userPaymentInfo);
+      });
 
       const data = {
         feesPaid: this.feesPaid.value,
@@ -171,11 +166,11 @@ export class UpdatePaymentPage implements OnInit {
 
       const alert = await this.alertController.create({
         header: 'Success',
-        subHeader: 'Payment Added',
-        message: `The new payment info has been updated for the Member ID: ${this.userPaymentInfo.memberId}!`,
+        subHeader: 'Payment Edited',
+        message: `The edited payment info has been updated for the Member ID: ${this.userPaymentInfo.memberId}!`,
         buttons: [{
           text: 'OK', handler: () => {
-            this.router.navigate(['/payment-detail', paymentTransDetails.id], { replaceUrl: true });
+            this.router.navigate(['/payment-detail', this.paymentDetail.id]);
           }
         }]
       });
@@ -213,36 +208,6 @@ export class UpdatePaymentPage implements OnInit {
     return this.formatDate(new Date(new Date().setMonth(subStartDt.getMonth() + numOfMonths, subStartDt.getDate())));
   }
 
-  // checkValueChanged(): boolean {
-  //   if (this.feesPaid.value === 'yes') {
-  //     this.userPaymentInfo = {
-  //       memberId: this.updateFeeForm.get('memberId').value,
-  //       memberName: this.updateFeeForm.get('memberName').value,
-  //       joiningDt: new Date(this.updateFeeForm.get('joiningDt').value),
-  //       feesPaid: this.updateFeeForm.get('feesPaid').value,
-  //       amount: this.updateFeeForm.get('amount').value,
-  //       subscriptionStartDt: this.updateFeeForm.get('subscriptionStartDt').value,
-  //       subscriptionEndDt: this.updateFeeForm.get('subscriptionEndDt').value,
-  //       numOfMonths: this.updateFeeForm.get('numOfMonths').value,
-  //       paymentDateTime: this.feesPaid.value === 'no' ? null :
-  //         this.paymentData[0].paymentDateTime ? this.paymentData[0].paymentDateTime.toDate() : new Date()
-  //     };
-  //     this.paymentData[0].joiningDt = this.paymentData[0].joiningDt.toDate();
-  //     this.paymentData[0].paymentDateTime = this.paymentData[0].paymentDateTime.toDate();
-  //     console.log(this.paymentData[0], this.userPaymentInfo, Object.);
-  //   }
-  //   else {
-  //     this.userPaymentInfo = {
-  //       memberId: this.updateFeeForm.get('memberId').value,
-  //       memberName: this.updateFeeForm.get('memberName').value,
-  //       joiningDt: new Date(this.updateFeeForm.get('joiningDt').value),
-  //       feesPaid: this.updateFeeForm.get('feesPaid').value,
-  //       paymentDateTime: this.feesPaid.value === 'yes' ? new Date() : null
-  //     };
-  //     return true;
-  //   }
-  // }
-
   // UTILITY FUNCTIONS
   formatDate(date) {
     const year = date.getFullYear().toString();
@@ -276,7 +241,6 @@ export class UpdatePaymentPage implements OnInit {
   }
 
   // LOADERS AND ALERTS
-
   async showLoading(): Promise<void> {
     try {
       this.loading = await this.loadingController.create();

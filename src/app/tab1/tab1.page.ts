@@ -12,7 +12,8 @@ export class Tab1Page {
   constructor(private authService: AuthService, private router: Router) { }
 
   async logout() {
-    await this.authService.logOut();
+    // await this.authService.logOut();
+    await this.authService.signout();
     this.router.navigateByUrl('/', { replaceUrl: true });
   }
 

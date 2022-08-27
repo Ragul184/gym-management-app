@@ -1,9 +1,69 @@
-<ion-header>
+<ion-header class="ion-no-border ion-no-padding">
   <ion-toolbar>
-    <ion-title>member-detail</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button color="light" defaultHref="home"></ion-back-button>
+    </ion-buttons>
+    <ion-title color="light" class="ion-text-center">Member Detail</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content [fullscreen]="true">
+  <div class="main-header"></div>
+
+  <ion-row class="avatar">
+    <ion-avatar *ngIf="retrievedUser">
+      <img src="https://avatars.dicebear.com/api/initials/{{retrievedUser.memberName}}.svg">
+    </ion-avatar>
+  </ion-row>
+
+  <ion-row class="firstItem" *ngIf="retrievedUser">
+    <ion-col size="4.5">Member ID</ion-col>
+    <ion-col size="7.5">{{retrievedUser.memberId |uppercase}}</ion-col>
+  </ion-row>
+
+  <ion-row *ngIf="retrievedUser">
+    <ion-col size="4.5">Member Name</ion-col>
+    <ion-col size="7.5">{{retrievedUser.memberName |titlecase}}</ion-col>
+  </ion-row>
+
+  <ion-row *ngIf="retrievedUser">
+    <ion-col size="4.5">Phone Number</ion-col>
+    <ion-col size="7.5">{{retrievedUser.phoneNumber}}</ion-col>
+  </ion-row>
+
+  <ion-row *ngIf="retrievedUser">
+    <ion-col size="4.5">Gender</ion-col>
+    <ion-col size="7.5">{{retrievedUser.gender |titlecase}}</ion-col>
+  </ion-row>
+
+  <ion-row *ngIf="retrievedUser">
+    <ion-col size="4.5">Date of Birth</ion-col>
+    <ion-col size="7.5">{{retrievedUser.birthDt.toDate() |date:'dd-MM-yyyy'}}</ion-col>
+  </ion-row>
+
+  <ion-row *ngIf="retrievedUser">
+    <ion-col size="4.5">Age</ion-col>
+    <ion-col size="7.5">{{retrievedUser.age}}</ion-col>
+  </ion-row>
+
+  <ion-row *ngIf="retrievedUser">
+    <ion-col size="4.5">Address</ion-col>
+    <ion-col size="7.5">{{retrievedUser.address}}</ion-col>
+  </ion-row>
+
+  <ion-row *ngIf="retrievedUser">
+    <ion-col size="4.5">Date of Joining</ion-col>
+    <ion-col size="7.5">{{retrievedUser.joiningDt.toDate() |date:'dd-MM-yyyy'}}</ion-col>
+  </ion-row>
+
+  <ion-row *ngIf="retrievedUser">
+    <ion-col size="4.5">Fees Paid</ion-col>
+    <ion-col size="7.5">{{retrievedUser.feesPaid}}</ion-col>
+  </ion-row>
+
+  <ion-row *ngIf="retrievedUser">
+    <ion-col size="4.5">Sub End Date</ion-col>
+    <ion-col size="7.5">{{changeToDate(retrievedUser.subscriptionEndDt) |date:'dd-MM-yyyy'}}</ion-col>
+  </ion-row>
 
 </ion-content>

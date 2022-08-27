@@ -1,0 +1,62 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
+
+// ion-header,
+// ion-toolbar {
+//   font-family: "Lato", sans-serif;
+//   font-weight: 700;
+//   text-transform: uppercase;
+//   --background: transparent;
+// }
+
+ion-content {
+  --padding-top: 35%;
+  --padding-start: 10%;
+  --padding-end: 10%;
+
+  --background: url("https://images.unsplash.com/photo-1536431311719-398b6704d4cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1234&q=80")
+    0 0/100% 100% no-repeat;
+}
+
+.registerLabel {
+  color: white;
+  text-transform: uppercase;
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+  text-align: center;
+  font-size: x-large;
+}
+
+.loginBtn {
+  color: white;
+  font-weight: 500;
+}
+
+ion-row.avatar {
+  margin-top: 5vh;
+  margin-bottom: 2vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 0;
+
+  ion-avatar {
+    height: 15vh;
+    width: 15vh;
+  }
+}
+
+.input-group {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+.errors {
+  font-size: small;
+  color: #fff;
+  background: var(--ion-color-danger);
+  padding-left: 15px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}

@@ -22,25 +22,12 @@ ion-header {
 }
 
 .firstItem {
-  margin-top: 1vh;
+  margin-top: 4vh;
   border-top: 2px groove;
 }
 
 ion-row {
   border-bottom: 2px groove;
-}
-
-ion-row.avatar {
-  margin-top: 4vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 0;
-
-  ion-avatar {
-    height: 10vh;
-    width: 10vh;
-  }
 }
 
 ion-col {

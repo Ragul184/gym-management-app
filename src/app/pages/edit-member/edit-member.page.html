@@ -3,14 +3,14 @@
     <ion-buttons slot="start">
       <ion-back-button color="light" defaultHref="home"></ion-back-button>
     </ion-buttons>
-    <ion-title color="light" class="ion-text-center">Add Member</ion-title>
+    <ion-title color="light" class="ion-text-center">Edit Member Profile</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <div class="main-header"></div>
 
-  <form class="addForm" [formGroup]="addMemberForm" (ngSubmit)="newUser()">
+  <form class="addForm" [formGroup]="editMemberForm" (ngSubmit)="newUser()" *ngIf="isShow ">
 
     <div class="input-group">
       <!-- MEMBER ID -->
@@ -114,7 +114,7 @@
       <!-- DATE OF JOINING -->
       <ion-item>
         <ion-label position="floating">Date of Joining</ion-label>
-        <ion-input required formControlName="joiningDt" placeholder="Date of Joining" type="date" value="{{today}}">
+        <ion-input required formControlName="joiningDt" placeholder="Date of Joining" type="date">
         </ion-input>
       </ion-item>
 
@@ -123,7 +123,7 @@
       </div>
 
       <!-- FEES PAID -->
-      <ion-radio-group required formControlName="feesPaid" (ionChange)="toggleFeePaidStatus($event)">
+      <ion-radio-group required formControlName="feesPaid" [attr.disabled]="true">
         <ion-row>
 
           <ion-col size="4" class="ion-no-padding">
@@ -135,14 +135,14 @@
           <ion-col size="4" class="ion-no-padding">
             <ion-item lines="full">
               <ion-label>Yes</ion-label>
-              <ion-radio item-left value="yes"></ion-radio>
+              <ion-radio item-left value="yes" [attr.disabled]="true"></ion-radio>
             </ion-item>
           </ion-col>
 
           <ion-col size="4" class="ion-no-padding">
             <ion-item lines="full">
               <ion-label>No</ion-label>
-              <ion-radio item-left value="no"></ion-radio>
+              <ion-radio item-left value="no" [attr.disabled]="true"></ion-radio>
             </ion-item>
           </ion-col>
 
@@ -153,35 +153,10 @@
         <span *ngIf="feesPaid.errors?.required">Address is required</span>
       </div>
 
-      <!-- AMOUNT -->
-      <ion-item *ngIf="feesPaid.value==='yes'">
-        <ion-label position="floating">Amount</ion-label>
-        <ion-input formControlName="amount" placeholder="Amount" type="number" (ionChange)="calculateFee()"></ion-input>
-      </ion-item>
-
-      <div *ngIf="(amount.dirty || amount.touched) && amount.errors" class="errors">
-        <!-- <span *ngIf="amount.errors?.required">Amount is required</span> -->
-        <span *ngIf="amount.errors?.min">Amount should be min of Rs. 500!</span>
-        <span *ngIf="amount.errors?.correctAmount">Amount should be in multiple of 500s!</span>
-      </div>
-
-      <!-- SUBSCRIPTION START DATE -->
-      <ion-item *ngIf="feesPaid.value==='yes'">
-        <ion-label position="floating">Subscription Start Date</ion-label>
-        <ion-input formControlName="subscriptionStartDt" placeholder="Subscription Start Date" type="date"
-          (ionChange)="calculateFee()">
-        </ion-input>
-      </ion-item>
-
-      <!-- <div *ngIf="(subscriptionStartDt.dirty || subscriptionStartDt.touched) && subscriptionStartDt.errors" class="errors">
-        <span *ngIf="subscriptionStartDt.errors?.required">Subscription Start Date is required</span>
-      </div> -->
-
       <!-- SUBSCRIPTION END DATE -->
       <ion-item *ngIf="feesPaid.value==='yes'">
         <ion-label position="floating">Subscription End Date</ion-label>
-        <ion-input formControlName="subscriptionEndDt" placeholder="Subscription End Date" type="date"
-          (ionChange)="calculateFee()">
+        <ion-input readonly="true" formControlName="subscriptionEndDt" placeholder="Subscription End Date" type="date">
         </ion-input>
       </ion-item>
 
@@ -189,18 +164,7 @@
         <span *ngIf="subscriptionEndDt.errors?.required">Subscription End Date is required</span>
       </div> -->
 
-      <!-- NUMBER OF MONTHS -->
-      <ion-item *ngIf="feesPaid.value==='yes'">
-        <ion-label position="floating">Number of Months</ion-label>
-        <ion-input formControlName="numOfMonths" placeholder="Number of Months" type="number"
-          (ionChange)="calculateFee()"></ion-input>
-      </ion-item>
-
-      <!-- <div *ngIf="(numOfMonths.dirty || numOfMonths.touched) && numOfMonths.errors" class="errors">
-        <span *ngIf="numOfMonths.errors?.required">Number of Months is required</span>
-      </div> -->
-
-      <ion-button type="submit" color="success" fill="clear" expand="block" [disabled]="addMemberForm.invalid">Add
+      <ion-button type="submit" color="success" fill="clear" expand="block" [disabled]="editMemberForm.invalid">Update
         Member
       </ion-button>
     </div>

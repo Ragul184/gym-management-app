@@ -9,7 +9,7 @@
     <ion-segment color="tertiary" [(ngModel)]="mode" (ionChange)="switchTab($event)">
       <ion-segment-button value="0">
         <ion-icon name="calendar"></ion-icon>
-        <ion-label>30Days</ion-label>
+        <ion-label>Total</ion-label>
       </ion-segment-button>
       <ion-segment-button value="1">
         <ion-icon name="information-circle"></ion-icon>
@@ -20,20 +20,34 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+
+  <ion-row class="summary ion-margin-horizontal">
+    <ion-col>
+      <ion-card class="summaryCard ion-text-center">
+        <ion-card-header class="summaryHeader">
+          <ion-label class="summaryLabel" color="dark">{{ name }}</ion-label>
+          <span class="membersCount" [style.background]="background">
+            &#8377;&nbsp;{{totalAmount}}
+          </span>
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+
   <ion-list>
-    <ion-item button *ngFor="let item of payments" [routerLink]="[item._id]">
-      <ion-avatar slot="start">
-        <img [src]="" />
-      </ion-avatar>
-      <ion-label class="ion-text-wrap">
-        <h3>{{ item.payer }}</h3>
-        <p>{{ item.payed_on }}</p>
-      </ion-label>
-      <ion-badge slot="end"> {{ item.amount }} </ion-badge>
-    </ion-item>
+    <ng-container *ngFor="let item of usersPaymentInfo">
+      <ion-item button *ngIf="item.feesPaid === 'yes'" routerLink="/payment-detail/{{item.id}}">
+        <ion-avatar slot="start">
+          <img src="https://avatars.dicebear.com/api/initials/{{item.memberName}}.svg" />
+        </ion-avatar>
+        <ion-label class="ion-text-wrap">
+          <h3>{{ item.memberName }}</h3>
+          <p>Member ID: {{ item.memberId}}</p>
+          <p>On: {{ item.paymentDateTime.toDate() |date: 'dd-MM-yyyy hh:mm aa'}}</p>
+        </ion-label>
+        <ion-badge slot="end"> &#8377;&nbsp;{{ item.amount }} </ion-badge>
+      </ion-item>
+    </ng-container>
   </ion-list>
-  <ion-infinite-scroll (ionInfinite)="loadMore($event)">
-    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
-    </ion-infinite-scroll-content>
-  </ion-infinite-scroll>
+
 </ion-content>

@@ -3,17 +3,22 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 import { AutoLoginGuard } from './guards/auto-login.guard';
 import { IntroGuard } from './guards/intro.guard';
+import { canActivate, redirectLoggedInTo, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
+
+const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['']);
+const redirectLoggedInToHome = () => redirectLoggedInTo(['home']);
 
 const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule),
-    canLoad: [IntroGuard, AutoLoginGuard]
+    ...canActivate(redirectLoggedInToHome),
+    canLoad: [IntroGuard]
   },
   {
     path: 'tabs',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule),
-    canLoad: [AuthGuard]
+    ...canActivate(redirectUnauthorizedToLogin)
   },
   {
     path: 'intro',
@@ -29,46 +34,71 @@ const routes: Routes = [
   },
   {
     path: 'add-member',
-    loadChildren: () => import('./pages/add-member/add-member.module').then(m => m.AddMemberPageModule)
+    loadChildren: () => import('./pages/add-member/add-member.module').then(m => m.AddMemberPageModule),
+    ...canActivate(redirectUnauthorizedToLogin)
   },
   {
-    path: 'member-detail',
-    loadChildren: () => import('./pages/member-detail/member-detail.module').then(m => m.MemberDetailPageModule)
+    path: 'member-detail/:memberId',
+    loadChildren: () => import('./pages/member-detail/member-detail.module').then(m => m.MemberDetailPageModule),
+    canLoad: [AuthGuard]
   },
   {
     path: 'view-all-members/:status',
-    loadChildren: () => import('./pages/view-all-members/view-all-members.module').then(m => m.ViewAllMembersPageModule)
+    loadChildren: () => import('./pages/view-all-members/view-all-members.module').then(m => m.ViewAllMembersPageModule),
+    canLoad: [AuthGuard]
   },
   {
     path: 'view-all-payments/:filter',
-    loadChildren: () => import('./pages/view-all-payments/view-all-payments.module').then(m => m.ViewAllPaymentsPageModule)
+    loadChildren: () => import('./pages/view-all-payments/view-all-payments.module').then(m => m.ViewAllPaymentsPageModule),
+    canLoad: [AuthGuard]
   },
   {
     path: 'delete-user',
-    loadChildren: () => import('./pages/delete-user/delete-user.module').then(m => m.DeleteUserPageModule)
+    loadChildren: () => import('./pages/delete-user/delete-user.module').then(m => m.DeleteUserPageModule),
+    canLoad: [AuthGuard]
   },
   {
     path: 'init-payment',
-    loadChildren: () => import('./pages/init-payment/init-payment.module').then(m => m.InitPaymentPageModule)
+    loadChildren: () => import('./pages/init-payment/init-payment.module').then(m => m.InitPaymentPageModule),
+    canLoad: [AuthGuard]
   },
   {
     path: 'update-payment/:id',
-    loadChildren: () => import('./pages/update-payment/update-payment.module').then(m => m.UpdatePaymentPageModule)
+    loadChildren: () => import('./pages/update-payment/update-payment.module').then(m => m.UpdatePaymentPageModule),
+    canLoad: [AuthGuard]
+  },
+  {
+    path: 'payment-detail/:paymentId',
+    loadChildren: () => import('./pages/payment-detail/payment-detail.module').then(m => m.PaymentDetailPageModule),
+    canLoad: [AuthGuard]
+  },
+  {
+    path: 'edit-member/:memberId',
+    loadChildren: () => import('./pages/edit-member/edit-member.module').then(m => m.EditMemberPageModule),
+    canLoad: [AuthGuard]
+  },
+  {
+    path: 'edit-payment-info/:paymentId',
+    loadChildren: () => import('./pages/edit-payment-info/edit-payment-info.module').then(m => m.EditPaymentInfoPageModule),
+    canLoad: [AuthGuard]
   },
   {
     path: 'profile',
     redirectTo: 'tabs/profile',
-    pathMatch: 'full'
+    pathMatch: 'full',
+    canLoad: [AuthGuard]
   },
   {
     path: 'home',
     redirectTo: 'tabs/home',
-    pathMatch: 'full'
+    pathMatch: 'full',
+    canLoad: [AuthGuard]
   },
   {
     path: 'more',
     redirectTo: 'tabs/more',
-    pathMatch: 'full'
+    pathMatch: 'full',
+    canLoad: [AuthGuard]
   },
   {
     path: '',

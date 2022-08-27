@@ -1,9 +1,44 @@
-<ion-header>
+<!-- <ion-header class="ion-no-border ion-no-padding">
   <ion-toolbar>
-    <ion-title>signup</ion-title>
+    <ion-title color="light" class="ion-text-center">Gym Management</ion-title>
   </ion-toolbar>
-</ion-header>
+</ion-header> -->
 
-<ion-content>
+<ion-content [fullscreen]="true">
 
+  <div class="registerLabel">Create Account</div>
+
+  <ion-row class="avatar">
+    <ion-avatar>
+      <img src="assets/fitness.png">
+    </ion-avatar>
+  </ion-row>
+
+  <form [formGroup]="credentials" (ngSubmit)="register()">
+
+    <div class="input-group">
+      <ion-item>
+        <ion-input required formControlName="email" placeholder="Email" type="email"></ion-input>
+      </ion-item>
+
+      <div *ngIf="(email.dirty || email.touched) && email.errors" class="errors">
+        <span *ngIf="email.errors?.required">Email is required</span>
+        <span *ngIf="email.errors?.email">Email is invalid!</span>
+      </div>
+
+      <ion-item>
+        <ion-input required formControlName="password" placeholder="Password" type="password"></ion-input>
+      </ion-item>
+
+      <div *ngIf="(password.dirty || password.touched) && password.errors" class="errors">
+        <span *ngIf="password.errors?.required">Password is required</span>
+        <span *ngIf="password.errors?.minlength">Password needs to be 6 characters</span>
+      </div>
+    </div>
+    <ion-button type="submit" expand="block" [disabled]="credentials.invalid">Register</ion-button>
+    <ion-button class="loginBtn" type="button" expand="block" fill="clear" (click)="redirectToLogin()">
+      Already a member? Login!
+    </ion-button>
+
+  </form>
 </ion-content>

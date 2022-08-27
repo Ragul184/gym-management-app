@@ -1,3 +1,29 @@
-.ion-padding {
-  --background: rgba(237, 242, 245, 0.8);
+ion-row {
+  margin: 0px;
+}
+
+ion-row ion-col span.membersCount {
+  font-size: 24px;
+  font-weight: 900;
+  padding: 10px 19px;
+  border-radius: 10px;
+}
+
+ion-row ion-card.summaryCard {
+  box-shadow: -1px 11px 13px -6px rgb(87, 86, 86);
+  border-radius: 10px !important;
+  margin: 10px 0;
+}
+
+ion-card-header.summaryHeader {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+  justify-content: space-around;
+}
+
+ion-label.summaryLabel {
+  font-weight: bold;
+  letter-spacing: 0.5px;
 }

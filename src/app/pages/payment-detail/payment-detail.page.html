@@ -1,0 +1,71 @@
+<ion-header class="ion-no-border ion-no-padding">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="light" defaultHref="home"></ion-back-button>
+    </ion-buttons>
+    <ion-title color="light" class="ion-text-center">Payment Details</ion-title>
+    <ion-buttons slot="end">
+      <ion-button *ngIf="paymentDetail" (click)="editPayment()">
+        <ion-icon slot="start" name="pencil" color="light"></ion-icon>
+      </ion-button>
+      <ion-button *ngIf="paymentDetail" (click)="deletePayment(paymentDetail)">
+        <ion-icon slot="start" name="trash" color="light"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="main-header"></div>
+
+  <ion-row class="firstItem" *ngIf="paymentDetail">
+    <ion-col size="4.5">Transaction ID</ion-col>
+    <ion-col size="7.5">{{paymentId}}</ion-col>
+  </ion-row>
+
+  <ion-row *ngIf="paymentDetail">
+    <ion-col size="4.5">Member ID</ion-col>
+    <ion-col size="7.5">{{paymentDetail.memberId}}</ion-col>
+  </ion-row>
+
+  <ion-row *ngIf="paymentDetail">
+    <ion-col size="4.5">Member Name</ion-col>
+    <ion-col size="7.5">{{paymentDetail.memberName |titlecase}}</ion-col>
+  </ion-row>
+
+  <ion-row *ngIf="paymentDetail">
+    <ion-col size="4.5">Date of Joining</ion-col>
+    <ion-col size="7.5">{{paymentDetail.joiningDt.toDate() |date:'dd-MM-yyyy'}}</ion-col>
+  </ion-row>
+
+  <ion-row *ngIf="paymentDetail">
+    <ion-col size="4.5">Fees Paid</ion-col>
+    <ion-col size="7.5">{{paymentDetail.feesPaid |titlecase}}</ion-col>
+  </ion-row>
+
+  <ion-row *ngIf="paymentDetail">
+    <ion-col size="4.5">Amount Paid</ion-col>
+    <ion-col size="7.5">&#8377;&nbsp;{{paymentDetail.amount}}</ion-col>
+  </ion-row>
+
+  <ion-row *ngIf="paymentDetail">
+    <ion-col size="4.5">Sub Start Date</ion-col>
+    <ion-col size="7.5">{{paymentDetail.subscriptionStartDt | date:'dd-MM-yyyy'}}</ion-col>
+  </ion-row>
+
+  <ion-row *ngIf="paymentDetail">
+    <ion-col size="4.5">Sub End Date</ion-col>
+    <ion-col size="7.5">{{paymentDetail.subscriptionEndDt | date:'dd-MM-yyyy'}}</ion-col>
+  </ion-row>
+
+  <ion-row *ngIf="paymentDetail">
+    <ion-col size="4.5">Num of Months</ion-col>
+    <ion-col size="7.5">{{paymentDetail.numOfMonths}}</ion-col>
+  </ion-row>
+
+  <ion-row *ngIf="paymentDetail">
+    <ion-col size="4.5">Paid On</ion-col>
+    <ion-col size="7.5">{{paymentDetail.paymentDateTime.toDate() |date:'dd-MM-yyyy hh:mm aa'}}</ion-col>
+  </ion-row>
+
+</ion-content>

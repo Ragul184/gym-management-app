@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
+import { AuthService } from '../services/auth.service';
 import { CollectionsService } from '../services/collections/collections.service';
 import { UserService } from '../services/user/user.service';
 
@@ -31,9 +33,15 @@ export class Tab2Page {
     { id: 2, vendor: 'Flaticons', image: '', amount: -1200, time: '4:00PM' }
   ];
 
-  constructor(private userService: UserService, private collectionService: CollectionsService,
-    private loadingController: LoadingController, private alertController: AlertController) {
+  constructor(private userService: UserService, private collectionService: CollectionsService, private router: Router,
+    private loadingController: LoadingController, private alertController: AlertController, private authService: AuthService) {
     this.calculateStats();
+  }
+
+  async logout() {
+    // await this.authService.logOut();
+    await this.authService.signout();
+    this.router.navigateByUrl('/', { replaceUrl: true });
   }
 
   retrieveUsers(status?: string) {
@@ -47,6 +55,11 @@ export class Tab2Page {
   async calculateStats() {
     try {
       await this.showLoading();
+
+      this.activeMembers = 0;
+      this.totalMembers = 0;
+      this.todayCollection = 0;
+      this.totalCollection = 0;
 
       const activeVal = await this.retrieveUsers('active');
       this.activeMembers = activeVal.size;
@@ -88,7 +101,6 @@ export class Tab2Page {
   }
 
   // LOADERS AND ALERTS
-
   async showLoading(): Promise<void> {
     try {
       this.loading = await this.loadingController.create();

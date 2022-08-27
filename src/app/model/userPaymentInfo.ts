@@ -1,11 +1,12 @@
 export class UserPaymentInfo {
+    id?: string;
     memberId?: string;
     memberName?: string;
-    joiningDt?: Date;
-    feesPaid?: boolean;
+    joiningDt?: Date | any;
+    feesPaid?: string;
     amount?: number;
     subscriptionStartDt?: Date;
     subscriptionEndDt?: Date;
     numOfMonths?: number;
-    paymentDateTime?: Date;
+    paymentDateTime?: Date | any | null;
 }

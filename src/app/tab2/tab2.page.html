@@ -1,15 +1,3 @@
-<!-- <ion-content>
-  <ion-item button routerLink="/view-all-members/all" color="none" lines="full">
-    <ion-label>View All Members</ion-label>
-  </ion-item>
-  <ion-item button routerLink="/view-all-payments" color="none" lines="full">
-    <ion-label>View All Payments</ion-label>
-  </ion-item>
-  <ion-item button routerLink="/show-expiring-members" color="none" lines="full">
-    <ion-label>Show Expiring Members</ion-label>
-  </ion-item>
-</ion-content> -->
-
 <ion-header class="ion-no-border ion-no-padding">
   <ion-toolbar>
     <ion-buttons slot="start">
@@ -17,7 +5,7 @@
     </ion-buttons>
     <!-- <ion-title color="light" class="ion-text-center">Home</ion-title> -->
     <ion-buttons slot="end">
-      <ion-button>
+      <ion-button (click)="logout()">
         <ion-icon slot="icon-only" color="light" name="log-out-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -56,16 +44,21 @@
       <ion-list-header>
         <ion-label>OTHER PAGES</ion-label>
       </ion-list-header>
-      <ion-item lines="none" *ngFor="let item of transactions">
-        <ion-icon slot="start" name="cash" color="primary"></ion-icon>
+
+      <ion-item detail="true" lines="none" routerLink="/add-member">
+        <ion-icon slot="start" name="person-add" color="primary"></ion-icon>
         <ion-label size="large" class="ion-text-wrap">
-          <b>{{item.vendor}}</b>
-          <p>
-            {{item?.time}}
-          </p>
+          <b>Add a new member</b>
         </ion-label>
-        <ion-text slot="end" [color]="item?.amount > 0 ? 'success' : 'danger'">₹{{item?.amount}}</ion-text>
       </ion-item>
+
+      <ion-item detail="true" lines="none" routerLink="/view-all-members/expired">
+        <ion-icon slot="start" name="person-remove" color="danger"></ion-icon>
+        <ion-label size="large" class="ion-text-wrap">
+          <b>Show Expiring Members</b>
+        </ion-label>
+      </ion-item>
+
     </ion-list>
   </ion-grid>
 

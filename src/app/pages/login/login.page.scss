@@ -1,3 +1,18 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
+
+ion-header,
+ion-toolbar {
+  font-family: "Lato", sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  --background: transparent;
+}
+
+ion-title {
+  font-weight: 900;
+  letter-spacing: 2.5px;
+}
+
 ion-content {
   --padding-top: 40%;
   --padding-start: 10%;
@@ -5,6 +20,30 @@ ion-content {
 
   --background: url("https://images.unsplash.com/photo-1536431311719-398b6704d4cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1234&q=80")
     0 0/100% 100% no-repeat;
+}
+
+.loginLabel {
+  color: white;
+  text-transform: uppercase;
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-align: center;
+  font-size: 20px;
+}
+
+ion-row.avatar {
+  margin-top: 5vh;
+  margin-bottom: 2vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 0;
+
+  ion-avatar {
+    height: 15vh;
+    width: 15vh;
+  }
 }
 
 .input-group {

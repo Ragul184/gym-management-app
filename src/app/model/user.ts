@@ -1,13 +1,14 @@
 import { Gender } from '../model/gender';
 export class User {
+    id?: string;
     memberId?: string;
     memberName?: string;
     address?: string;
     gender?: Gender;
     feesPaid?: boolean;
-    subscriptionEndDt?: Date;
-    joiningDt: Date;
-    birthDt: Date;
+    subscriptionEndDt?: Date | any;
+    joiningDt: Date | any;
+    birthDt: Date | any;
     phoneNumber: string;
     age: number;
     active: boolean;

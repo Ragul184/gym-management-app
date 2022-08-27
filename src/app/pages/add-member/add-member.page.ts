@@ -70,7 +70,7 @@ export class AddMemberPage implements OnInit {
     }, { validators: [this.isCorrectAmount('amount')] } as AbstractControlOptions);
   }
 
-  newUser(): void {
+  async newUser(): Promise<void> {
     this.submitted = false;
     this.user = new User();
     this.userPaymentInfo = new UserPaymentInfo();
@@ -111,7 +111,19 @@ export class AddMemberPage implements OnInit {
       };
     }
 
-    this.saveUser();
+    await this.showLoading();
+    const confirmAlert = await this.alertController.create({
+      header: 'Confirm!',
+      message: `Are you sure want to submit details for adding a member ${this.user.memberName}  \
+                  with id: ${this.user.memberId}?`,
+      buttons: [{
+        text: 'Update', handler: async () => {
+          await this.saveUser();
+        }
+      }, { text: 'Cancel', role: 'cancel', }]
+    });
+    await this.hideLoading();
+    await confirmAlert.present();
   }
 
   async saveUser() {
@@ -182,7 +194,6 @@ export class AddMemberPage implements OnInit {
   }
 
   // UTILITY FUNCTIONS
-
   retrieveId() {
     this.userService.getAllUsers().snapshotChanges().pipe(
       map(changes =>
@@ -246,7 +257,6 @@ export class AddMemberPage implements OnInit {
   }
 
   // LOADERS AND ALERTS
-
   async showLoading(): Promise<void> {
     try {
       this.loading = await this.loadingController.create();

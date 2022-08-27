@@ -33,8 +33,13 @@ export class AppComponent {
       icon: 'people'
     },
     {
+      title: 'Today Collection',
+      url: 'view-all-payments/today',
+      icon: 'wallet'
+    },
+    {
       title: 'Total Collection',
-      url: 'view-all-payments',
+      url: 'view-all-payments/all',
       icon: 'wallet'
     },
   ];

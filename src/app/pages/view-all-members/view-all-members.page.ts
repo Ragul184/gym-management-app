@@ -1,13 +1,10 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LoadingController, AlertController, ModalController, MenuController } from '@ionic/angular';
+import { LoadingController, AlertController } from '@ionic/angular';
 import { map } from 'rxjs/operators';
-import { AuthService } from 'src/app/services/auth.service';
-import { DeleteUserPage } from '../delete-user/delete-user.page';
 
 import { User } from '../../model/user';
 import { UserService } from '../../services/user/user.service';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-view-all-members',
@@ -25,14 +22,11 @@ export class ViewAllMembersPage implements OnInit {
   currentIndex = -1;
   title = '';
 
-  constructor(private router: Router, private route: ActivatedRoute, private authService: AuthService, private userService: UserService,
-    private modalController: ModalController, private loadingCtrl: LoadingController, private alertCtrl: AlertController,
-    private ngZone: NgZone, private menuController: MenuController, private httpClient: HttpClient) {
+  constructor(private router: Router, private route: ActivatedRoute, private userService: UserService,
+    private loadingController: LoadingController, private alertController: AlertController) {
 
     this.status = this.route.snapshot.paramMap.get('status');
 
-    this.ngZone.run(() => {
-    });
   }
 
   ngOnInit() {
@@ -52,13 +46,9 @@ export class ViewAllMembersPage implements OnInit {
     });
   }
 
-  ionViewWillEnter() {
-    this.menuController.enable(true, 'first');
-    this.menuController.enable(false, 'second');
-  }
-
   editMember(id: string) {
     console.log(`From EditMember: ID: ${id}`);
+    this.router.navigate(['edit-member', id.toLowerCase()]);
   }
 
   updatePayment(id: string) {
@@ -66,13 +56,29 @@ export class ViewAllMembersPage implements OnInit {
     this.router.navigate(['update-payment', id.toLowerCase()]);
   }
 
-  deleteMember(id: string) {
-    console.log(`From DeleteMember: ID: ${id}`);
+  async deleteMember(user: User) {
+    console.log(`From DeleteMember: ID: ${user.id}`);
+    await this.showLoading();
+    const inputAlert = await this.alertController.create({
+      message: `Are you sure want to delete this member ${user.memberName} with id: ${user.memberId}?`,
+      buttons: [{
+        text: 'Delete', handler: async () => {
+          await this.showLoading();
+          // DELETE USER HERE!
+          await this.userService.deleteUser(user.id);
+          await this.retrieveUsers(this.status);
+          await this.hideLoading();
+          await this.handleError({ message: 'Member Succesfully Deleted!' });
+        }
+      }, { text: 'Cancel', role: 'cancel', }]
+    });
+    await this.hideLoading();
+    await inputAlert.present();
   }
 
   async showLoading(): Promise<void> {
     try {
-      this.loading = await this.loadingCtrl.create();
+      this.loading = await this.loadingController.create();
       await this.loading.present();
     } catch (error) {
       this.handleError(error);
@@ -84,7 +90,7 @@ export class ViewAllMembersPage implements OnInit {
   }
 
   async handleError(error): Promise<void> {
-    const alert = await this.alertCtrl.create({
+    const alert = await this.alertController.create({
       message: error.message,
       buttons: [{ text: 'Ok', role: 'cancel' }]
     });

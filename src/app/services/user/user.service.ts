@@ -20,10 +20,17 @@ export class UserService {
     if (status === 'active') {
       return this.db.collection(this.dbPath, ref => ref.where('subscriptionEndDt', '>=', this.formatDate(new Date())));
     }
+    else if (status === 'expired') {
+      return this.db.collection(this.dbPath, ref => ref.where('subscriptionEndDt', '<', this.formatDate(new Date())));
+    }
     return this.usersRef;
   }
 
-  async getDocIdByUserId(id: string) {
+  getUserByMemberId(memberId: string): AngularFirestoreCollection<User> {
+    return this.db.collection(this.dbPath, ref => ref.where('memberId', 'in', [memberId.toLowerCase(), memberId.toUpperCase()]));
+  }
+
+  async getDocIdByUserId(id: string): Promise<QuerySnapshot<DocumentData>> {
     const docIdQuery = query(
       collection(this.firestore, this.dbPath),
       where('memberId', 'in', [id.toLowerCase(), id.toUpperCase()]),

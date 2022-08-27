@@ -3,20 +3,20 @@
     <ion-buttons slot="start">
       <ion-back-button color="light" defaultHref="home"></ion-back-button>
     </ion-buttons>
-    <ion-title color="light" class="ion-text-center">Add Member</ion-title>
+    <ion-title color="light" class="ion-text-center">Edit Payment Info</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <div class="main-header"></div>
 
-  <form class="addForm" [formGroup]="addMemberForm" (ngSubmit)="newUser()">
+  <form class="addForm" [formGroup]="updateFeeForm" (ngSubmit)="collectFormDetails()" *ngIf="isShow">
 
     <div class="input-group">
       <!-- MEMBER ID -->
       <ion-item>
         <ion-label position="floating">Member ID</ion-label>
-        <ion-input readonly="true" required formControlName="memberId" placeholder="Member ID" type="text"></ion-input>
+        <ion-input required readonly="true" formControlName="memberId" placeholder="Member ID" type="text"></ion-input>
       </ion-item>
 
       <div *ngIf="(memberId.dirty || memberId.touched) && memberId.errors" class="errors">
@@ -27,7 +27,7 @@
       <!-- MEMBER NAME -->
       <ion-item>
         <ion-label position="floating">Member Name</ion-label>
-        <ion-input required formControlName="memberName" placeholder="Member Name" type="text">
+        <ion-input required readonly="true" formControlName="memberName" placeholder="Member Name" type="text">
         </ion-input>
       </ion-item>
 
@@ -36,85 +36,10 @@
         <span *ngIf="memberName.errors?.maxlength">Member Name should not be more than 25 chars!</span>
       </div>
 
-      <!-- PHONE NUMBER -->
-      <ion-item>
-        <ion-label position="floating">Mobile Number</ion-label>
-        <ion-input required formControlName="phoneNumber" placeholder="Mobile Number" type="tel" pattern="[0-9]{10}"
-          maxlength="10"></ion-input>
-      </ion-item>
-
-      <div *ngIf="(phoneNumber.dirty || phoneNumber.touched) && phoneNumber.errors" class="errors">
-        <span *ngIf="phoneNumber.errors?.required">Mobile Number is required</span>
-        <span *ngIf="phoneNumber.errors?.minlength">Mobile Number should be 10 digits!</span>
-      </div>
-
-      <!-- GENDER -->
-      <ion-radio-group required formControlName="gender">
-        <ion-row>
-
-          <ion-col size="4" class="ion-no-padding">
-            <ion-item lines="full">
-              <ion-label>Gender</ion-label>
-            </ion-item>
-          </ion-col>
-
-          <ion-col size="4" class="ion-no-padding">
-            <ion-item lines="full">
-              <ion-label>Male</ion-label>
-              <ion-radio mode="md" item-left value="male"></ion-radio>
-            </ion-item>
-          </ion-col>
-
-          <ion-col size="4" class="ion-no-padding">
-            <ion-item lines="full">
-              <ion-label>Female</ion-label>
-              <ion-radio mode="md" item-left value="female"></ion-radio>
-            </ion-item>
-          </ion-col>
-
-        </ion-row>
-      </ion-radio-group>
-
-      <div *ngIf="(gender.dirty || gender.touched) && gender.errors" class="errors">
-        <span *ngIf="gender.errors?.required">Address is required</span>
-      </div>
-
-      <!-- DATE OF BIRTH -->
-      <ion-item>
-        <ion-label position="floating">Date of Birth</ion-label>
-        <ion-input required formControlName="birthDt" placeholder="Date of Birth" type="date" (ionChange)="ageCalc()"
-          [max]="today"></ion-input>
-      </ion-item>
-
-      <div *ngIf="(birthDt.dirty || birthDt.touched) && birthDt.errors" class="errors">
-        <span *ngIf="birthDt.errors?.required">Date of Birth is required</span>
-      </div>
-
-      <!-- AGE -->
-      <ion-item>
-        <ion-label position="floating">Age</ion-label>
-        <ion-input required formControlName="age" placeholder="Age" type="number"></ion-input>
-      </ion-item>
-
-      <div *ngIf="(age.dirty || age.touched) && age.errors" class="errors">
-        <span *ngIf="age.errors?.required">Age is required</span>
-      </div>
-
-      <!-- ADDRESS -->
-      <ion-item>
-        <ion-label position="floating">Address</ion-label>
-        <ion-textarea autocapitalize="true" required formControlName="address" placeholder="Address" type="text">
-        </ion-textarea>
-      </ion-item>
-
-      <div *ngIf="(address.dirty || address.touched) && address.errors" class="errors">
-        <span *ngIf="address.errors?.required">Address is required</span>
-      </div>
-
       <!-- DATE OF JOINING -->
       <ion-item>
         <ion-label position="floating">Date of Joining</ion-label>
-        <ion-input required formControlName="joiningDt" placeholder="Date of Joining" type="date" value="{{today}}">
+        <ion-input required readonly="true" formControlName="joiningDt" placeholder="Date of Joining" type="date">
         </ion-input>
       </ion-item>
 
@@ -200,8 +125,8 @@
         <span *ngIf="numOfMonths.errors?.required">Number of Months is required</span>
       </div> -->
 
-      <ion-button type="submit" color="success" fill="clear" expand="block" [disabled]="addMemberForm.invalid">Add
-        Member
+      <ion-button type="submit" color="success" fill="clear" expand="block" [disabled]="updateFeeForm.invalid">
+        Update Payment
       </ion-button>
     </div>
   </form>

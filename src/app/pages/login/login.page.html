@@ -1,11 +1,20 @@
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>Gym Management</ion-title>
+<ion-header class="ion-no-border ion-no-padding">
+  <ion-toolbar>
+    <ion-title color="light" class="ion-text-center">Gym Management</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <form [formGroup]="credentials" (ngSubmit)="login()">
+<ion-content [fullscreen]="true">
+
+  <div class="loginLabel">SIGN IN</div>
+
+  <ion-row class="avatar">
+    <ion-avatar>
+      <img src="assets/fitness.png">
+    </ion-avatar>
+  </ion-row>
+
+  <form [formGroup]="credentials" (ngSubmit)="signIn()">
 
     <div class="input-group">
       <ion-item>
@@ -23,11 +32,13 @@
 
       <div *ngIf="(password.dirty || password.touched) && password.errors" class="errors">
         <span *ngIf="password.errors?.required">Password is required</span>
-        <span *ngIf="password.errors?.minLength">Password needs to be 6 characters</span>
+        <span *ngIf="password.errors?.minlength">Password needs to be 6 characters</span>
       </div>
     </div>
     <ion-button type="submit" expand="block" [disabled]="credentials.invalid">Login</ion-button>
-    <ion-button type="button" expand="block" color="dark" fill="clear">Not yet a member? Sign up!</ion-button>
+    <ion-button type="button" expand="block" color="light" fill="clear" (click)="redirectToSignUp()">
+      Not yet a member? Sign up!
+    </ion-button>
 
   </form>
 </ion-content>

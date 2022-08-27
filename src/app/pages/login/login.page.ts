@@ -10,10 +10,16 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+  public loading: HTMLIonLoadingElement;
   credentials: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private alertController: AlertController,
-    private router: Router, private loadingController: LoadingController) { }
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private alertController: AlertController,
+    private loadingController: LoadingController,
+    private router: Router
+  ) { }
 
   get email() {
     return this.credentials.get('email');
@@ -25,9 +31,51 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
     this.credentials = this.fb.group({
-      email: ['eve.holt@reqres.in', [Validators.required, Validators.email]],
-      password: ['cityslicka', [Validators.required, Validators.minLength(6)]]
+      email: ['admin@extremegym.com', [Validators.required, Validators.email]],
+      password: ['adminextreme', [Validators.required, Validators.minLength(6)]]
     });
+  }
+
+  redirectToSignUp() {
+    this.router.navigate(['/signup'], { replaceUrl: true });
+  }
+
+  async register() {
+    try {
+      await this.showLoading();
+      const user = await this.authService.register(this.credentials.value);
+      await this.hideLoading();
+
+      if (user) {
+        this.router.navigate(['/home'], { replaceUrl: true });
+      } else {
+        this.handleError({ header: 'Registration Failed', message: 'Please try again!' });
+      }
+
+    } catch (error) {
+      console.error(error);
+      this.handleError(error);
+      await this.hideLoading();
+    }
+  }
+
+  async signIn() {
+    try {
+      await this.showLoading();
+      const user = await this.authService.signin(this.credentials.value);
+      await this.hideLoading();
+
+      if (user) {
+        this.router.navigate(['/home'], { replaceUrl: true });
+      } else {
+        this.handleError({ header: 'Login Failed', message: 'Please try again!' });
+      }
+
+    } catch (error) {
+      console.error(error);
+      this.handleError(error);
+      await this.hideLoading();
+    }
   }
 
   async login() {
@@ -50,6 +98,29 @@ export class LoginPage implements OnInit {
         await alert.present();
       }
     );
+  }
+
+  // LOADERS AND ALERTS
+  async showLoading(): Promise<void> {
+    try {
+      this.loading = await this.loadingController.create();
+      await this.loading.present();
+    } catch (error) {
+      this.handleError(error);
+    }
+  }
+
+  hideLoading(): Promise<boolean> {
+    return this.loading.dismiss();
+  }
+
+  async handleError(error: { header?: any; message: any }): Promise<void> {
+    const alert = await this.alertController.create({
+      header: error?.header,
+      message: error.message,
+      buttons: [{ text: 'Ok', role: 'cancel' }]
+    });
+    await alert.present();
   }
 
 }
