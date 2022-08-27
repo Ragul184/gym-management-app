@@ -8,6 +8,8 @@ import { User } from '../../model/user';
 import { UserService } from '../../services/user/user.service';
 import { map } from 'rxjs/operators';
 import { CollectionsService } from 'src/app/services/collections/collections.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { User as UserAuth } from '@angular/fire/auth';
 
 export const DEFAULT_FEE_AMOUNT = 500;
 
@@ -28,10 +30,12 @@ export class AddMemberPage implements OnInit {
   userPaymentInfo: UserPaymentInfo;
   maxId = '';
   currentId = '';
+  userAuth: UserAuth;
 
   constructor(private userService: UserService, private fb: FormBuilder,
-    private alertController: AlertController, private router: Router,
+    private alertController: AlertController, private router: Router, private authService: AuthService,
     private loadingController: LoadingController, private collectionService: CollectionsService) {
+    this.userAuth = authService.getCurrentUser();
     this.today = this.formatDate(new Date());
     this.retrieveId();
   }
@@ -81,6 +85,7 @@ export class AddMemberPage implements OnInit {
       phoneNumber: this.addMemberForm.get('phoneNumber').value,
       address: this.addMemberForm.get('address').value,
       gender: this.addMemberForm.get('gender').value.trim() === 'male' ? Gender.male : Gender.female,
+      gymName: this.userAuth.uid,
       birthDt: new Date(this.addMemberForm.get('birthDt').value),
       age: this.addMemberForm.get('age').value,
       joiningDt: new Date(this.addMemberForm.get('joiningDt').value),
@@ -93,6 +98,7 @@ export class AddMemberPage implements OnInit {
       this.userPaymentInfo = {
         memberId: this.addMemberForm.get('memberId').value,
         memberName: this.addMemberForm.get('memberName').value,
+        gymName: this.userAuth.uid,
         joiningDt: new Date(this.addMemberForm.get('joiningDt').value),
         feesPaid: this.addMemberForm.get('feesPaid').value,
         amount: this.addMemberForm.get('amount').value,
@@ -105,6 +111,7 @@ export class AddMemberPage implements OnInit {
       this.userPaymentInfo = {
         memberId: this.addMemberForm.get('memberId').value,
         memberName: this.addMemberForm.get('memberName').value,
+        gymName: this.userAuth.uid,
         joiningDt: new Date(this.addMemberForm.get('joiningDt').value),
         feesPaid: this.addMemberForm.get('feesPaid').value,
         paymentDateTime: this.feesPaid.value === 'yes' ? new Date() : null
@@ -117,7 +124,7 @@ export class AddMemberPage implements OnInit {
       message: `Are you sure want to submit details for adding a member ${this.user.memberName}  \
                   with id: ${this.user.memberId}?`,
       buttons: [{
-        text: 'Update', handler: async () => {
+        text: 'ADD MEMBER', handler: async () => {
           await this.saveUser();
         }
       }, { text: 'Cancel', role: 'cancel', }]

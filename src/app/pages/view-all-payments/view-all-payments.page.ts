@@ -16,7 +16,7 @@ export class ViewAllPaymentsPage implements OnInit {
   currentPage = 1;
   mode = 0;
   filter = 'all';
-  usersPaymentInfo: UserPaymentInfo[];
+  usersPaymentInfo: UserPaymentInfo[] = [];
 
   name = 'Today Collection';
   src = 'todayCollection';

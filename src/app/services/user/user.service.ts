@@ -1,8 +1,10 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, DocumentData } from '@angular/fire/compat/firestore';
 import { collection, getDocs, getFirestore, limit, orderBy, query, QuerySnapshot, where } from '@angular/fire/firestore';
 import { User } from '../../model/user';
+import { AuthService } from '../auth.service';
+import { User as UserAuth } from '@angular/fire/auth';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -10,29 +12,35 @@ export class UserService {
 
   usersRef: AngularFirestoreCollection<User>;
   firestore = getFirestore();
+  user: UserAuth;
   private dbPath = '/users';
 
-  constructor(private db: AngularFirestore, private httpClient: HttpClient) {
-    this.usersRef = db.collection(this.dbPath);
+  constructor(private db: AngularFirestore, private authService: AuthService) {
+    this.user = authService.getCurrentUser();
+    this.usersRef = db.collection(this.dbPath, ref => ref.where('gymName', '==', this.user.uid));
   }
 
   getAllUsers(status?: string): AngularFirestoreCollection<User> {
     if (status === 'active') {
-      return this.db.collection(this.dbPath, ref => ref.where('subscriptionEndDt', '>=', this.formatDate(new Date())));
+      return this.db.collection(this.dbPath, ref => ref.where('gymName', '==', this.user.uid)
+        .where('subscriptionEndDt', '>=', this.formatDate(new Date())));
     }
     else if (status === 'expired') {
-      return this.db.collection(this.dbPath, ref => ref.where('subscriptionEndDt', '<', this.formatDate(new Date())));
+      return this.db.collection(this.dbPath, ref => ref.where('gymName', '==', this.user.uid)
+        .where('subscriptionEndDt', '<', this.formatDate(new Date())));
     }
     return this.usersRef;
   }
 
   getUserByMemberId(memberId: string): AngularFirestoreCollection<User> {
-    return this.db.collection(this.dbPath, ref => ref.where('memberId', 'in', [memberId.toLowerCase(), memberId.toUpperCase()]));
+    return this.db.collection(this.dbPath, ref => ref.where('gymName', '==', this.user.uid)
+      .where('memberId', 'in', [memberId.toLowerCase(), memberId.toUpperCase()]));
   }
 
   async getDocIdByUserId(id: string): Promise<QuerySnapshot<DocumentData>> {
     const docIdQuery = query(
       collection(this.firestore, this.dbPath),
+      where('gymName', '==', this.user.uid),
       where('memberId', 'in', [id.toLowerCase(), id.toUpperCase()]),
       limit(1)
     );

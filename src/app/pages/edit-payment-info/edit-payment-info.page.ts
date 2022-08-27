@@ -3,9 +3,11 @@ import { AbstractControl, AbstractControlOptions, FormBuilder, FormGroup, Valida
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { UserPaymentInfo } from 'src/app/model/userPaymentInfo';
+import { AuthService } from 'src/app/services/auth.service';
 import { CollectionsService } from 'src/app/services/collections/collections.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { DEFAULT_FEE_AMOUNT } from '../add-member/add-member.page';
+import { User as UserAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-edit-payment-info',
@@ -23,12 +25,14 @@ export class EditPaymentInfoPage implements OnInit {
   isShow = false;
   userPaymentInfo: UserPaymentInfo;
   paymentDetail: UserPaymentInfo;
+  userAuth: UserAuth;
 
   constructor(private route: ActivatedRoute, private userService: UserService, private fb: FormBuilder,
-    private alertController: AlertController, private router: Router,
+    private alertController: AlertController, private router: Router, private authService: AuthService,
     private loadingController: LoadingController, private collectionService: CollectionsService) {
     // this.id = this.route.snapshot.paramMap.get('id').toLowerCase();
     // this.getLatestPaymentDetails(this.id);
+    this.userAuth = authService.getCurrentUser();
     this.paymentId = this.route.snapshot.paramMap.get('paymentId');
     this.getTransactionWithId(this.paymentId);
   }
@@ -122,6 +126,7 @@ export class EditPaymentInfoPage implements OnInit {
       this.userPaymentInfo = {
         memberId: this.updateFeeForm.get('memberId').value,
         memberName: this.updateFeeForm.get('memberName').value,
+        gymName: this.userAuth.uid,
         joiningDt: new Date(this.updateFeeForm.get('joiningDt').value),
         feesPaid: this.updateFeeForm.get('feesPaid').value,
         amount: this.updateFeeForm.get('amount').value,
@@ -135,6 +140,7 @@ export class EditPaymentInfoPage implements OnInit {
       this.userPaymentInfo = {
         memberId: this.updateFeeForm.get('memberId').value,
         memberName: this.updateFeeForm.get('memberName').value,
+        gymName: this.userAuth.uid,
         joiningDt: new Date(this.updateFeeForm.get('joiningDt').value),
         feesPaid: this.updateFeeForm.get('feesPaid').value,
         paymentDateTime: this.feesPaid.value === 'yes' ? new Date() : null

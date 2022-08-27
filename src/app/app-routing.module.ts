@@ -26,11 +26,13 @@ const routes: Routes = [
   },
   {
     path: 'signup',
-    loadChildren: () => import('./pages/signup/signup.module').then(m => m.SignupPageModule)
+    loadChildren: () => import('./pages/signup/signup.module').then(m => m.SignupPageModule),
+    ...canActivate(redirectLoggedInToHome)
   },
   {
     path: 'forgot-password',
-    loadChildren: () => import('./pages/forgot-password/forgot-password.module').then(m => m.ForgotPasswordPageModule)
+    loadChildren: () => import('./pages/forgot-password/forgot-password.module').then(m => m.ForgotPasswordPageModule),
+    ...canActivate(redirectLoggedInToHome)
   },
   {
     path: 'add-member',
@@ -40,65 +42,62 @@ const routes: Routes = [
   {
     path: 'member-detail/:memberId',
     loadChildren: () => import('./pages/member-detail/member-detail.module').then(m => m.MemberDetailPageModule),
-    canLoad: [AuthGuard]
+    ...canActivate(redirectUnauthorizedToLogin)
   },
   {
     path: 'view-all-members/:status',
     loadChildren: () => import('./pages/view-all-members/view-all-members.module').then(m => m.ViewAllMembersPageModule),
-    canLoad: [AuthGuard]
+    ...canActivate(redirectUnauthorizedToLogin)
   },
   {
     path: 'view-all-payments/:filter',
     loadChildren: () => import('./pages/view-all-payments/view-all-payments.module').then(m => m.ViewAllPaymentsPageModule),
-    canLoad: [AuthGuard]
+    ...canActivate(redirectUnauthorizedToLogin)
   },
   {
     path: 'delete-user',
     loadChildren: () => import('./pages/delete-user/delete-user.module').then(m => m.DeleteUserPageModule),
-    canLoad: [AuthGuard]
+    ...canActivate(redirectUnauthorizedToLogin)
   },
   {
     path: 'init-payment',
     loadChildren: () => import('./pages/init-payment/init-payment.module').then(m => m.InitPaymentPageModule),
-    canLoad: [AuthGuard]
+    ...canActivate(redirectUnauthorizedToLogin)
   },
   {
     path: 'update-payment/:id',
     loadChildren: () => import('./pages/update-payment/update-payment.module').then(m => m.UpdatePaymentPageModule),
-    canLoad: [AuthGuard]
+    ...canActivate(redirectUnauthorizedToLogin)
   },
   {
     path: 'payment-detail/:paymentId',
     loadChildren: () => import('./pages/payment-detail/payment-detail.module').then(m => m.PaymentDetailPageModule),
-    canLoad: [AuthGuard]
+    ...canActivate(redirectUnauthorizedToLogin)
   },
   {
     path: 'edit-member/:memberId',
     loadChildren: () => import('./pages/edit-member/edit-member.module').then(m => m.EditMemberPageModule),
-    canLoad: [AuthGuard]
+    ...canActivate(redirectUnauthorizedToLogin)
   },
   {
     path: 'edit-payment-info/:paymentId',
     loadChildren: () => import('./pages/edit-payment-info/edit-payment-info.module').then(m => m.EditPaymentInfoPageModule),
-    canLoad: [AuthGuard]
+    ...canActivate(redirectUnauthorizedToLogin)
   },
   {
     path: 'profile',
     redirectTo: 'tabs/profile',
-    pathMatch: 'full',
-    canLoad: [AuthGuard]
+    pathMatch: 'full'
   },
   {
     path: 'home',
     redirectTo: 'tabs/home',
-    pathMatch: 'full',
-    canLoad: [AuthGuard]
+    pathMatch: 'full'
   },
   {
     path: 'more',
     redirectTo: 'tabs/more',
-    pathMatch: 'full',
-    canLoad: [AuthGuard]
+    pathMatch: 'full'
   },
   {
     path: '',

@@ -19,6 +19,12 @@
     </ion-item-options>
   </ion-item-sliding> -->
 
+  <ng-container *ngIf="users.length === 0">
+    <ion-item class="noItems" lines="full">
+      <ion-label class="ion-text-center">Sorry, No Users List Available!</ion-label>
+    </ion-item>
+  </ng-container>
+
   <ion-card class="usersListCard" *ngFor="let user of users; let i=index">
     <ion-card-header class="usersListCardHeader" routerLink="/member-detail/{{ user.memberId |lowercase }}">
       <ion-row>

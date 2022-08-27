@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
-import { map } from 'rxjs/operators';
 import { Gender } from 'src/app/model/gender';
 import { User } from 'src/app/model/user';
 import { CollectionsService } from 'src/app/services/collections/collections.service';
 import { UserService } from 'src/app/services/user/user.service';
+import { User as UserAuth } from '@angular/fire/auth';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-edit-member',
@@ -26,10 +27,12 @@ export class EditMemberPage implements OnInit {
   users?: User[];
   submitted = false;
   isShow = false;
+  userAuth: UserAuth;
 
   constructor(private userService: UserService, private fb: FormBuilder, private route: ActivatedRoute,
-    private alertController: AlertController, private router: Router,
+    private alertController: AlertController, private router: Router, private authService: AuthService,
     private loadingController: LoadingController, private collectionService: CollectionsService) {
+    this.userAuth = authService.getCurrentUser();
     this.mId = this.route.snapshot.paramMap.get('memberId');
     this.getUser(this.mId);
     this.today = this.formatDate(new Date());
@@ -108,6 +111,7 @@ export class EditMemberPage implements OnInit {
       memberName: this.editMemberForm.get('memberName').value,
       phoneNumber: this.editMemberForm.get('phoneNumber').value,
       gender: this.editMemberForm.get('gender').value.trim() === 'male' ? Gender.male : Gender.female,
+      gymName: this.userAuth.uid,
       birthDt: new Date(this.editMemberForm.get('birthDt').value),
       age: this.editMemberForm.get('age').value,
       address: this.editMemberForm.get('address').value,

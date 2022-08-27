@@ -1,12 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
+
 ion-header {
   ion-toolbar {
     --background: transparent;
+  }
+  ion-title {
+    margin-left: 0vh;
   }
 }
 
 ion-content {
   .main-header {
-    height: 13vh;
+    height: 40vh;
     width: 100%;
     box-shadow: 0 1px 10px var(--ion-color-light);
     background: linear-gradient(
@@ -18,4 +23,71 @@ ion-content {
     transform: scaleX(2.6);
     margin-top: -116px;
   }
+}
+
+.firstItem {
+  margin-top: 1vh;
+  // border-top: 2px groove;
+}
+
+ion-row {
+  // border-bottom: 2px groove;
+  align-items: center;
+}
+
+ion-row.avatar {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateY(8vh);
+  padding-bottom: 8vh;
+
+  margin-top: 2.5vh;
+  margin-bottom: 2.5vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 0;
+
+  ion-avatar {
+    height: 13vh;
+    width: 13vh;
+    box-shadow: -1px 11px 13px -6px rgb(77 76 76);
+    border: 2px solid white;
+  }
+}
+
+ion-col {
+  // border-right: 2px groove;
+  text-align: center;
+}
+
+.gymName {
+  transform: translateY(-85px);
+  text-align: center;
+  font-size: 20px;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-family: "Lato", sans-serif;
+  letter-spacing: 2.5px;
+  color: white;
+}
+
+.gymEmail {
+  transform: translateY(-80px);
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: lowercase;
+  font-family: "Lato", sans-serif;
+  letter-spacing: 1px;
+  color: white;
+}
+
+.profileCard {
+  margin: 20px;
+  border-radius: 17px;
+  transform: translateY(-40px);
+  box-shadow: -1px 11px 13px -6px rgb(77, 76, 76);
 }

@@ -18,6 +18,43 @@
 
     <div class="input-group">
       <ion-item>
+        <ion-input required formControlName="gymName" placeholder="Enter Gym Name" type="text"></ion-input>
+      </ion-item>
+
+      <div *ngIf="(gymName.dirty || gymName.touched) && gymName.errors" class="errors">
+        <span *ngIf="gymName.errors?.required">Gym Name is required</span>
+        <span *ngIf="gymName.errors?.minlength">Gym Name should have min of 3 letters!</span>
+      </div>
+
+      <ion-item>
+        <ion-input required formControlName="gymOwnerName" placeholder="Enter Gym Owner Name" type="text"></ion-input>
+      </ion-item>
+
+      <div *ngIf="(gymOwnerName.dirty || gymOwnerName.touched) && gymOwnerName.errors" class="errors">
+        <span *ngIf="gymOwnerName.errors?.required">Owner Name is required</span>
+        <span *ngIf="gymOwnerName.errors?.minlength">Owner Name must've min len of 3 chars!</span>
+        <span *ngIf="gymOwnerName.errors?.maxlength">Owner Name must've max len of 25 chars!</span>
+      </div>
+
+      <ion-item>
+        <ion-textarea required formControlName="gymAddress" placeholder="Enter Gym Address" type="text"></ion-textarea>
+      </ion-item>
+
+      <div *ngIf="(gymAddress.dirty || gymAddress.touched) && gymAddress.errors" class="errors">
+        <span *ngIf="gymAddress.errors?.required">Gym Address is required</span>
+        <span *ngIf="gymAddress.errors?.minlength">Gym Address must've min len of 5 chars!</span>
+      </div>
+
+      <ion-item>
+        <ion-input required formControlName="gymOwnerPhone" placeholder="Enter Owner Phone Number (without +91)" type="number"></ion-input>
+      </ion-item>
+
+      <div *ngIf="(gymOwnerPhone.dirty || gymOwnerPhone.touched) && gymOwnerPhone.errors" class="errors">
+        <span *ngIf="gymOwnerPhone.errors?.required">Owner Phone Number is required</span>
+        <span *ngIf="gymOwnerPhone.errors?.pattern">Phone number must be exactly 10 digits!</span>
+      </div>
+
+      <ion-item>
         <ion-input required formControlName="email" placeholder="Email" type="email"></ion-input>
       </ion-item>
 
@@ -35,6 +72,7 @@
         <span *ngIf="password.errors?.minlength">Password needs to be 6 characters</span>
       </div>
     </div>
+
     <ion-button type="submit" expand="block" [disabled]="credentials.invalid">Register</ion-button>
     <ion-button class="loginBtn" type="button" expand="block" fill="clear" (click)="redirectToLogin()">
       Already a member? Login!

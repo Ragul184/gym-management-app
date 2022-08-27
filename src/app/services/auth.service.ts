@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from '@angular/fire/auth';
-import { Firestore } from '@angular/fire/firestore';
+import {
+  Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, User
+} from '@angular/fire/auth';
+import { doc, Firestore, getDoc, setDoc } from '@angular/fire/firestore';
 import { Preferences } from '@capacitor/preferences';
 import { BehaviorSubject, from } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
@@ -14,9 +16,19 @@ const TOKEN_KEY = 'my-token';
 export class AuthService {
   isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   token = '';
+  userInfo: User;
 
   constructor(private http: HttpClient, private auth: Auth, private firestore: Firestore) {
     this.loadToken();
+    console.log(this.getCurrentUser());
+    // onAuthStateChanged(this.auth, (user) => {
+    //   if (user) {
+    //     this.userInfo = user;
+    //   } else {
+    //     this.userInfo = null;
+    //   }
+    //   console.log(this.userInfo);
+    // });
   }
 
   async loadToken() {
@@ -46,9 +58,14 @@ export class AuthService {
     return Preferences.remove({ key: TOKEN_KEY });
   }
 
-  async register({ email, password }) {
+  async register({ email, password, gymName, gymOwnerName, gymAddress, gymOwnerPhone }) {
     try {
       const user = await createUserWithEmailAndPassword(this.auth, email, password);
+
+      const gymProfile = { email, password, gymName, gymOwnerName, gymAddress, gymOwnerPhone };
+      const result = await setDoc(doc(this.firestore, 'gymProfile', user.user.uid), gymProfile);
+      console.log('Document Successfully created: ', result);
+
       return user;
     } catch (e) {
       return null;
@@ -66,5 +83,17 @@ export class AuthService {
 
   async signout() {
     return signOut(this.auth);
+  }
+
+  getCurrentUser(): User {
+    const userInfo = this.auth.currentUser;
+    if (userInfo) {
+      return userInfo;
+    }
+    return null;
+  }
+
+  async getCurrentUserProfile() {
+    return await getDoc(doc(this.firestore, 'gymProfile', this.getCurrentUser().uid));
   }
 }

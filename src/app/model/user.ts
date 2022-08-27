@@ -5,6 +5,7 @@ export class User {
     memberName?: string;
     address?: string;
     gender?: Gender;
+    gymName: string;
     feesPaid?: boolean;
     subscriptionEndDt?: Date | any;
     joiningDt: Date | any;

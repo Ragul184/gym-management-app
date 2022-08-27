@@ -6,6 +6,8 @@ import { UserPaymentInfo } from 'src/app/model/userPaymentInfo';
 import { CollectionsService } from 'src/app/services/collections/collections.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { DEFAULT_FEE_AMOUNT } from '../add-member/add-member.page';
+import { User as UserAuth } from '@angular/fire/auth';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-update-payment',
@@ -21,10 +23,12 @@ export class UpdatePaymentPage implements OnInit {
 
   submitted: boolean;
   userPaymentInfo: UserPaymentInfo;
+  userAuth: UserAuth;
 
   constructor(private route: ActivatedRoute, private userService: UserService, private fb: FormBuilder,
-    private alertController: AlertController, private router: Router,
+    private alertController: AlertController, private router: Router, private authService: AuthService,
     private loadingController: LoadingController, private collectionService: CollectionsService) {
+    this.userAuth = authService.getCurrentUser();
     this.id = this.route.snapshot.paramMap.get('id').toLowerCase();
     this.getLatestPaymentDetails(this.id);
   }
@@ -56,14 +60,10 @@ export class UpdatePaymentPage implements OnInit {
 
   async getLatestPaymentDetails(id: string) {
     const latestPayment = await this.collectionService.getLatestPaymentById(id);
-    latestPayment.forEach(item => {
-      this.paymentData.push(item.data());
-    });
+    latestPayment.forEach(item => this.paymentData.push(item.data() as UserPaymentInfo));
 
     const docIdList = await this.userService.getDocIdByUserId(this.paymentData[0].memberId);
-    docIdList.forEach(item => {
-      this.docId = item.id;
-    });
+    docIdList.forEach(item => this.docId = item.id);
 
     console.log(this.paymentData);
     this.memberId.setValue(this.paymentData[0].memberId);
@@ -86,6 +86,7 @@ export class UpdatePaymentPage implements OnInit {
       this.userPaymentInfo = {
         memberId: this.updateFeeForm.get('memberId').value,
         memberName: this.updateFeeForm.get('memberName').value,
+        gymName: this.userAuth.uid,
         joiningDt: new Date(this.updateFeeForm.get('joiningDt').value),
         feesPaid: this.updateFeeForm.get('feesPaid').value,
         amount: this.updateFeeForm.get('amount').value,
@@ -99,6 +100,7 @@ export class UpdatePaymentPage implements OnInit {
       this.userPaymentInfo = {
         memberId: this.updateFeeForm.get('memberId').value,
         memberName: this.updateFeeForm.get('memberName').value,
+        gymName: this.userAuth.uid,
         joiningDt: new Date(this.updateFeeForm.get('joiningDt').value),
         feesPaid: this.updateFeeForm.get('feesPaid').value,
         paymentDateTime: this.feesPaid.value === 'yes' ? new Date() : null

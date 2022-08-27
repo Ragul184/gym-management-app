@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button color="light"></ion-menu-button>
     </ion-buttons>
-    <ion-title color="light" class="ion-text-center">Profile</ion-title>
+    <ion-title color="light" class="ion-text-center">Gym Profile</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="logout()">
         <ion-icon slot="icon-only" color="light" name="log-out-outline"></ion-icon>
@@ -12,6 +12,81 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" color="light">
+<ion-content [fullscreen]="true">
   <div class="main-header"></div>
+
+  <ion-row class="avatar">
+    <ion-avatar *ngIf="retrievedUser">
+      <img src="https://avatars.dicebear.com/api/initials/{{retrievedUser.gymName}}.svg">
+    </ion-avatar>
+  </ion-row>
+
+  <div *ngIf="retrievedUser" class="gymName">{{retrievedUser.gymName |titlecase}}</div>
+  <div *ngIf="retrievedUser" class="gymEmail">{{retrievedUser.email}}</div>
+
+  <ion-card class="profileCard">
+
+    <ion-item *ngIf="retrievedUser" lines="solid">
+      <ion-label>
+        <p>
+          <ion-text color="dark">Gym Owner Name</ion-text>
+        </p>
+        <ion-text color="dark"><b>{{retrievedUser.gymOwnerName |titlecase}}</b></ion-text>
+      </ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="retrievedUser" lines="solid">
+      <ion-label>
+        <p>
+          <ion-text color="dark">Phone Number</ion-text>
+        </p>
+        <ion-text color="dark"><b>{{retrievedUser.gymOwnerPhone}}</b></ion-text>
+      </ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="retrievedUser" lines="solid">
+      <ion-label>
+        <p>
+          <ion-text color="dark">Gym Address</ion-text>
+        </p>
+        <ion-text color="dark"><b>{{retrievedUser.gymAddress |titlecase}}</b></ion-text>
+      </ion-label>
+    </ion-item>
+
+    <!-- <ion-item>
+      <ion-row class="firstItem" *ngIf="retrievedUser">
+        <ion-col size="4.5">Gym Name</ion-col>
+        <ion-col size="7.5">{{retrievedUser.gymName |titlecase}}</ion-col>
+      </ion-row>
+    </ion-item>
+    <ion-item>
+      <ion-row *ngIf="retrievedUser">
+        <ion-col size="4.5">Gym Owner Name</ion-col>
+        <ion-col size="7.5">{{retrievedUser.gymOwnerName |titlecase}}</ion-col>
+      </ion-row>
+    </ion-item>
+
+    <ion-item>
+      <ion-row *ngIf="retrievedUser">
+        <ion-col size="4.5">Phone Number</ion-col>
+        <ion-col size="7.5">{{retrievedUser.gymOwnerPhone}}</ion-col>
+      </ion-row>
+    </ion-item>
+
+    <ion-item>
+      <ion-row *ngIf="retrievedUser">
+        <ion-col size="4.5">Address</ion-col>
+        <ion-col size="7.5">{{retrievedUser.gymAddress}}</ion-col>
+      </ion-row>
+    </ion-item>
+
+    <ion-item>
+      <ion-row *ngIf="retrievedUser">
+        <ion-col size="4.5">Email ID</ion-col>
+        <ion-col size="7.5">{{retrievedUser.email}}</ion-col>
+      </ion-row>
+    </ion-item> -->
+  </ion-card>
+
+
 </ion-content>

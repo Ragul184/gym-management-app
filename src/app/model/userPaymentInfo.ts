@@ -1,5 +1,6 @@
 export class UserPaymentInfo {
     id?: string;
+    gymName: string;
     memberId?: string;
     memberName?: string;
     joiningDt?: Date | any;

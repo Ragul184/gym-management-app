@@ -1,19 +1,12 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, DocumentReference } from '@angular/fire/compat/firestore';
 import { collection, getDocs, getFirestore, limit, orderBy, query, where } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
-import { Observable } from 'rxjs';
 import { UserPaymentInfo } from 'src/app/model/userPaymentInfo';
+import { AuthService } from '../auth.service';
 import { UserService } from '../user/user.service';
-
-export interface ApiResult {
-  page: number;
-  results: any[];
-  totalPages: number;
-  totalResults: number;
-}
+import { User as UserAuth } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -24,20 +17,14 @@ export class CollectionsService {
   userPaymentsRef: AngularFirestoreCollection<UserPaymentInfo>;
   userPaymentsDoc: AngularFirestoreDocument<UserPaymentInfo>;
   firestore = getFirestore();
+  userAuth: UserAuth;
   private dbPath = '/payments';
 
-  constructor(private db: AngularFirestore, private httpClient: HttpClient, private userService: UserService,
+  constructor(private db: AngularFirestore, private authService: AuthService, private userService: UserService,
     private loadingController: LoadingController, private router: Router,
     private alertController: AlertController) {
-    this.userPaymentsRef = db.collection(this.dbPath);
-  }
-
-  getPayments(page = 1, mode = 0): Observable<ApiResult> {
-    return this.getJSON(page, mode);
-  }
-
-  public getJSON(page: number, mode: number): Observable<ApiResult> {
-    return this.httpClient.get<ApiResult>(`../assets/myData${mode}.json`);
+    this.userAuth = authService.getCurrentUser();
+    this.userPaymentsRef = db.collection(this.dbPath, ref => ref.where('gymName', '==', this.userAuth.uid));
   }
 
   getPaymentWithId(paymentId: string): AngularFirestoreDocument<UserPaymentInfo> {
@@ -47,7 +34,8 @@ export class CollectionsService {
   getAllUserPayments(timeline?: string): AngularFirestoreCollection<UserPaymentInfo> {
     if (timeline === 'today') {
       const today = new Date(); today.setHours(0, 0, 0);
-      return this.db.collection(this.dbPath, ref => ref.where('paymentDateTime', '>=', today).orderBy('paymentDateTime', 'desc'));
+      return this.db.collection(this.dbPath, ref => ref.where('gymName', '==', this.userAuth.uid)
+        .where('paymentDateTime', '>=', today).orderBy('paymentDateTime', 'desc'));
     }
     return this.userPaymentsRef;
   }
@@ -55,6 +43,7 @@ export class CollectionsService {
   async getLatestPaymentById(id: string) {
     const paymentQuery = query(
       collection(this.firestore, this.dbPath),
+      where('gymName', '==', this.userAuth.uid),
       where('memberId', 'in', [id.toLowerCase(), id.toUpperCase()]),
       orderBy('paymentDateTime', 'desc'),
       limit(1)

@@ -34,6 +34,12 @@
     </ion-col>
   </ion-row>
 
+  <ng-container *ngIf="usersPaymentInfo.length === 0">
+    <ion-item class="noItems" lines="full">
+      <ion-label class="ion-text-center">Sorry, No Payment Info Available!</ion-label>
+    </ion-item>
+  </ng-container>
+
   <ion-list>
     <ng-container *ngFor="let item of usersPaymentInfo">
       <ion-item button *ngIf="item.feesPaid === 'yes'" routerLink="/payment-detail/{{item.id}}">

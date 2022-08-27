@@ -12,7 +12,7 @@ import { UserService } from '../../services/user/user.service';
   styleUrls: ['./view-all-members.page.scss'],
 })
 export class ViewAllMembersPage implements OnInit {
-  users?: User[];
+  users?: User[] = [];
   public loading: HTMLIonLoadingElement;
   show = false;
   userName: string;

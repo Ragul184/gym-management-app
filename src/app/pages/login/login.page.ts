@@ -47,7 +47,7 @@ export class LoginPage implements OnInit {
       await this.hideLoading();
 
       if (user) {
-        this.router.navigate(['/home'], { replaceUrl: true });
+        this.router.navigate(['/tabs/home'], { replaceUrl: true });
       } else {
         this.handleError({ header: 'Registration Failed', message: 'Please try again!' });
       }

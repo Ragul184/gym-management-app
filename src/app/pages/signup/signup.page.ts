@@ -21,16 +21,31 @@ export class SignupPage implements OnInit {
     private router: Router
   ) { }
 
+  get gymName() {
+    return this.credentials.get('gymName');
+  }
+  get gymOwnerName() {
+    return this.credentials.get('gymOwnerName');
+  }
+  get gymAddress() {
+    return this.credentials.get('gymAddress');
+  }
+  get gymOwnerPhone() {
+    return this.credentials.get('gymOwnerPhone');
+  }
   get email() {
     return this.credentials.get('email');
   }
-
   get password() {
     return this.credentials.get('password');
   }
 
   ngOnInit() {
     this.credentials = this.fb.group({
+      gymName: ['Extreme Gym', [Validators.required, Validators.minLength(3)]],
+      gymOwnerName: ['Kumar', [Validators.required, Validators.minLength(3), Validators.maxLength(25)]],
+      gymAddress: ['', [Validators.required, Validators.minLength(5)]],
+      gymOwnerPhone: ['', [Validators.required, Validators.pattern('[0-9]{10}')]],
       email: ['admin@extremegym.com', [Validators.required, Validators.email]],
       password: ['adminextreme', [Validators.required, Validators.minLength(6)]]
     });
@@ -47,11 +62,10 @@ export class SignupPage implements OnInit {
       await this.hideLoading();
 
       if (user) {
-        this.router.navigate(['/home'], { replaceUrl: true });
+        this.router.navigate(['/tabs/home'], { replaceUrl: true });
       } else {
         this.handleError({ header: 'Registration Failed', message: 'Please try again!' });
       }
-
     } catch (error) {
       console.error(error);
       this.handleError(error);
@@ -78,28 +92,6 @@ export class SignupPage implements OnInit {
     }
   }
 
-  async login() {
-    const loading = await this.loadingController.create();
-    await loading.present();
-
-    this.authService.login(this.credentials.value).subscribe(
-      async (res) => {
-        await loading.dismiss();
-        this.router.navigateByUrl('/tabs', { replaceUrl: true });
-      },
-      async (res) => {
-        await loading.dismiss();
-        const alert = await this.alertController.create({
-          header: 'Login Failed!',
-          message: res.error.error,
-          buttons: ['OK']
-        });
-
-        await alert.present();
-      }
-    );
-  }
-
   // LOADERS AND ALERTS
   async showLoading(): Promise<void> {
     try {
@@ -122,5 +114,27 @@ export class SignupPage implements OnInit {
     });
     await alert.present();
   }
+
+  // async login() {
+  //   const loading = await this.loadingController.create();
+  //   await loading.present();
+
+  //   this.authService.login(this.credentials.value).subscribe(
+  //     async (res) => {
+  //       await loading.dismiss();
+  //       this.router.navigateByUrl('/tabs', { replaceUrl: true });
+  //     },
+  //     async (res) => {
+  //       await loading.dismiss();
+  //       const alert = await this.alertController.create({
+  //         header: 'Login Failed!',
+  //         message: res.error.error,
+  //         buttons: ['OK']
+  //       });
+
+  //       await alert.present();
+  //     }
+  //   );
+  // }
 
 }
