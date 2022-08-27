@@ -12,53 +12,54 @@
     {{status | titlecase}} - Members List
   </ion-card-header>
   <ion-toolbar>
-    <ion-searchbar [(ngModel)]="searchTerm" showCancelButton="focus" animated placeholder="Search User">
+    <ion-searchbar [(ngModel)]="searchTerm" showClearButton="focus" animated="true" placeholder="Search User">
     </ion-searchbar>
   </ion-toolbar>
 
-  <ng-container *ngIf="users.length === 0">
+  <ng-container *ngIf="users.length === 0 && !isShow">
     <ion-item class="noItems" lines="full">
       <ion-label class="ion-text-center">Sorry, No User Info Available!</ion-label>
     </ion-item>
   </ng-container>
 
-  <ion-card class="usersListCard" *ngFor="let user of users | filter: searchTerm; let i=index">
-    <ion-card-header class="usersListCardHeader" routerLink="/member-detail/{{ user.memberId |lowercase }}">
-      <ion-row>
-        <ion-col size="3">
-          <ion-avatar>
-            <img src="https://avatars.dicebear.com/api/initials/{{user.memberName}}.svg">
-          </ion-avatar>
-        </ion-col>
-        <ion-col class="usersListCardTitle" size="9">
-          <ion-card-title>{{i+1}}.&nbsp;{{user.memberName |titlecase }}</ion-card-title>
-          <ion-card-subtitle>ID: {{user.memberId |uppercase }}</ion-card-subtitle>
-        </ion-col>
-      </ion-row>
-    </ion-card-header>
-    <ion-card-content class="usersListCardContent">
-      <ion-row class="firstRow">
-        <ion-col size="6" class="editBtn ion-no-padding">
-          <ion-button expand="block" color="success" fill="clear" (click)="editMember(user.memberId)">
-            <ion-icon name="pencil"></ion-icon>&nbsp;EDIT INFO
-          </ion-button>
-        </ion-col>
-        <ion-col size="6" class="deleteBtn ion-no-padding">
-          <ion-button expand="block" color="danger" fill="clear" (click)="deleteMember(user)">
-            <ion-icon name="trash"></ion-icon>&nbsp;DELETE
-          </ion-button>
-        </ion-col>
-      </ion-row>
-      <ion-row class="secondRow">
-        <ion-col class="updateBtn" class="ion-no-padding">
-          <ion-button expand="block" color="primary" fill="clear" (click)="updatePayment(user.memberId)">
-            <ion-icon name="card-outline"></ion-icon>&nbsp;UPDATE FEE
-          </ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-card-content>
-  </ion-card>
-
+  <ng-container *ngIf="users.length > 0 && isShow">
+    <ion-card class="usersListCard" *ngFor="let user of users | filter: searchTerm; let i=index">
+      <ion-card-header class="usersListCardHeader" routerLink="/member-detail/{{ user.memberId |lowercase }}">
+        <ion-row>
+          <ion-col size="3">
+            <ion-avatar>
+              <img src="https://avatars.dicebear.com/api/initials/{{user.memberName}}.svg">
+            </ion-avatar>
+          </ion-col>
+          <ion-col class="usersListCardTitle" size="9">
+            <ion-card-title>{{i+1}}.&nbsp;{{user.memberName |titlecase }}</ion-card-title>
+            <ion-card-subtitle>ID: {{user.memberId |uppercase }}</ion-card-subtitle>
+          </ion-col>
+        </ion-row>
+      </ion-card-header>
+      <ion-card-content class="usersListCardContent">
+        <ion-row class="firstRow">
+          <ion-col size="6" class="editBtn ion-no-padding">
+            <ion-button expand="block" color="success" fill="clear" (click)="editMember(user.memberId)">
+              <ion-icon name="pencil"></ion-icon>&nbsp;EDIT INFO
+            </ion-button>
+          </ion-col>
+          <ion-col size="6" class="deleteBtn ion-no-padding">
+            <ion-button expand="block" color="danger" fill="clear" (click)="deleteMember(user)">
+              <ion-icon name="trash"></ion-icon>&nbsp;DELETE
+            </ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-row class="secondRow">
+          <ion-col class="updateBtn" class="ion-no-padding">
+            <ion-button expand="block" color="primary" fill="clear" (click)="updatePayment(user.memberId)">
+              <ion-icon name="card-outline"></ion-icon>&nbsp;UPDATE FEE
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
 </ion-content>
 
 <ion-footer>

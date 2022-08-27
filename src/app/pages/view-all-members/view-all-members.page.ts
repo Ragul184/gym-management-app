@@ -23,30 +23,41 @@ export class ViewAllMembersPage implements OnInit {
   currentIndex = -1;
   title = '';
   searchTerm: string;
-
+  isShow = false;
 
   constructor(private router: Router, private route: ActivatedRoute, private userService: UserService,
     private loadingController: LoadingController, private alertController: AlertController) {
-
     this.status = this.route.snapshot.paramMap.get('status');
-
   }
 
   ngOnInit() {
     this.retrieveUsers(this.status);
   }
 
-  retrieveUsers(status?: string): void {
-    this.userService.getAllUsers(status).snapshotChanges().pipe(
-      map(changes =>
-        changes.map(c =>
-          ({ id: c.payload.doc.id, ...c.payload.doc.data() })
+  async retrieveUsers(status?: string): Promise<void> {
+    try {
+
+      await this.showLoading();
+
+      this.userService.getAllUsers(status).snapshotChanges().pipe(
+        map(changes =>
+          changes.map(c =>
+            ({ id: c.payload.doc.id, ...c.payload.doc.data() })
+          )
         )
-      )
-    ).subscribe(data => {
-      this.users = data;
-      console.log('u', this.users);
-    });
+      ).subscribe(data => {
+        this.users = data;
+        console.log('u', this.users);
+        this.isShow = true;
+      });
+
+      await this.hideLoading();
+
+    } catch (error) {
+      console.error(error);
+      this.handleError(error);
+      await this.hideLoading();
+    }
   }
 
   editMember(id: string) {
