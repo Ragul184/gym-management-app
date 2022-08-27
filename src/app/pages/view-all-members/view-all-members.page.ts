@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { User } from '../../model/user';
 import { UserService } from '../../services/user/user.service';
 
+
 @Component({
   selector: 'app-view-all-members',
   templateUrl: './view-all-members.page.html',
@@ -21,8 +22,8 @@ export class ViewAllMembersPage implements OnInit {
   currentUser?: User;
   currentIndex = -1;
   title = '';
-  searchTerm :string;
-  
+  searchTerm: string;
+
 
   constructor(private router: Router, private route: ActivatedRoute, private userService: UserService,
     private loadingController: LoadingController, private alertController: AlertController) {

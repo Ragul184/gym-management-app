@@ -19,4 +19,4 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
   ],
   declarations: [ViewAllMembersPage]
 })
-export class ViewAllMembersPageModule {}
+export class ViewAllMembersPageModule { }
