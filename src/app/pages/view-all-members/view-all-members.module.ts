@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { ViewAllMembersPageRoutingModule } from './view-all-members-routing.module';
 
 import { ViewAllMembersPage } from './view-all-members.page';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ViewAllMembersPageRoutingModule
+    ViewAllMembersPageRoutingModule,
+    Ng2SearchPipeModule
   ],
   declarations: [ViewAllMembersPage]
 })

@@ -9,7 +9,15 @@
 
 <ion-content>
   <ion-card-header color="primary" class="ion-text-center" style="font-size: larger;">{{status | uppercase}} - Members
-    List</ion-card-header>
+    List
+    <ion-toolbar>
+      <ion-searchbar 
+      [(ngModel)]="searchTerm"
+      showCancelButton="focus"
+      animated
+      placeholder="Search User"></ion-searchbar>
+    </ion-toolbar>
+  </ion-card-header>
   <!-- <ion-item-sliding *ngFor="let user of users; let i=index">
     <ion-item button color="none" routerLink="/user-details/{{ user.memberId |lowercase }}">
       {{i+1}}.&nbsp;{{user.memberId |uppercase }} &nbsp; {{user.memberName |titlecase }}
@@ -19,7 +27,7 @@
     </ion-item-options>
   </ion-item-sliding> -->
 
-  <ion-card class="usersListCard" *ngFor="let user of users; let i=index">
+  <ion-card class="usersListCard" *ngFor="let user of users | filter:searchTerm ; let i=index ">
     <ion-card-header class="usersListCardHeader" routerLink="/member-detail/{{ user.memberId |lowercase }}">
       <ion-row>
         <ion-col size="3">
