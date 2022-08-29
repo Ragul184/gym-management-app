@@ -5,7 +5,9 @@ import { map } from 'rxjs/operators';
 
 import { User } from '../../model/user';
 import { UserService } from '../../services/user/user.service';
-
+import pdfMake from "pdfmake/build/pdfmake";  
+import pdfFonts from "pdfmake/build/vfs_fonts";  
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'app-view-all-members',
@@ -69,6 +71,40 @@ export class ViewAllMembersPage implements OnInit {
     console.log(`From UpdatePayment: ID: ${id}`);
     this.router.navigate(['update-payment', id.toLowerCase()]);
   }
+
+  generatePDF() {  
+    let docDefinition = {  
+      content: [  
+        {  
+          text: 'EXTREME GYM',  
+          fontSize: 16,  
+          alignment: 'center',  
+          color: '#047886'  
+        },  
+        {  
+          text: 'LIST OF USERS',  
+          fontSize: 20,  
+          bold: true,  
+          alignment: 'center',  
+          decoration: 'underline',  
+          color: 'skyblue'  
+        } ,
+        {  
+          table: {  
+              headerRows: 1,  
+              widths: ['auto', 'auto', 'auto', 'auto','auto','auto'],  
+              body: [  
+                  ['memberId', 'memberName','gender','subscriptionEndDate','Phone Number','Active'],  
+                  ...this.users.map(p => ([p.memberId,p.memberName,p.gender,p.subscriptionEndDt,p.phoneNumber,p.active])),  
+              ]  
+          }  
+      }  
+        
+      ] 
+    };  
+   
+    pdfMake.createPdf(docDefinition).open();  
+  }  
 
   async deleteMember(user: User) {
     console.log(`From DeleteMember: ID: ${user.id}`);

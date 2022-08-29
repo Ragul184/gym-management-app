@@ -29,6 +29,7 @@
     "@ionic/angular": "^6.1.9",
     "firebase": "^9.9.3",
     "ng2-search-filter": "^0.5.1",
+    "pdfmake": "^0.2.5",
     "rxjs": "~6.6.0",
     "swiper": "^8.3.2",
     "tslib": "^2.2.0",
