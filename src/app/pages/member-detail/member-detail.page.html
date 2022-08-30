@@ -16,54 +16,99 @@
     </ion-avatar>
   </ion-row>
 
-  <ion-row class="firstItem" *ngIf="retrievedUser">
-    <ion-col size="4.5">Member ID</ion-col>
-    <ion-col size="7.5">{{retrievedUser.memberId |uppercase}}</ion-col>
-  </ion-row>
+  <div *ngIf="retrievedUser" class="gymName">{{retrievedUser.memberName |titlecase}}</div>
+  <div *ngIf="retrievedUser" class="gymEmail">{{retrievedUser.memberId |uppercase}}</div>
 
-  <ion-row *ngIf="retrievedUser">
-    <ion-col size="4.5">Member Name</ion-col>
-    <ion-col size="7.5">{{retrievedUser.memberName |titlecase}}</ion-col>
-  </ion-row>
+  <ion-card class="profileCard">
 
-  <ion-row *ngIf="retrievedUser">
-    <ion-col size="4.5">Phone Number</ion-col>
-    <ion-col size="7.5">{{retrievedUser.phoneNumber}}</ion-col>
-  </ion-row>
+    <ion-item *ngIf="retrievedUser" lines="solid">
+      <ion-label>
+        <p>
+          <ion-text color="dark">Member ID</ion-text>
+        </p>
+        <ion-text color="dark"><b>{{retrievedUser.memberId |titlecase}}</b></ion-text>
+      </ion-label>
+    </ion-item>
 
-  <ion-row *ngIf="retrievedUser">
-    <ion-col size="4.5">Gender</ion-col>
-    <ion-col size="7.5">{{retrievedUser.gender |titlecase}}</ion-col>
-  </ion-row>
+    <ion-item *ngIf="retrievedUser" lines="solid">
+      <ion-label>
+        <p>
+          <ion-text color="dark">Member Name</ion-text>
+        </p>
+        <ion-text color="dark"><b>{{retrievedUser.memberName |titlecase}}</b></ion-text>
+      </ion-label>
+    </ion-item>
 
-  <ion-row *ngIf="retrievedUser">
-    <ion-col size="4.5">Date of Birth</ion-col>
-    <ion-col size="7.5">{{retrievedUser.birthDt.toDate() |date:'dd-MM-yyyy'}}</ion-col>
-  </ion-row>
+    <ion-item *ngIf="retrievedUser" lines="solid">
+      <ion-label>
+        <p>
+          <ion-text color="dark">Phone Number</ion-text>
+        </p>
+        <ion-text color="dark"><b>{{retrievedUser.phoneNumber}}</b></ion-text>
+      </ion-label>
+    </ion-item>
 
-  <ion-row *ngIf="retrievedUser">
-    <ion-col size="4.5">Age</ion-col>
-    <ion-col size="7.5">{{retrievedUser.age}}</ion-col>
-  </ion-row>
+    <ion-item *ngIf="retrievedUser" lines="solid">
+      <ion-label>
+        <p>
+          <ion-text color="dark">Gender</ion-text>
+        </p>
+        <ion-text color="dark"><b>{{retrievedUser.gender |titlecase}}</b></ion-text>
+      </ion-label>
+    </ion-item>
 
-  <ion-row *ngIf="retrievedUser">
-    <ion-col size="4.5">Address</ion-col>
-    <ion-col size="7.5">{{retrievedUser.address}}</ion-col>
-  </ion-row>
+    <ion-item *ngIf="retrievedUser" lines="solid">
+      <ion-label>
+        <p>
+          <ion-text color="dark">Date of Birth</ion-text>
+        </p>
+        <ion-text color="dark"><b>{{retrievedUser.birthDt.toDate() |date:'dd-MM-yyyy'}}</b></ion-text>
+      </ion-label>
+    </ion-item>
 
-  <ion-row *ngIf="retrievedUser">
-    <ion-col size="4.5">Date of Joining</ion-col>
-    <ion-col size="7.5">{{retrievedUser.joiningDt.toDate() |date:'dd-MM-yyyy'}}</ion-col>
-  </ion-row>
+    <ion-item *ngIf="retrievedUser" lines="solid">
+      <ion-label>
+        <p>
+          <ion-text color="dark">Age</ion-text>
+        </p>
+        <ion-text color="dark"><b>{{retrievedUser.age}}</b></ion-text>
+      </ion-label>
+    </ion-item>
 
-  <ion-row *ngIf="retrievedUser">
-    <ion-col size="4.5">Fees Paid</ion-col>
-    <ion-col size="7.5">{{retrievedUser.feesPaid}}</ion-col>
-  </ion-row>
+    <ion-item *ngIf="retrievedUser" lines="solid">
+      <ion-label>
+        <p>
+          <ion-text color="dark">Address</ion-text>
+        </p>
+        <ion-text color="dark"><b>{{retrievedUser.address}}</b></ion-text>
+      </ion-label>
+    </ion-item>
 
-  <ion-row *ngIf="retrievedUser">
-    <ion-col size="4.5">Sub End Date</ion-col>
-    <ion-col size="7.5">{{changeToDate(retrievedUser.subscriptionEndDt) |date:'dd-MM-yyyy'}}</ion-col>
-  </ion-row>
+    <ion-item *ngIf="retrievedUser" lines="solid">
+      <ion-label>
+        <p>
+          <ion-text color="dark">Data Of Joining</ion-text>
+        </p>
+        <ion-text color="dark"><b>{{retrievedUser.joiningDt.toDate() |date:'dd-MM-yyyy'}}</b></ion-text>
+      </ion-label>
+    </ion-item>
 
+    <ion-item *ngIf="retrievedUser" lines="solid">
+      <ion-label>
+        <p>
+          <ion-text color="dark">Fees Paid Status</ion-text>
+        </p>
+        <ion-text color="dark"><b>{{retrievedUser.feesPaid}}</b></ion-text>
+      </ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="retrievedUser" lines="solid">
+      <ion-label>
+        <p>
+          <ion-text color="dark">Sub End Date</ion-text>
+        </p>
+        <ion-text color="dark"><b>{{retrievedUser.subscriptionEndDt |date:'dd-MM-yyyy'}}</b></ion-text>
+      </ion-label>
+    </ion-item>
+  </ion-card>
 </ion-content>

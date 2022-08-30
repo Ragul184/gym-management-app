@@ -1,0 +1,97 @@
+// playground requires you to assign document definition to a variable called dd
+
+var dd = {
+	content: [
+		{text: 'EXTREME Gym - Members List', style: 'subheader'},
+		'The following are the list of the members joined in our Extreme Gym',
+		{
+			style: 'tableExample',
+			table: {
+				headerRows: 1,
+				// dontBreakRows: true,
+				// keepWithHeaderRows: 1,
+				body: [
+					[{text: 'S.No.', style: 'tableHeader'}, 
+					{text: 'Member ID', style: 'tableHeader'}, 
+					{text: 'Member Name', style: 'tableHeader'},
+					{text: 'Phone Number', style: 'tableHeader'},
+					{text: 'DOB', style: 'tableHeader'},
+					{text: 'Address', style: 'tableHeader'},
+					{text: 'Date of Joining', style: 'tableHeader'},
+					{text: 'Fees Paid', style: 'tableHeader'},
+					{text: 'Sub End Date', style: 'tableHeader'},
+					],
+					[
+						'1',
+						'EX-001',
+						'Raghul Karthik',
+						'7598366295',
+						'18-04-2000',
+						'Vandavasi',
+						'28-06-2022',
+						'Yes',
+						'28-07-2022'
+					],
+					[
+						'1',
+						'EX-001',
+						'Raghul Karthik',
+						'7598366295',
+						'18-04-2000',
+						'Vandavasi',
+						'28-06-2022',
+						'Yes',
+						'28-07-2022'
+					],
+					[
+						'1',
+						'EX-001',
+						'Raghul Karthik',
+						'7598366295',
+						'18-04-2000',
+						'Vandavasi',
+						'28-06-2022',
+						'Yes',
+						'28-07-2022'
+					],
+					[
+						'1',
+						'EX-001',
+						'Raghul Karthik',
+						'7598366295',
+						'18-04-2000',
+						'Vandavasi',
+						'28-06-2022',
+						'Yes',
+						'28-07-2022'
+					],
+				]
+			}
+		},
+		
+	],
+	styles: {
+		header: {
+			fontSize: 18,
+			bold: true,
+			margin: [0, 0, 0, 10]
+		},
+		subheader: {
+			fontSize: 16,
+			bold: true,
+			margin: [0, 10, 0, 5]
+		},
+		tableExample: {
+			margin: [0, 5, 0, 15]
+		},
+		tableHeader: {
+			bold: true,
+			fontSize: 13,
+			color: 'black'
+		}
+	},
+	defaultStyle: {
+		alignment: 'justify'
+	}
+	
+}
