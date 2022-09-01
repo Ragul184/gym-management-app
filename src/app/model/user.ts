@@ -6,7 +6,7 @@ export class User {
     address?: string;
     gender?: Gender;
     gymName: string;
-    feesPaid?: boolean;
+    feesPaid?: boolean | string;
     subscriptionEndDt?: Date | any;
     joiningDt: Date | any;
     birthDt: Date | any;

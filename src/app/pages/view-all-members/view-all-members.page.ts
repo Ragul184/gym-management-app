@@ -5,9 +5,11 @@ import { map } from 'rxjs/operators';
 
 import { User } from '../../model/user';
 import { UserService } from '../../services/user/user.service';
-import pdfMake from "pdfmake/build/pdfmake";  
-import pdfFonts from "pdfmake/build/vfs_fonts";  
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import * as pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import { TDocumentDefinitions } from 'pdfmake/interfaces';
+import { formatDate } from '@angular/common';
+(pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'app-view-all-members',
@@ -50,6 +52,20 @@ export class ViewAllMembersPage implements OnInit {
       ).subscribe(data => {
         this.users = data;
         console.log('u', this.users);
+
+        console.log(...this.users.sort((a, b) => a.memberId.localeCompare(b.memberId))
+          .map((p, index) => ([
+            index + 1,
+            p.memberId,
+            this.titleCase(p.memberName),
+            p.phoneNumber,
+            this.formatDate(p.birthDt.toDate()),
+            p.address,
+            this.formatDate(p.joiningDt.toDate()),
+            p.feesPaid.toString().toUpperCase(),
+            p.feesPaid === 'yes' ? this.formatDate(new Date(p.subscriptionEndDt)) : ''
+          ])));
+
         this.isShow = true;
       });
 
@@ -72,39 +88,139 @@ export class ViewAllMembersPage implements OnInit {
     this.router.navigate(['update-payment', id.toLowerCase()]);
   }
 
-  generatePDF() {  
-    let docDefinition = {  
-      content: [  
-        {  
-          text: 'EXTREME GYM',  
-          fontSize: 16,  
-          alignment: 'center',  
-          color: '#047886'  
-        },  
-        {  
-          text: 'LIST OF USERS',  
-          fontSize: 20,  
-          bold: true,  
-          alignment: 'center',  
-          decoration: 'underline',  
-          color: 'skyblue'  
-        } ,
-        {  
-          table: {  
-              headerRows: 1,  
-              widths: ['auto', 'auto', 'auto', 'auto','auto','auto'],  
-              body: [  
-                  ['memberId', 'memberName','gender','subscriptionEndDate','Phone Number','Active'],  
-                  ...this.users.map(p => ([p.memberId,p.memberName,p.gender,p.subscriptionEndDt,p.phoneNumber,p.active])),  
-              ]  
-          }  
-      }  
-        
-      ] 
-    };  
-   
-    pdfMake.createPdf(docDefinition).open();  
-  }  
+  generatePDF() {
+    (pdfMake.fonts as any) = {
+      lato: {
+        normal: 'https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/fonts/lato-normal/lato-normal.woff',
+        bold: 'https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/fonts/lato-bold/lato-bold.woff',
+        italics: 'https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/fonts/lato-light-italic/lato-light-italic.woff',
+        bolditalics: 'https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/fonts/lato-bold-italic/lato-bold-italic.woff'
+      }
+    };
+
+    const docDefinition: TDocumentDefinitions = {
+      content: [
+        {
+          text: 'EXTREME GYM',
+          fontSize: 16,
+          alignment: 'center',
+          color: '#047886'
+        },
+        {
+          text: 'LIST OF USERS',
+          fontSize: 20,
+          bold: true,
+          alignment: 'center',
+          decoration: 'underline',
+          color: 'skyblue'
+        },
+        {
+          table: {
+            headerRows: 1,
+            widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
+            body: [
+              ['memberId', 'memberName', 'gender', 'subscriptionEndDate', 'Phone Number', 'Active'],
+              ...this.users.map(p => ([p.memberId, p.memberName, p.gender, p.subscriptionEndDt, p.phoneNumber, p.active])),
+            ]
+          }
+        }
+      ],
+      defaultStyle: {
+        font: 'lato'
+      }
+    };
+
+    const docDefinition1: TDocumentDefinitions = {
+      pageOrientation: 'landscape',
+      content: [
+        { text: 'EXTREME GYM', style: 'title' },
+        { text: 'Old No: 3, New No: 5,', style: 'address' },
+        { text: '2nd Floor, Rama Iyer Street,', style: 'address' },
+        { text: 'Vandavasi, Tiruvannamalai', style: 'address' },
+        { text: 'PIN: 604408', style: 'address' },
+
+        { text: 'MEMBERS LIST', style: 'subcentered' },
+        { text: '\n' },
+        {
+          columns: [
+            { width: '*', text: '' },
+            {
+              width: 'auto',
+              table: {
+                headerRows: 1,
+                body: [
+                  [{ text: 'S.No.', style: 'tableHeader' },
+                  { text: 'Member ID', style: 'tableHeader' },
+                  { text: 'Member Name', style: 'tableHeader' },
+                  { text: 'Phone Number', style: 'tableHeader' },
+                  { text: 'DOB', style: 'tableHeader' },
+                  { text: 'Address', style: 'tableHeader' },
+                  { text: 'Date of Joining', style: 'tableHeader' },
+                  { text: 'Fees Paid', style: 'tableHeader' },
+                  { text: 'Sub End Date', style: 'tableHeader' },
+                  ],
+                  ...this.users.sort((a, b) => a.memberId.localeCompare(b.memberId))
+                    .map((p, index) => ([
+                      index + 1,
+                      p.memberId,
+                      this.titleCase(p.memberName),
+                      p.phoneNumber,
+                      this.formatDate(p.birthDt.toDate()),
+                      p.address,
+                      this.formatDate(p.joiningDt.toDate()),
+                      p.feesPaid.toString().toUpperCase(),
+                      p.feesPaid === 'yes' ? this.formatDate(new Date(p.subscriptionEndDt)) : ''
+                    ])),
+                ]
+              }
+            },
+            { width: '*', text: '' },
+          ]
+        },
+      ],
+      styles: {
+        title: {
+          fontSize: 14,
+          bold: true,
+          characterSpacing: 0.5
+        },
+        subcentered: {
+          fontSize: 16,
+          bold: true,
+          alignment: 'center',
+          decoration: 'underline',
+          margin: [0, 10, 0, 5]
+        },
+        tableExample: {
+          margin: [0, 5, 0, 15]
+        },
+        tableHeader: {
+          bold: true,
+          fontSize: 13,
+          color: 'black',
+          alignment: 'center',
+        }
+      },
+      defaultStyle: {
+        alignment: 'justify',
+        font: 'lato',
+      }
+
+    };
+
+    pdfMake.createPdf(docDefinition1).open();
+  }
+
+  formatDate(date) {
+    const year = date.getFullYear().toString();
+    const month = (date.getMonth() + 101).toString().substring(1);
+    const day = (date.getDate() + 100).toString().substring(1);
+    return day + '-' + month + '-' + year;
+  }
+
+  titleCase(str) {
+    return str.toLowerCase().split(' ').map((word) => word.replace(word[0], word[0].toUpperCase())).join(' ');
+  }
 
   async deleteMember(user: User) {
     console.log(`From DeleteMember: ID: ${user.id}`);

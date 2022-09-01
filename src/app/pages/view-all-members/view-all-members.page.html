@@ -4,17 +4,18 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>View All Members</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="generatePDF()" fill="clear">
+        <ion-icon name="print-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-card-header color="primary" class="ion-text-center" style="font-size: larger;">
-    {{status | titlecase}} - Members List  
+    {{status | titlecase}} - Members List
   </ion-card-header>
-  <ion-button (click)="generatePDF()" fill="clear">
-    <ion-icon name="print-outline"></ion-icon>
-  
-  </ion-button>
   <ion-toolbar>
     <ion-searchbar [(ngModel)]="searchTerm" showClearButton="focus" animated="true" placeholder="Search User">
     </ion-searchbar>
