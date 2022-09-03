@@ -13,6 +13,10 @@ Thumbs.db
 UserInterfaceState.xcuserstate
 $RECYCLE.BIN/
 
+release.jks
+keystore.properties
+gymManagement.jks
+
 *.log
 log.txt
 npm-debug.log*
@@ -35,3 +39,5 @@ node_modules
 .firebase
 *-debug.log
 .runtimeconfig.json
+
+resources/android/**/*

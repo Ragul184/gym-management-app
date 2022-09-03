@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'gym-management-app',
+  appId: 'com.dcnerds.gymManager',
+  appName: 'Gym Manager',
   webDir: 'www',
   bundledWebRuntime: false
 };

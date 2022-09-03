@@ -1,20 +1,24 @@
 <ion-content class="intro">
   <swiper #swiper [pagination]="true">
-    <ng-template swiperSlide class="ion-text-center">
-      <ion-text color="light">
-        <img src="https://i1.wp.com/ionicacademy.com/wp-content/uploads/2019/10/async-code-course.png">
-        <h1>Hey there!</h1>
-        <p>This is an epic app because...</p>
-        <ion-button (click)="next()" fill="outline" color="light">Next</ion-button>
-      </ion-text>
+    <ng-template swiperSlide class="slide1 ion-text-center">
+      <div class="gym001Div ion-text-center">
+        <ion-text color="dark">
+          <!-- <img class="gym001" src="assets/gym001.jpg"> -->
+          <h1>Hey there!</h1>
+          <p>Welcome to DCNerds Gym Manager...</p>
+          <ion-button (click)="next()" fill="outline" color="dark">Next</ion-button>
+        </ion-text>
+      </div>
     </ng-template>
     <ng-template swiperSlide class="ion-text-center">
-      <ion-text color="light">
-        <img src="https://i1.wp.com/ionicacademy.com/wp-content/uploads/2020/06/ionic-everywhere-course.png">
-        <h1>It's Ionic!</h1>
-        <p>... it shows all the basics you need!</p>
-        <ion-button (click)="start()" fill="outline" color="light">Start</ion-button>
-      </ion-text>
+      <div class="gym002Div ion-text-center">
+        <ion-text color="dark">
+          <!-- <img src="https://i1.wp.com/ionicacademy.com/wp-content/uploads/2020/06/ionic-everywhere-course.png"> -->
+          <h1>Thank you for choosing us!</h1>
+          <p>Best & Simple Gym Manager Application!</p>
+          <ion-button (click)="start()" fill="outline" color="dark">Start</ion-button>
+        </ion-text>
+      </div>
     </ng-template>
   </swiper>
 </ion-content>
