@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
+
 ion-header {
   ion-toolbar {
     --background: transparent;
@@ -8,7 +10,7 @@ ion-header {
 }
 
 .main-header {
-  height: 13vh;
+  height: 15.5vh;
   width: 100%;
   box-shadow: 0 1px 10px var(--ion-color-light);
   background: linear-gradient(
@@ -18,19 +20,53 @@ ion-header {
   );
   border-radius: 0 0 50% 50%/0 0 100% 100%;
   transform: scaleX(2.6);
-  margin-top: -116px;
+  margin-top: -15vh;
 }
 
-.firstItem {
-  margin-top: 4vh;
-  border-top: 2px groove;
+.avatarCard {
+  padding: 15px;
+  border-radius: 10px;
+  background: rgba(135, 135, 135, 0.14);
 }
 
-ion-row {
-  border-bottom: 2px groove;
+ion-avatar {
+  height: 13vh;
+  width: 13vh;
+  box-shadow: -1px 11px 13px -6px rgb(77 76 76);
+  border: 2px solid white;
+  display: flex;
+  justify-content: center;
 }
 
-ion-col {
-  border-right: 2px groove;
+.avatarCol {
+  width: 80%;
+  height: 100%;
+}
+
+.titleCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.gymName {
   text-align: center;
+  font-size: 18px;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-family: "Lato", sans-serif;
+  letter-spacing: 0.5px;
+  color: var(--ion-color-dark);
+  line-height: 5vh;
+}
+
+.gymMemId {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-family: "Lato", sans-serif;
+  letter-spacing: 1px;
+  color: var(--ion-color-dark);
 }

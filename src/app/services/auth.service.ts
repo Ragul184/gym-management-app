@@ -19,8 +19,16 @@ export class AuthService {
   userInfo: User;
 
   constructor(private http: HttpClient, private auth: Auth, private firestore: Firestore) {
-    this.loadToken();
+    // this.loadToken();
     console.log(this.getCurrentUser());
+    // setDoc(
+    //   doc(this.firestore, 'gymProfile', 'FnLZ7XSvDZgjp2qlH0diF1JMtqz2'),
+    //   {
+    //     gymAddress: 'Old No: 3, New No: 5,\n2nd Floor, Rama Iyer Street,\nVandavasi, Tiruvannamalai\nPIN: 604408'
+    //   }, { merge: true }
+    // ).then(res => {
+    //   console.log('UPDATE RESULT: ', res);
+    // });
     // onAuthStateChanged(this.auth, (user) => {
     //   if (user) {
     //     this.userInfo = user;

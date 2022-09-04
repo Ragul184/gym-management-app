@@ -100,10 +100,22 @@ export class Tab2Page {
     }
   }
 
+  async doRefresh(event) {
+    console.log('Refresh Started');
+
+    await this.calculateStats();
+
+    await event.target.complete();
+    console.log('Async operation has ended');
+  }
+
   // LOADERS AND ALERTS
   async showLoading(): Promise<void> {
     try {
-      this.loading = await this.loadingController.create();
+      this.loading = await this.loadingController.create({
+        message: 'Just a moment...',
+        mode: 'ios'
+      });
       await this.loading.present();
     } catch (error) {
       this.handleError(error);

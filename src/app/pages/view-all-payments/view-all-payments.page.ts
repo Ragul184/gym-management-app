@@ -18,7 +18,7 @@ export class ViewAllPaymentsPage implements OnInit {
   filter = 'all';
   usersPaymentInfo: UserPaymentInfo[] = [];
 
-  name = 'Today Collection';
+  name = '';
   src = 'todayCollection';
   background = 'rgba(255, 196, 9, 0.1)';
   page = '/view-all-payments/today';
@@ -31,10 +31,28 @@ export class ViewAllPaymentsPage implements OnInit {
     private router: Router) {
     this.filter = this.route.snapshot.paramMap.get('filter');
     this.mode = this.filter === 'today' ? 1 : 0;
+    this.name = this.mode === 0 ? 'Total Collection' : 'Today Collection';
     this.retrievePayments(this.filter);
   }
 
   ngOnInit() { }
+
+  async doRefresh(event) {
+    console.log('Refresh Started');
+
+    this.name = this.mode === 0 ? 'Total Collection' : 'Today Collection';
+
+    if (this.mode === 0) { // FOR TOTAL
+      await this.retrievePayments('all');
+    }
+
+    if (this.mode === 1) { // FOR TODAY
+      await this.retrievePayments('today');
+    }
+
+    await event.target.complete();
+    console.log('Async operation has ended');
+  }
 
   async retrievePayments(timeline?: string) {
     try {
@@ -68,6 +86,7 @@ export class ViewAllPaymentsPage implements OnInit {
     console.log(this.mode, ' = ', event.target.value);
 
     this.mode = event.target.value * 1;
+    this.name = this.mode === 0 ? 'Total Collection' : 'Today Collection';
     console.log(this.mode === 0);
     console.log(this.mode === 1);
 
@@ -83,7 +102,10 @@ export class ViewAllPaymentsPage implements OnInit {
   // LOADERS AND ALERTS
   async showLoading(): Promise<void> {
     try {
-      this.loading = await this.loadingController.create();
+      this.loading = await this.loadingController.create({
+        message: 'Just a moment...',
+        mode: 'ios'
+      });
       await this.loading.present();
     } catch (error) {
       this.handleError(error);

@@ -15,7 +15,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<!-- <ion-content [fullscreen]="true">
   <div class="main-header"></div>
 
   <ion-row class="firstItem" *ngIf="paymentDetail">
@@ -68,4 +68,117 @@
     <ion-col size="7.5">{{paymentDetail.paymentDateTime.toDate() |date:'dd-MM-yyyy hh:mm aa'}}</ion-col>
   </ion-row>
 
+</ion-content> -->
+
+<ion-content [fullscreen]="true">
+  <div class="main-header"></div>
+
+  <ion-card class="avatarCard" *ngIf="isShow">
+    <ion-row class="avatar">
+      <ion-col size="5" class="avatarCol">
+        <ion-avatar *ngIf="paymentDetail">
+          <img src="https://avatars.dicebear.com/api/initials/{{paymentDetail.memberName}}.svg">
+        </ion-avatar>
+      </ion-col>
+
+      <ion-col size="7" class="titleCol">
+        <div *ngIf="paymentDetail" class="gymName">{{paymentDetail.memberName |titlecase}}</div>
+        <div *ngIf="paymentDetail" class="gymMemId">{{paymentDetail.memberId |uppercase}}</div>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+
+  <ion-card class="profileCard"  *ngIf="isShow">
+
+    <ion-item *ngIf="paymentDetail" lines="full">
+      <ion-label>
+        <p>
+          <ion-text color="dark">Transaction ID</ion-text>
+        </p>
+        <ion-text color="dark"><b>{{paymentId}}</b></ion-text>
+      </ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="paymentDetail" lines="full">
+      <ion-label>
+        <p>
+          <ion-text color="dark">Member ID</ion-text>
+        </p>
+        <ion-text color="dark"><b>{{paymentDetail.memberId |uppercase}}</b></ion-text>
+      </ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="paymentDetail" lines="full">
+      <ion-label>
+        <p>
+          <ion-text color="dark">Member Name</ion-text>
+        </p>
+        <ion-text color="dark"><b>{{paymentDetail.memberName |titlecase}}</b></ion-text>
+      </ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="paymentDetail" lines="full">
+      <ion-label>
+        <p>
+          <ion-text color="dark">Date of Joining</ion-text>
+        </p>
+        <ion-text color="dark"><b>{{paymentDetail.joiningDt.toDate() |date:'dd-MM-yyyy'}}</b></ion-text>
+      </ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="paymentDetail" lines="full">
+      <ion-label>
+        <p>
+          <ion-text color="dark">Fees Paid</ion-text>
+        </p>
+        <ion-text color="dark"><b>{{paymentDetail.feesPaid |titlecase}}</b></ion-text>
+      </ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="paymentDetail" lines="full">
+      <ion-label>
+        <p>
+          <ion-text color="dark">Amount Paid</ion-text>
+        </p>
+        <ion-text color="dark"><b>&#8377;&nbsp;{{paymentDetail.amount}}</b></ion-text>
+      </ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="paymentDetail" lines="full">
+      <ion-label>
+        <p>
+          <ion-text color="dark">Subscription Start Date</ion-text>
+        </p>
+        <ion-text color="dark"><b>{{paymentDetail.subscriptionStartDt | date:'dd-MM-yyyy'}}</b></ion-text>
+      </ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="paymentDetail" lines="full">
+      <ion-label>
+        <p>
+          <ion-text color="dark">Subscription End Date</ion-text>
+        </p>
+        <ion-text color="dark"><b>{{paymentDetail.subscriptionEndDt | date:'dd-MM-yyyy'}}</b></ion-text>
+      </ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="paymentDetail" lines="full">
+      <ion-label>
+        <p>
+          <ion-text color="dark">Number of Months</ion-text>
+        </p>
+        <ion-text color="dark"><b>{{paymentDetail.numOfMonths}}</b></ion-text>
+      </ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="paymentDetail" lines="full">
+      <ion-label>
+        <p>
+          <ion-text color="dark">Paid On</ion-text>
+        </p>
+        <ion-text color="dark"><b>{{paymentDetail.paymentDateTime.toDate() |date:'dd-MM-yyyy hh:mm aa'}}</b></ion-text>
+      </ion-label>
+    </ion-item>
+
+  </ion-card>
 </ion-content>

@@ -55,7 +55,13 @@ export class UserService {
     return this.usersRef.doc(id).update(data);
   }
 
-  deleteUser(id: string): Promise<void> {
+  async deleteUser(id: string): Promise<void> {
+    const deletedUserRef = this.db.collection('/deletedUsers');
+    const userDoc = await this.db.collection(this.dbPath).doc(id).get().toPromise();
+    const deleteData = userDoc.data();
+    await deletedUserRef.doc(id).set(deleteData).then(result => {
+      console.log(result);
+    });
     return this.usersRef.doc(id).delete();
   }
 

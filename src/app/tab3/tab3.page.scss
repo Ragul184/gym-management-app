@@ -6,7 +6,7 @@ ion-header {
   
   ion-content {
     .main-header {
-      height: 13vh;
+      height: 15.5vh;
       width: 100%;
       box-shadow: 0 1px 10px var(--ion-color-light);
       background: linear-gradient(
@@ -16,7 +16,7 @@ ion-header {
       );
       border-radius: 0 0 50% 50%/0 0 100% 100%;
       transform: scaleX(2.6);
-      margin-top: -116px;
+      margin-top: -15vh;
     }
   }
   

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LoadingController, AlertController } from '@ionic/angular';
+import { LoadingController, AlertController, Platform } from '@ionic/angular';
 import { map } from 'rxjs/operators';
 
 import { User } from '../../model/user';
@@ -9,6 +9,9 @@ import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
 import { formatDate } from '@angular/common';
+import { Filesystem, Directory } from '@capacitor/filesystem';
+import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
+import { AuthService } from 'src/app/services/auth.service';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -28,9 +31,13 @@ export class ViewAllMembersPage implements OnInit {
   title = '';
   searchTerm: string;
   isShow = false;
+  pdfObj: pdfMake.TCreatedPdf;
+  retrievedUser: any;
+  testUser: any;
 
   constructor(private router: Router, private route: ActivatedRoute, private userService: UserService,
-    private loadingController: LoadingController, private alertController: AlertController) {
+    private loadingController: LoadingController, private alertController: AlertController,
+    private plt: Platform, private fileOpener: FileOpener, private authService: AuthService) {
     this.status = this.route.snapshot.paramMap.get('status');
   }
 
@@ -38,10 +45,23 @@ export class ViewAllMembersPage implements OnInit {
     this.retrieveUsers(this.status);
   }
 
+  async doRefresh(event) {
+    console.log('Refresh Started');
+
+    await this.retrieveUsers(this.status);
+
+    await event.target.complete();
+    console.log('Async operation has ended');
+  }
+
   async retrieveUsers(status?: string): Promise<void> {
     try {
 
       await this.showLoading();
+
+      const userDoc = await this.authService.getCurrentUserProfile();
+      this.retrievedUser = { id: userDoc.id, ...userDoc.data() };
+      console.log('Retrieved User: ', this.retrievedUser);
 
       this.userService.getAllUsers(status).snapshotChanges().pipe(
         map(changes =>
@@ -52,7 +72,8 @@ export class ViewAllMembersPage implements OnInit {
       ).subscribe(data => {
         this.users = data;
         console.log('u', this.users);
-
+        // this.testUser = this.users.sort((a, b) => a.memberId.localeCompare(b.memberId))[5];
+        // console.log('TEST USER: ', this.testUser);
         console.log(...this.users.sort((a, b) => a.memberId.localeCompare(b.memberId))
           .map((p, index) => ([
             index + 1,
@@ -133,11 +154,13 @@ export class ViewAllMembersPage implements OnInit {
     const docDefinition1: TDocumentDefinitions = {
       pageOrientation: 'landscape',
       content: [
-        { text: 'EXTREME GYM', style: 'title' },
-        { text: 'Old No: 3, New No: 5,', style: 'address' },
-        { text: '2nd Floor, Rama Iyer Street,', style: 'address' },
-        { text: 'Vandavasi, Tiruvannamalai', style: 'address' },
-        { text: 'PIN: 604408', style: 'address' },
+        { text: this.retrievedUser.gymName.toUpperCase(), style: 'title' },
+        { text: this.retrievedUser.gymAddress, style: 'address' },
+        // { text: 'EXTREME GYM', style: 'title' },
+        // { text: 'Old No: 3, New No: 5,', style: 'address' },
+        // { text: '2nd Floor, Rama Iyer Street,', style: 'address' },
+        // { text: 'Vandavasi, Tiruvannamalai', style: 'address' },
+        // { text: 'PIN: 604408', style: 'address' },
 
         { text: 'MEMBERS LIST', style: 'subcentered' },
         { text: '\n' },
@@ -208,7 +231,42 @@ export class ViewAllMembersPage implements OnInit {
 
     };
 
-    pdfMake.createPdf(docDefinition1).open();
+    // alert(this.plt.platforms());
+    this.pdfObj = pdfMake.createPdf(docDefinition1);
+    // this.pdfObj.open();
+    this.downloadPDF();
+  }
+
+  async downloadPDF() {
+    try {
+      await this.showLoading();
+
+      if (this.plt.is('android') || this.plt.is('cordova') || this.plt.is('capacitor') || this.plt.is('mobile')) {
+        this.pdfObj.getBase64(async (data) => {
+          try {
+            const path = `Gym Manager/pdf/${this.status}_members_list-${formatDate(new Date(), 'yyyyMMdd_HHmmss', 'en-IN')}.pdf`;
+            // const readResult = await Filesystem.readdir({ directory: Directory.Documents, path: '' });
+            // console.log('READ RESULT: ', readResult.files);
+            const result = await Filesystem.writeFile({
+              path, data, directory: Directory.Documents, recursive: true
+            });
+            // console.log(result.uri);
+            this.fileOpener.open(`${result.uri}`, 'application/pdf');
+          } catch (e) {
+            console.error('Unable to write file', e);
+          }
+        });
+      } else {
+        const path = `${this.status}_members_list-${formatDate(new Date(), 'yyyyMMdd', 'en-IN')}.pdf`;
+        this.pdfObj.download(path);
+      }
+
+      await this.hideLoading();
+    } catch (error) {
+      console.error(error);
+      this.handleError(error);
+      await this.hideLoading();
+    }
   }
 
   formatDate(date) {
@@ -232,8 +290,8 @@ export class ViewAllMembersPage implements OnInit {
           await this.showLoading();
           // DELETE USER HERE!
           await this.userService.deleteUser(user.id);
-          await this.retrieveUsers(this.status);
           await this.hideLoading();
+          await this.retrieveUsers(this.status);
           await this.handleError({ message: 'Member Succesfully Deleted!' });
         }
       }, { text: 'Cancel', role: 'cancel', }]
@@ -244,7 +302,10 @@ export class ViewAllMembersPage implements OnInit {
 
   async showLoading(): Promise<void> {
     try {
-      this.loading = await this.loadingController.create();
+      this.loading = await this.loadingController.create({
+        message: 'Just a moment...',
+        mode: 'ios'
+      });
       await this.loading.present();
     } catch (error) {
       this.handleError(error);

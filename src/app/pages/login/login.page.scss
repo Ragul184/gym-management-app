@@ -11,6 +11,7 @@ ion-toolbar {
 ion-title {
   font-weight: 900;
   letter-spacing: 2.5px;
+  color: white;
 }
 
 ion-content {
@@ -44,6 +45,12 @@ ion-row.avatar {
     height: 15vh;
     width: 15vh;
   }
+}
+
+.signUpBtn {
+  --color: white;
+  // --border-color: white;
+  // --border-radius: 10px;
 }
 
 .input-group {

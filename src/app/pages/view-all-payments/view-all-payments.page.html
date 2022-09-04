@@ -21,6 +21,10 @@
 
 <ion-content class="ion-padding">
 
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <ion-row class="summary ion-margin-horizontal">
     <ion-col>
       <ion-card class="summaryCard ion-text-center">

@@ -31,8 +31,8 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
     this.credentials = this.fb.group({
-      email: ['admin@extremegym.com', [Validators.required, Validators.email]],
-      password: ['adminextreme', [Validators.required, Validators.minLength(6)]]
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
@@ -103,7 +103,10 @@ export class LoginPage implements OnInit {
   // LOADERS AND ALERTS
   async showLoading(): Promise<void> {
     try {
-      this.loading = await this.loadingController.create();
+      this.loading = await this.loadingController.create({
+        message: 'Just a moment...',
+        mode: 'ios'
+      });
       await this.loading.present();
     } catch (error) {
       this.handleError(error);

@@ -266,7 +266,10 @@ export class AddMemberPage implements OnInit {
   // LOADERS AND ALERTS
   async showLoading(): Promise<void> {
     try {
-      this.loading = await this.loadingController.create();
+      this.loading = await this.loadingController.create({
+        message: 'Just a moment...',
+        mode: 'ios'
+      });
       await this.loading.present();
     } catch (error) {
       this.handleError(error);

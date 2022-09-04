@@ -1,6 +1,6 @@
 <ion-header class="ion-no-border ion-no-padding">
   <ion-toolbar>
-    <ion-title color="light" class="ion-text-center">Gym Management</ion-title>
+    <ion-title class="ion-text-center">Gym Management</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -36,7 +36,7 @@
       </div>
     </div>
     <ion-button type="submit" expand="block" [disabled]="credentials.invalid">Login</ion-button>
-    <ion-button type="button" expand="block" color="light" fill="clear" (click)="redirectToSignUp()">
+    <ion-button type="button" expand="block" fill="clear" class="signUpBtn" (click)="redirectToSignUp()">
       Not yet a member? Sign up!
     </ion-button>
 

@@ -17,7 +17,7 @@
   </ion-row>
 
   <div *ngIf="retrievedUser" class="gymName">{{retrievedUser.memberName |titlecase}}</div>
-  <div *ngIf="retrievedUser" class="gymEmail">{{retrievedUser.memberId |uppercase}}</div>
+  <div *ngIf="retrievedUser" class="gymMemId">{{retrievedUser.memberId |uppercase}}</div>
 
   <ion-card class="profileCard">
 
@@ -26,7 +26,7 @@
         <p>
           <ion-text color="dark">Member ID</ion-text>
         </p>
-        <ion-text color="dark"><b>{{retrievedUser.memberId |titlecase}}</b></ion-text>
+        <ion-text color="dark"><b>{{retrievedUser.memberId |uppercase}}</b></ion-text>
       </ion-label>
     </ion-item>
 
@@ -80,14 +80,14 @@
         <p>
           <ion-text color="dark">Address</ion-text>
         </p>
-        <ion-text color="dark"><b>{{retrievedUser.address}}</b></ion-text>
+        <ion-text class="memAddressText" color="dark"><b>{{retrievedUser.address}}</b></ion-text>
       </ion-label>
     </ion-item>
 
     <ion-item *ngIf="retrievedUser" lines="solid">
       <ion-label>
         <p>
-          <ion-text color="dark">Data Of Joining</ion-text>
+          <ion-text color="dark">Date Of Joining</ion-text>
         </p>
         <ion-text color="dark"><b>{{retrievedUser.joiningDt.toDate() |date:'dd-MM-yyyy'}}</b></ion-text>
       </ion-label>
@@ -98,7 +98,7 @@
         <p>
           <ion-text color="dark">Fees Paid Status</ion-text>
         </p>
-        <ion-text color="dark"><b>{{retrievedUser.feesPaid}}</b></ion-text>
+        <ion-text color="dark"><b>{{retrievedUser.feesPaid.toString() |titlecase}}</b></ion-text>
       </ion-label>
     </ion-item>
 

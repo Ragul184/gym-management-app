@@ -59,3 +59,12 @@ ion-content.intro {
   align-items: center;
   justify-content: center;
 }
+
+ion-text {
+  color: white;
+}
+ion-button {
+  --color: white;
+  --border-color: white;
+  --border-radius: 10px;
+}

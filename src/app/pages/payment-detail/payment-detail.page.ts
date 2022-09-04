@@ -14,6 +14,7 @@ export class PaymentDetailPage implements OnInit {
   public loading: HTMLIonLoadingElement;
   paymentId = '';
   paymentDetail: UserPaymentInfo;
+  isShow = false;
 
   constructor(private route: ActivatedRoute, private collectionService: CollectionsService, private router: Router,
     private collectionsService: CollectionsService, private alertController: AlertController,
@@ -25,8 +26,17 @@ export class PaymentDetailPage implements OnInit {
   ngOnInit() { }
 
   async getTransactionWithId(paymentId: string) {
-    const paymentRef = await this.collectionService.getPaymentWithId(paymentId).get().toPromise();
-    this.paymentDetail = { id: paymentRef.id, ...paymentRef.data() };
+    try {
+      await this.showLoading();
+      const paymentRef = await this.collectionService.getPaymentWithId(paymentId).get().toPromise();
+      this.paymentDetail = { id: paymentRef.id, ...paymentRef.data() };
+      this.isShow = true;
+      await this.hideLoading();
+    } catch (error) {
+      console.error(error);
+      this.handleError(error);
+      await this.hideLoading();
+    }
   }
 
   editPayment() {
@@ -61,7 +71,10 @@ export class PaymentDetailPage implements OnInit {
   // LOADERS AND ALERTS
   async showLoading(): Promise<void> {
     try {
-      this.loading = await this.loadingController.create();
+      this.loading = await this.loadingController.create({
+        message: 'Just a moment...',
+        mode: 'ios'
+      });
       await this.loading.present();
     } catch (error) {
       this.handleError(error);

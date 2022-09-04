@@ -13,6 +13,10 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <ion-card-header color="primary" class="ion-text-center" style="font-size: larger;">
     {{status | titlecase}} - Members List
   </ion-card-header>
