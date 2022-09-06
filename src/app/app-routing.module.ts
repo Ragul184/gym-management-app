@@ -55,11 +55,6 @@ const routes: Routes = [
     ...canActivate(redirectUnauthorizedToLogin)
   },
   {
-    path: 'delete-user',
-    loadChildren: () => import('./pages/delete-user/delete-user.module').then(m => m.DeleteUserPageModule),
-    ...canActivate(redirectUnauthorizedToLogin)
-  },
-  {
     path: 'init-payment',
     loadChildren: () => import('./pages/init-payment/init-payment.module').then(m => m.InitPaymentPageModule),
     ...canActivate(redirectUnauthorizedToLogin)

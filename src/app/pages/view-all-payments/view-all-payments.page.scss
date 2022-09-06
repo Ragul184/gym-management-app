@@ -32,3 +32,11 @@ ion-label.summaryLabel {
   font-size: large;
   font-weight: 600;
 }
+
+ion-searchbar {
+  --border-radius: 25px;
+}
+
+ion-list.paymentList {
+  border-radius: 10px;
+}

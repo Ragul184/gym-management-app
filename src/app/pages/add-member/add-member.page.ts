@@ -66,7 +66,7 @@ export class AddMemberPage implements OnInit {
       address: ['', [Validators.required]],
       joiningDt: [this.today, [Validators.required]],
       feesPaid: ['', [Validators.required]],
-      amount: ['500', [Validators.min(DEFAULT_FEE_AMOUNT)]],
+      amount: [DEFAULT_FEE_AMOUNT, [Validators.min(DEFAULT_FEE_AMOUNT)]],
       subscriptionStartDt: ['', []],
       subscriptionEndDt: ['', []],
       numOfMonths: ['', []],
@@ -154,7 +154,7 @@ export class AddMemberPage implements OnInit {
         buttons: [{
           text: 'OK', handler: () => {
             this.retrieveId();
-            this.router.navigate(['/home']);
+            this.router.navigate(['/tabs/home']);
           }
         }]
       });
@@ -212,11 +212,11 @@ export class AddMemberPage implements OnInit {
       this.users = data;
       const memberIdArray = this.users.map(member => member.memberId).sort((a, b) => b.localeCompare(a));
 
-      this.maxId = memberIdArray[0] ? memberIdArray[0] : 'EX-000';
-      this.currentId = (this.maxId.split('-')[0] + '-' + ((this.maxId.split('-')[1] as any * 1) + 1001).toString().substring(1));
+      this.maxId = memberIdArray[0] ? memberIdArray[0] : 'EX000';
+      this.currentId = (this.maxId.slice(0, 2) + ((this.maxId.slice(2, this.maxId.length) as any * 1) + 1001).toString().substring(1));
 
       this.memberId.setValue(this.currentId);
-      console.log('u', this.users);
+      console.log('u', this.users, this.currentId);
     });
   }
 

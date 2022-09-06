@@ -7,14 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { ViewAllPaymentsPageRoutingModule } from './view-all-payments-routing.module';
 
 import { ViewAllPaymentsPage } from './view-all-payments.page';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ViewAllPaymentsPageRoutingModule
+    ViewAllPaymentsPageRoutingModule,
+    Ng2SearchPipeModule
   ],
   declarations: [ViewAllPaymentsPage]
 })
-export class ViewAllPaymentsPageModule {}
+export class ViewAllPaymentsPageModule { }

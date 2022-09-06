@@ -17,12 +17,14 @@ export class ViewAllPaymentsPage implements OnInit {
   mode = 0;
   filter = 'all';
   usersPaymentInfo: UserPaymentInfo[] = [];
+  isShow = false;
 
   name = '';
   src = 'todayCollection';
   background = 'rgba(255, 196, 9, 0.1)';
   page = '/view-all-payments/today';
   totalAmount = 0;
+  searchTerm: string;
 
   constructor(private collectionService: CollectionsService,
     private loadingController: LoadingController,
@@ -58,6 +60,8 @@ export class ViewAllPaymentsPage implements OnInit {
     try {
       await this.showLoading();
 
+      this.isShow = false;
+
       return this.collectionService.getAllUserPayments(timeline).snapshotChanges().pipe(
         map(changes =>
           changes.map(c =>
@@ -66,7 +70,13 @@ export class ViewAllPaymentsPage implements OnInit {
         )
       ).subscribe(async data => {
         this.usersPaymentInfo = data;
+        console.log(this.usersPaymentInfo);
+        this.usersPaymentInfo = this.usersPaymentInfo
+          .filter(item => item.feesPaid.toLowerCase() === 'yes')
+          .sort((a, b) => b.paymentDateTime?.toMillis() - a.paymentDateTime?.toMillis());
         this.populateTotalAmount();
+
+        this.isShow = true;
         await this.hideLoading();
       });
 

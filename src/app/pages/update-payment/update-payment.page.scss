@@ -23,11 +23,12 @@ ion-content {
     height: 15.5vh;
     width: 100%;
     box-shadow: 0 1px 10px var(--ion-color-light);
-    background: linear-gradient(
-      90deg,
-      var(--ion-color-tertiary) 10%,
-      var(--ion-color-primary) 100%
-    );
+    // background: linear-gradient(
+    //   90deg,
+    //   var(--ion-color-tertiary) 10%,
+    //   var(--ion-color-primary) 100%
+    // );
+    background: #0357b6;
     border-radius: 0 0 50% 50%/0 0 100% 100%;
     transform: scaleX(2.6);
     margin-top: -15vh;

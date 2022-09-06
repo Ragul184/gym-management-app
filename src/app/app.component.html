@@ -6,8 +6,8 @@
           <div class="manu-header-bg"></div>
 
           <ion-menu-toggle autoHide="false" *ngFor="let p of appPages; let i=index">
-            <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false"
-              routerLinkActive="selected">
+            <ion-item [routerDirection]="p.url==='tabs/home' || 'home' ?'root':'forward'" [routerLink]="[p.url]"
+              lines="none" detail="false" routerLinkActive="selected">
               <ion-icon [md]="p.icon + '-sharp'" [ios]="p.icon + '-outline'" slot="start"></ion-icon>
               <ion-label>{{ p.title }}</ion-label>
             </ion-item>

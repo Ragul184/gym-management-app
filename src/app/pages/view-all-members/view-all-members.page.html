@@ -5,7 +5,7 @@
     </ion-buttons>
     <ion-title>View All Members</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="generatePDF()" fill="clear">
+      <ion-button (click)="generatePDF()" fill="clear" [disabled]="users.length === 0 && isShow">
         <ion-icon name="print-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -25,7 +25,13 @@
     </ion-searchbar>
   </ion-toolbar>
 
-  <ng-container *ngIf="users.length === 0 && !isShow">
+  <ng-container *ngIf="!isShow">
+    <ion-item class="noItems" lines="full">
+      <ion-label class="ion-text-center">Loading Members List...</ion-label>
+    </ion-item>
+  </ng-container>
+
+  <ng-container *ngIf="users.length === 0 && isShow">
     <ion-item class="noItems" lines="full">
       <ion-label class="ion-text-center">Sorry, No User Info Available!</ion-label>
     </ion-item>
@@ -33,7 +39,8 @@
 
   <ng-container *ngIf="users.length > 0 && isShow">
     <ion-card class="usersListCard" *ngFor="let user of users | filter: searchTerm; let i=index">
-      <ion-card-header class="usersListCardHeader" routerLink="/member-detail/{{ user.memberId |lowercase }}">
+      <ion-card-header class="usersListCardHeader" routerDirection="forward"
+        routerLink="/member-detail/{{ user.memberId |lowercase }}">
         <ion-row>
           <ion-col size="3">
             <ion-avatar>
@@ -53,19 +60,24 @@
               <ion-icon name="pencil"></ion-icon>&nbsp;EDIT INFO
             </ion-button>
           </ion-col>
-          <ion-col size="6" class="deleteBtn ion-no-padding">
+          <ion-col size="6" class="updateBtn ion-no-padding">
+            <ion-button expand="block" color="primary" fill="clear" (click)="updatePayment(user.memberId)">
+              <ion-icon name="card-outline"></ion-icon>&nbsp;UPDATE FEE
+            </ion-button>
+          </ion-col>
+          <!-- <ion-col size="6" class="deleteBtn ion-no-padding">
             <ion-button expand="block" color="danger" fill="clear" (click)="deleteMember(user)">
               <ion-icon name="trash"></ion-icon>&nbsp;DELETE
             </ion-button>
-          </ion-col>
+          </ion-col> -->
         </ion-row>
-        <ion-row class="secondRow">
+        <!-- <ion-row class="secondRow">
           <ion-col class="updateBtn" class="ion-no-padding">
             <ion-button expand="block" color="primary" fill="clear" (click)="updatePayment(user.memberId)">
               <ion-icon name="card-outline"></ion-icon>&nbsp;UPDATE FEE
             </ion-button>
           </ion-col>
-        </ion-row>
+        </ion-row> -->
       </ion-card-content>
     </ion-card>
   </ng-container>

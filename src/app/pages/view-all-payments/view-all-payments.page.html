@@ -25,6 +25,11 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
+  <!-- <ion-toolbar> -->
+  <ion-searchbar [(ngModel)]="searchTerm" showClearButton="focus" animated="true" placeholder="Search Payments">
+  </ion-searchbar>
+  <!-- </ion-toolbar> -->
+
   <ion-row class="summary ion-margin-horizontal">
     <ion-col>
       <ion-card class="summaryCard ion-text-center">
@@ -38,14 +43,20 @@
     </ion-col>
   </ion-row>
 
-  <ng-container *ngIf="usersPaymentInfo.length === 0">
+  <ng-container *ngIf="!isShow">
+    <ion-item class="noItems" lines="full">
+      <ion-label class="ion-text-center">Loading Members List...</ion-label>
+    </ion-item>
+  </ng-container>
+
+  <ng-container *ngIf="usersPaymentInfo.length === 0 && isShow">
     <ion-item class="noItems" lines="full">
       <ion-label class="ion-text-center">Sorry, No Payment Info Available!</ion-label>
     </ion-item>
   </ng-container>
 
-  <ion-list>
-    <ng-container *ngFor="let item of usersPaymentInfo">
+  <ion-list class="paymentList" *ngIf="usersPaymentInfo.length > 0 && isShow">
+    <ng-container *ngFor="let item of usersPaymentInfo | filter: searchTerm; let i=index">
       <ion-item button *ngIf="item.feesPaid === 'yes'" routerLink="/payment-detail/{{item.id}}">
         <ion-avatar slot="start">
           <img src="https://avatars.dicebear.com/api/initials/{{item.memberName}}.svg" />
